@@ -4,7 +4,7 @@ import FadeInSection from './FadeInSection';
 
 export default function Footer(): ReactElement {
   return (
-    <footer className="relative w-full overflow-hidden bg-[#1F1F1F] px-6 py-16 sm:px-10 lg:px-16 xl:px-20">
+  <footer className="relative w-full overflow-hidden bg-dark px-6 py-16 sm:px-10 lg:px-16 xl:px-20">
       {/* container */}
       <div className="relative z-10 mx-auto max-w-[1280px]">
         {/* Main */}
@@ -12,10 +12,10 @@ export default function Footer(): ReactElement {
           {/* Left: Name & Tagline (animate this only) */}
           <FadeInSection delay={0} direction="up">
             <div className="space-y-2">
-              <h3 className="font-['Satoshi'] text-2xl tracking-wide text-[#FBF8F3]">
+              <h3 className="font-['Satoshi'] text-2xl tracking-wide text-text-on-dark">
                 AUSTIN CARSON
               </h3>
-              <p className="font-['Satoshi'] text-sm text-[#FBF8F3] opacity-60">
+              <p className="font-['Satoshi'] text-sm text-text-on-dark opacity-60">
                 Design + Technology
               </p>
             </div>
@@ -23,12 +23,12 @@ export default function Footer(): ReactElement {
 
           {/* Right: Links (animate, keep top/baseline stable) */}
           <FadeInSection delay={60} direction="up">
-            <nav className="flex flex-wrap items-center justify-start gap-6 font-['Satoshi'] text-sm text-[#FBF8F3] md:justify-end">
+            <nav className="flex flex-wrap items-center justify-start gap-6 font-['Satoshi'] text-sm text-text-on-dark md:justify-end">
               <a
                 href="https://www.linkedin.com/in/austncarsn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors duration-200 hover:text-[#7C8F82]"
+                className="transition-colors duration-200 hover:text-brand"
               >
                 LinkedIn
               </a>
@@ -36,13 +36,13 @@ export default function Footer(): ReactElement {
                 href="https://github.com/austncarsn"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors duration-200 hover:text-[#7C8F82]"
+                className="transition-colors duration-200 hover:text-brand"
               >
                 GitHub
               </a>
               <a
                 href="mailto:austncarsn@gmail.com"
-                className="transition-colors duration-200 hover:text-[#7C8F82]"
+                className="transition-colors duration-200 hover:text-brand"
               >
                 Email
               </a>
@@ -53,12 +53,12 @@ export default function Footer(): ReactElement {
         {/* Bottom row */}
         <div className="flex flex-col items-start justify-between gap-4 pt-8 sm:flex-row sm:items-center">
           <FadeInSection delay={120} direction="up">
-            <p className="font-['Satoshi'] text-xs text-[#FBF8F3] opacity-50">
+            <p className="font-['Satoshi'] text-xs text-text-on-dark opacity-50">
               Missoula, Montana
             </p>
           </FadeInSection>
           <FadeInSection delay={150} direction="up">
-            <p className="font-['Satoshi'] text-xs text-[#FBF8F3] opacity-50">
+            <p className="font-['Satoshi'] text-xs text-text-on-dark opacity-50">
               © 2025 All Rights Reserved
             </p>
           </FadeInSection>

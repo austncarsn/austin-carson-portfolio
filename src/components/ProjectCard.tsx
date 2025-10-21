@@ -25,17 +25,12 @@ export const ProjectCard = memo(function ProjectCard({
   subtitle,
   liveUrl,
   githubUrl,
-  order,
+  
 }: ProjectCardProps) {
   return (
-  <article className="group relative bg-surface border border-structure overflow-hidden transition-transform duration-300 hover:border-brand/30 hover:translate-y-[-3px] hover:shadow-none">
+  <article className="group relative bg-surface border border-structure overflow-hidden transition-transform duration-300 hover:border-brand/30 hover:-translate-y-1" style={{ willChange: 'transform' }}>
       {/* Subtle grid pattern background */}
-      <div className="absolute inset-0 opacity-[0.015] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)`,
-          backgroundSize: '24px 24px'
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none project-card-grid" />
       
       {/* Left accent border - animates on hover */}
   <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand transform scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
@@ -67,7 +62,7 @@ export const ProjectCard = memo(function ProjectCard({
               </div>
             )}
 
-            <h3 className="font-['Satoshi'] text-[28px] md:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-all duration-500 group-hover:text-brand">
+            <h3 className="font-['Satoshi'] text-[28px] md:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 group-hover:text-brand">
               {title}
             </h3>
 
@@ -92,19 +87,20 @@ export const ProjectCard = memo(function ProjectCard({
           </div>
         </div>
 
-        {/* Divider Line */}
+  {/* Divider Line */}
         <div className="relative h-[1px] bg-structure my-8">
           <div className="absolute left-0 top-0 h-full bg-brand transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" 
             style={{ width: '80px' }}
           />
         </div>
 
-        {/* Action Buttons */}
+  {/* Action Buttons */}
   <div className="flex flex-wrap items-center gap-4">
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-white transition-all duration-300 hover:bg-brand hover:gap-3"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-text-on-dark transition-colors duration-300 hover:bg-brand hover:gap-3"
+              style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
@@ -116,7 +112,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
             >
               LIVE DEMO
               <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
@@ -128,7 +124,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
             >
               <Github className="w-4 h-4 transition-transform duration-300 group-hover/btn:rotate-12" />
               GITHUB

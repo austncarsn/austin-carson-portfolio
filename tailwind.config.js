@@ -14,6 +14,7 @@ module.exports = {
 				dark: 'var(--bg-dark)',
 				'text-primary': 'var(--text-primary)',
 				'text-muted': 'var(--text-muted)',
+				'text-on-dark': 'var(--text-on-dark)',
 				structure: 'var(--border)'
 			},
 			maxWidth: {

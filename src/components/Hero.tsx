@@ -5,8 +5,8 @@ import React from 'react';
 
 export default function Hero(): React.JSX.Element {
   const manifestoLines = [
-    "I do not always know what I am doing with my life,",
-    "but I do have a consistent strategy:",
+  "I don't always know what I'm doing with my life,",
+  "but I do have a consistent strategy:",
     "",
     "Panic",
     "",
@@ -51,11 +51,11 @@ export default function Hero(): React.JSX.Element {
             <FadeInSection delay={300} direction="up">
               <div className="space-y-6">
                 <p className="font-['Satoshi'] text-[15px] leading-[1.6] text-text-muted">
-                  I design clean, scalable digital interfaces with a focus on structure, clarity, and usability. My work blends front-end engineering with system-driven design, building products that feel effortless to use and simple to maintain.
+                  I design clean, scalable interfaces that prioritize structure, clarity, and usability. My work combines front-end engineering with system-driven design to create products that feel effortless and are simple to maintain.
                 </p>
-                
+
                 <p className="font-['Satoshi'] text-[13px] leading-[1.5] text-text-muted opacity-70">
-                  Currently crafting modern UI systems and refining component logic, one build at a time.
+                  Currently crafting modern UI systems and refining component logic — one build at a time.
                 </p>
               </div>
             </FadeInSection>

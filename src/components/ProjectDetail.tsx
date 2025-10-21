@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { PROJECTS, type ProjectId, type Project } from "../components/Projects";
+import { PROJECTS, type ProjectId, type Project, type CaseStudy } from "../components/Projects";
 import React from "react";
 
 /* --------------------------- Utilities ------------------------------ */
@@ -76,10 +76,27 @@ function ProjectMeta({
 
 export default function ProjectDetail(): React.JSX.Element {
   const params = useParams<{ id: string }>();
+  const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
+  const [caseStudyLoading, setCaseStudyLoading] = useState(false);
+
   const project = useMemo<Project | null>(() => {
     const id = params.id as ProjectId | undefined;
     return id ? (PROJECTS[id] ?? null) : null;
   }, [params.id]);
+
+  // Lazy load case study data
+  useEffect(() => {
+    if (project?.id && !caseStudy && !caseStudyLoading) {
+      setCaseStudyLoading(true);
+      import('../data/caseStudies').then(module => {
+        const caseStudies = module.CASE_STUDIES;
+        setCaseStudy(caseStudies[project.id as keyof typeof caseStudies] || null);
+        setCaseStudyLoading(false);
+      }).catch(() => {
+        setCaseStudyLoading(false);
+      });
+    }
+  }, [project?.id, caseStudy, caseStudyLoading]);
 
   if (!project) {
     return (
@@ -134,14 +151,14 @@ export default function ProjectDetail(): React.JSX.Element {
           </p>
 
           {/* Short case study summary */}
-          {project.caseStudy && (
+          {caseStudy && (
             <div className="mt-6 p-6 bg-surface border border-structure rounded-md max-w-[900px]">
               <h3 className="font-satoshi text-[18px] text-text-primary mb-4">Case Study</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <h4 className="font-['Satoshi'] text-[14px] text-text-primary mb-2">Problem</h4>
                   <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
-                    {project.caseStudy.problem.map((item, idx) => (
+                    {caseStudy.problem.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
                   </ul>
@@ -150,17 +167,17 @@ export default function ProjectDetail(): React.JSX.Element {
                 <div>
                   <h4 className="font-['Satoshi'] text-[14px] text-text-primary mb-2">Approach</h4>
                   <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
-                    {project.caseStudy.approach.map((item, idx) => (
+                    {caseStudy.approach.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
                   </ul>
                 </div>
 
-                {project.caseStudy.impact && (
+                {caseStudy.impact && (
                   <div>
                     <h4 className="font-['Satoshi'] text-[14px] text-text-primary mb-2">Impact</h4>
                     <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
-                      {project.caseStudy.impact.map((item, idx) => (
+                      {caseStudy.impact.map((item, idx) => (
                         <li key={idx}>{item}</li>
                       ))}
                     </ul>

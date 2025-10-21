@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import squirrelLogo from '@/assets/squirrel_logo.svg';
+import { NavLink } from './NavLink';
+import { MobileMenu } from './MobileMenu';
+import squirrelLogo from '@/assets/race_car.svg';
 
 // ---------------- Types
 export type NavItem = { label: string; href: string; external?: boolean };
@@ -12,21 +14,6 @@ export type NavigationState = { scrollTo?: string } | null;
 // ---------------- Constants
 const SCROLL_STORAGE_KEY = 'navigation:pending-scroll-target';
 const SECTION_IDS = ['work', 'contact'];
-
-// Elegant, editorial link style with underline reveal - enhanced for usability
-const linkClasses = [
-  "group/link relative",
-  "font-['Satoshi'] font-semibold uppercase tracking-[0.12em]",
-  "text-[13px] md:text-[14px]",
-  "text-text-muted hover:text-brand focus:text-brand",
-  "focus:outline-none transition-all duration-200 ease-out",
-  "px-3 py-2",
-  "min-h-[44px] inline-flex items-center",
-  // underline
-  "after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-[2px] after:bg-brand",
-  "after:origin-left after:scale-x-0 group-hover/link:after:scale-x-100 hover:after:scale-x-100",
-  "after:transition-transform after:duration-200 after:ease-out",
-].join(' ');
 
 const navItems: NavItem[] = [
   { label: 'Work', href: '#work' },
@@ -121,122 +108,114 @@ export default function Navigation(): ReactElement {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-paper/95 backdrop-blur-lg border-b border-structure/50" aria-label="Main navigation">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-16 xl:px-24">
-  {/* Flex layout: logo left | links right */}
-  <div className="flex items-center justify-between h-16 md:h-24">
-          {/* Left: Logo */}
-          <Link
-            to="/"
-            aria-current={isHomePage ? 'page' : undefined}
-            className="inline-flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95"
-            aria-label="Return to homepage"
-          >
-            <img 
-              src={squirrelLogo} 
-              alt="Austin Carson Logo" 
-              className="h-8 md:h-9 w-auto transition-transform duration-200 ease-out hover:scale-105" 
-            />
-          </Link>
-
-          {/* Right: Navigation Links (hidden on small screens) */}
-          <div className="hidden md:flex items-center gap-8 md:gap-10 lg:gap-12">
-            {navItems.map((item) => {
-              const sectionId = item.href.replace('#', '');
-              const isActive = activeSection === sectionId;
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className={linkClasses + (isActive ? ' text-brand after:scale-x-100' : '')}
-                  aria-current={isActive ? 'location' : undefined}
-                  onClick={(e) => handleSectionClick(e, item.href)}
-                >
-                  {item.label}
-                </a>
-              );
-            })}
-            <div className="hidden md:block w-px h-6 bg-structure/50" />
-            {externalLinks.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClasses}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="md:hidden justify-self-end p-2.5 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 min-h-[44px] min-w-[44px]"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-structure/50">
-            <div className="py-4 space-y-1">
-              {navItems.map((item) => {
+    <>
+      <nav
+        className="sticky top-0 z-50 w-full bg-paper/95 backdrop-blur-lg border-b border-structure/50"
+        aria-label="Main navigation"
+      >
+        <div className="mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 xl:px-12">
+          {/* Desktop & Tablet Layout: Logo centered | Links balanced */}
+          <div className="flex items-center justify-between h-16 md:h-20 lg:h-24">
+            {/* Left Section: Primary Navigation */}
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
+              {navItems.slice(0, 1).map((item) => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
                 return (
-                  <a
+                  <NavLink
                     key={item.label}
                     href={item.href}
-                    className={`block px-4 py-3 text-sm font-['Satoshi'] font-semibold uppercase tracking-[0.12em] transition-colors duration-200 rounded-lg ${
-                      isActive
-                        ? 'text-brand bg-surface'
-                        : 'text-text-muted hover:text-brand hover:bg-surface/50'
-                    }`}
-                    aria-current={isActive ? 'location' : undefined}
+                    variant="primary"
+                    isActive={isActive}
                     onClick={(e) => handleSectionClick(e, item.href)}
                   >
                     {item.label}
-                  </a>
+                  </NavLink>
                 );
               })}
-              <div className="pt-3 mt-3 border-t border-structure/50">
-                {externalLinks.map((item) => (
-                  <a
+            </div>
+
+            {/* Center: Logo */}
+            <Link
+              to="/"
+              aria-current={isHomePage ? 'page' : undefined}
+              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px]"
+              aria-label="Return to homepage"
+            >
+              <img
+                src={squirrelLogo}
+                alt="Austin Carson Logo"
+                className="h-8 md:h-9 lg:h-10 w-auto transition-transform duration-200 ease-out hover:scale-105"
+              />
+            </Link>
+
+            {/* Right Section: Secondary Navigation */}
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
+              {navItems.slice(1).map((item) => {
+                const sectionId = item.href.replace('#', '');
+                const isActive = activeSection === sectionId;
+                return (
+                  <NavLink
                     key={item.label}
                     href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-3 text-sm font-['Satoshi'] font-semibold uppercase tracking-[0.12em] text-text-muted hover:text-brand hover:bg-surface/50 transition-colors duration-200 rounded-lg"
-                    onClick={() => setMobileMenuOpen(false)}
+                    variant="primary"
+                    isActive={isActive}
+                    onClick={(e) => handleSectionClick(e, item.href)}
                   >
                     {item.label}
-                    <span className="ml-2 text-xs opacity-60">↗</span>
-                  </a>
-                ))}
-              </div>
+                  </NavLink>
+                );
+              })}
+              {/* Separator */}
+              <div className="hidden lg:block w-px h-6 bg-structure/50" />
+              {externalLinks.map((item) => (
+                <NavLink
+                  key={item.label}
+                  href={item.href}
+                  variant="secondary"
+                  isExternal={item.external}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              className="md:hidden flex items-center justify-center p-2.5 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 min-h-[44px] min-w-[44px]"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        navItems={navItems}
+        externalLinks={externalLinks}
+        activeSection={activeSection}
+        onLinkClick={handleSectionClick}
+        onClose={() => setMobileMenuOpen(false)}
+      />
+    </>
   );
 }

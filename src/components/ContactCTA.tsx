@@ -26,7 +26,8 @@ export default function ContactCTA(): ReactElement {
           <div className="flex min-h-0 flex-col self-start space-y-4">
             <a
               href="mailto:austncarsn@gmail.com"
-              className="group inline-flex w-full items-center gap-3 px-6 py-4 bg-dark text-white transition-all duration-300 hover:bg-brand hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-3 px-6 py-4 bg-dark text-text-on-dark transition-all duration-300 hover:bg-brand hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              aria-label="Email Austin"
             >
               <Mail className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               <div className="flex flex-col items-start">

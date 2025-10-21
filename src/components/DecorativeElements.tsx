@@ -22,7 +22,7 @@ export const FloatingDot = memo(function FloatingDot({
 
   return (
     <div
-      className={`absolute rounded-full bg-brand opacity-20 ${className}`}
+      className={`absolute rounded-full bg-brand opacity-20 floating-dot ${className}`}
       style={{
         top,
         left,

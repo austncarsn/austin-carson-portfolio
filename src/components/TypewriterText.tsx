@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 interface TypewriterTextProps {
@@ -25,7 +25,10 @@ export default memo(function TypewriterText({
   const [isComplete, setIsComplete] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
+  
   const prefersReducedMotion = usePrefersReducedMotion();
+  const typingTimerRef = useRef<number | null>(null);
+  const cursorTimerRef = useRef<number | null>(null);
 
   // Handle initial delay
   useEffect(() => {
@@ -33,7 +36,6 @@ export default memo(function TypewriterText({
       const startTimer = setTimeout(() => {
         setHasStarted(true);
       }, initialDelay);
-
       return () => clearTimeout(startTimer);
     } else {
       setHasStarted(true);
@@ -78,9 +80,20 @@ export default memo(function TypewriterText({
     return Math.max(15, delay); // Minimum 15ms, maximum natural speed
   }, [typingSpeed, speedVariation]);
 
-  // Smooth cursor blinking
+  // Consolidated typing and cursor effects
   useEffect(() => {
+    // Clear existing timers
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    if (cursorTimerRef.current) clearInterval(cursorTimerRef.current);
+
+    if (!hasStarted) return;
+
     if (prefersReducedMotion) {
+      // Reveal everything immediately for reduced motion
+      setDisplayedLines(lines);
+      setCurrentLineIndex(lines.length);
+      setCurrentCharIndex(0);
+      setIsComplete(true);
       setCursorVisible(false);
       return;
     }
@@ -90,25 +103,12 @@ export default memo(function TypewriterText({
       return;
     }
 
-    const interval = setInterval(() => {
+    // Cursor blinking
+    cursorTimerRef.current = setInterval(() => {
       setCursorVisible(prev => !prev);
-    }, 530); // Slightly irregular blink (more natural)
+    }, 530);
 
-    return () => clearInterval(interval);
-  }, [isComplete, prefersReducedMotion]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-
-    if (prefersReducedMotion) {
-      // Reveal everything immediately for reduced motion
-      setDisplayedLines(lines);
-      setCurrentLineIndex(lines.length);
-      setCurrentCharIndex(0);
-      setIsComplete(true);
-      return;
-    }
-
+    // Typing logic
     if (currentLineIndex >= lines.length) {
       setIsComplete(true);
       return;
@@ -116,44 +116,40 @@ export default memo(function TypewriterText({
 
     const currentLine = lines[currentLineIndex];
 
-    // Handle empty lines (paragraph breaks)
     if (currentLine.length === 0) {
+      // Handle empty lines
       updateDisplayedLine(currentLineIndex, '');
-      
-      const timer = setTimeout(() => {
+      typingTimerRef.current = setTimeout(() => {
         setCurrentLineIndex(prev => prev + 1);
         setCurrentCharIndex(0);
-      }, lineDelay * 0.6); // Natural pause between paragraphs
-
-      return () => clearTimeout(timer);
-    }
-
-    // Type characters with natural variation
-    if (currentCharIndex < currentLine.length) {
+      }, lineDelay * 0.6);
+    } else if (currentCharIndex < currentLine.length) {
+      // Type next character
       const currentChar = currentLine[currentCharIndex];
       const nextChar = currentLine[currentCharIndex + 1];
       const delay = getTypingDelay(currentChar, nextChar);
 
-      const timer = setTimeout(() => {
+      typingTimerRef.current = setTimeout(() => {
         updateDisplayedLine(currentLineIndex, currentLine.slice(0, currentCharIndex + 1));
         setCurrentCharIndex(prev => prev + 1);
       }, delay);
-
-      return () => clearTimeout(timer);
     } else {
-      // Move to next line with natural pause
+      // Move to next line
       const lastChar = currentLine[currentLine.length - 1];
       const isEndOfSentence = ['.', '!', '?'].includes(lastChar);
       const delay = isEndOfSentence ? lineDelay * 1.5 : lineDelay;
 
-      const timer = setTimeout(() => {
+      typingTimerRef.current = setTimeout(() => {
         setCurrentLineIndex(prev => prev + 1);
         setCurrentCharIndex(0);
       }, delay);
-
-      return () => clearTimeout(timer);
     }
-  }, [hasStarted, currentLineIndex, currentCharIndex, lines, lineDelay, updateDisplayedLine, getTypingDelay]);
+
+    return () => {
+      if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+      if (cursorTimerRef.current) clearInterval(cursorTimerRef.current);
+    };
+  }, [hasStarted, currentLineIndex, currentCharIndex, lines, lineDelay, updateDisplayedLine, getTypingDelay, prefersReducedMotion, isComplete]);
 
   // Memoize the rendered output with smooth cursor
   const renderedLines = useMemo(() => {

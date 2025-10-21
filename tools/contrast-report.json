@@ -1,0 +1,56 @@
+{
+  "vars": {
+    "brand": "#7C8F82",
+    "brand-ice": "#EAF4EE",
+    "brand-ink": "#0F2A23",
+    "ring": "var(--brand)",
+    "accent": "#8A919A",
+    "bg-paper": "#E7E3D9",
+    "bg-surface": "#FFFFFF",
+    "bg-dark": "#1A1D20",
+    "text-primary": "#111418",
+    "text-muted": "#5B5650",
+    "text-on-dark": "#F5F6F7",
+    "border": "#A8A39B",
+    "shadow-1": "0 6px 18px rgba(17, 20, 24, 0.04)",
+    "font-size": "16px"
+  },
+  "results": [
+    {
+      "text": "text-primary",
+      "bg": "bg-paper",
+      "ratio": 14.41,
+      "ok": true
+    },
+    {
+      "text": "text-primary",
+      "bg": "bg-surface",
+      "ratio": 18.47,
+      "ok": true
+    },
+    {
+      "text": "text-muted",
+      "bg": "bg-paper",
+      "ratio": 5.67,
+      "ok": true
+    },
+    {
+      "text": "text-muted",
+      "bg": "bg-surface",
+      "ratio": 7.26,
+      "ok": true
+    },
+    {
+      "text": "text-primary",
+      "bg": "bg-dark",
+      "ratio": 1.09,
+      "ok": false
+    },
+    {
+      "text": "text-on-dark",
+      "bg": "bg-dark",
+      "ratio": 15.64,
+      "ok": true
+    }
+  ]
+}
