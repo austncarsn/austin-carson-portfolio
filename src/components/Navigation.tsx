@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import tealRacecar from '@/assets/teal_racecar.svg';
+import flowerLogo from '@/assets/flower.png';
 
 // ---------------- Types
 export type NavItem = { label: string; href: string; external?: boolean };
@@ -133,9 +133,9 @@ export default function Navigation(): ReactElement {
             aria-label="Return to homepage"
           >
             <img 
-              src={tealRacecar} 
+              src={flowerLogo} 
               alt="Austin Carson Logo" 
-              className="h-5 md:h-5.5 w-auto transition-transform duration-200 ease-out hover:scale-105" 
+              className="h-8 md:h-9 w-auto transition-transform duration-200 ease-out hover:scale-105" 
             />
           </Link>
 
