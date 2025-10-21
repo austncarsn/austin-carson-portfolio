@@ -7,11 +7,11 @@ export default function ContactCTA(): ReactElement {
   return (
   <Section id="contact" border="bottom" bgClass="bg-paper">
       {/* Force columns to align to the top; prevent accidental stretching */}
-      <div className="grid grid-cols-1 items-start gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-24">
+  <div className="grid grid-cols-1 items-start gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-24">
         {/* Left — Heading */}
         <FadeInSection delay={0} direction="right">
           <div className="space-y-4">
-            <h2 className="font-['Satoshi'] text-[52px] leading-[0.95] tracking-[-0.02em] sm:text-[64px] lg:text-[72px]">
+            <h2 className="font-['Satoshi'] text-[32px] leading-[1.0] tracking-[-0.02em] sm:text-[52px] lg:text-[72px]">
               LET'S BUILD SOMETHING USEFUL
             </h2>
             <p className="font-['Satoshi'] text-[18px] text-text-muted max-w-[520px]">
@@ -26,7 +26,7 @@ export default function ContactCTA(): ReactElement {
           <div className="flex min-h-0 flex-col self-start space-y-4">
             <a
               href="mailto:austncarsn@gmail.com"
-              className="group inline-flex items-center gap-3 px-6 py-4 bg-dark text-white transition-all duration-300 hover:bg-brand hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-3 px-6 py-4 bg-dark text-white transition-all duration-300 hover:bg-brand hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
             >
               <Mail className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               <div className="flex flex-col items-start">
@@ -39,7 +39,7 @@ export default function ContactCTA(): ReactElement {
               href="https://www.linkedin.com/in/austncarsn"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 px-6 py-4 bg-surface border-2 border-structure text-text-primary transition-all duration-300 hover:border-brand hover:bg-white hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-3 px-6 py-4 bg-surface border-2 border-structure text-text-primary transition-all duration-300 hover:border-brand hover:bg-white hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
             >
               <Linkedin className="w-5 h-5 transition-all duration-300 group-hover:text-brand group-hover:scale-110" />
               <div className="flex flex-col items-start">
@@ -52,7 +52,7 @@ export default function ContactCTA(): ReactElement {
               href="https://github.com/austncarsn"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 px-6 py-4 bg-surface border-2 border-structure text-text-primary transition-all duration-300 hover:border-dark hover:bg-white hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-3 px-6 py-4 bg-surface border-2 border-structure text-text-primary transition-all duration-300 hover:border-dark hover:bg-white hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
             >
               <Github className="w-5 h-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <div className="flex flex-col items-start">

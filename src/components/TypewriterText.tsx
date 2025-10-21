@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 interface TypewriterTextProps {
   lines: string[];
@@ -24,6 +25,7 @@ export default memo(function TypewriterText({
   const [isComplete, setIsComplete] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Handle initial delay
   useEffect(() => {
@@ -78,6 +80,11 @@ export default memo(function TypewriterText({
 
   // Smooth cursor blinking
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setCursorVisible(false);
+      return;
+    }
+
     if (isComplete) {
       setCursorVisible(false);
       return;
@@ -88,10 +95,19 @@ export default memo(function TypewriterText({
     }, 530); // Slightly irregular blink (more natural)
 
     return () => clearInterval(interval);
-  }, [isComplete]);
+  }, [isComplete, prefersReducedMotion]);
 
   useEffect(() => {
     if (!hasStarted) return;
+
+    if (prefersReducedMotion) {
+      // Reveal everything immediately for reduced motion
+      setDisplayedLines(lines);
+      setCurrentLineIndex(lines.length);
+      setCurrentCharIndex(0);
+      setIsComplete(true);
+      return;
+    }
 
     if (currentLineIndex >= lines.length) {
       setIsComplete(true);

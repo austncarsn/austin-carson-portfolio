@@ -28,7 +28,7 @@ export const ProjectCard = memo(function ProjectCard({
   order,
 }: ProjectCardProps) {
   return (
-    <article className="group relative bg-surface border border-structure overflow-hidden transition-all duration-700 hover:border-brand/30 hover:shadow-[0_8px_30px_rgba(168,204,196,0.08)]">
+  <article className="group relative bg-surface border border-structure overflow-hidden transition-transform duration-300 hover:border-brand/30 hover:translate-y-[-3px] hover:shadow-none">
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none"
         style={{
@@ -100,11 +100,11 @@ export const ProjectCard = memo(function ProjectCard({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-4">
+  <div className="flex flex-wrap items-center gap-4">
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex items-center gap-2 font-['Satoshi'] font-semibold text-[14px] tracking-[0.02em] px-6 py-3 bg-dark text-white transition-all duration-300 hover:bg-brand hover:gap-3"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-white transition-all duration-300 hover:bg-brand hover:gap-3"
             >
               VIEW DETAILS
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
@@ -116,7 +116,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-6 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
             >
               LIVE DEMO
               <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
@@ -128,7 +128,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-6 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-all duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
             >
               <Github className="w-4 h-4 transition-transform duration-300 group-hover/btn:rotate-12" />
               GITHUB

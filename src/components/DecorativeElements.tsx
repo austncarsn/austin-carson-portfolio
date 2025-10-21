@@ -3,6 +3,7 @@
    ========================================================================== */
 
 import { memo } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 export const FloatingDot = memo(function FloatingDot({ 
   top, 
@@ -17,6 +18,8 @@ export const FloatingDot = memo(function FloatingDot({
   delay?: number;
   className?: string;
 }) {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
     <div
       className={`absolute rounded-full bg-brand opacity-20 ${className}`}
@@ -25,7 +28,7 @@ export const FloatingDot = memo(function FloatingDot({
         left,
         width: `${size}px`,
         height: `${size}px`,
-        animation: `float 6s ease-in-out infinite ${delay}s`,
+        animation: prefersReducedMotion ? 'none' : `float 6s ease-in-out infinite ${delay}s`,
         willChange: 'transform'
       }}
     />

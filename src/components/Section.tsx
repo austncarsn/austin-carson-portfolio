@@ -46,7 +46,7 @@ export default function Section({
   const baseSpacing = 'px-6 py-16 sm:px-10 sm:py-18 md:py-20 lg:px-16 lg:py-24 xl:px-20';
 
   return (
-  <section id={id} className={`relative w-full overflow-hidden ${borderClasses} ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`}>
+  <section id={id} className={`relative w-full overflow-hidden ${borderClasses} ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`} style={{ scrollMarginTop: '4rem' }}>
       {noContainer ? (
         children
       ) : (

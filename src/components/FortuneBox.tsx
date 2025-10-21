@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { memo, useState } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const FORTUNES = [
     "You will trip over gravity itself and pretend you did it for character development.",
@@ -57,6 +58,7 @@ const FORTUNES = [
 const FortuneBox = memo(function FortuneBox(): ReactElement {
   const [currentFortune, setCurrentFortune] = useState('Click to reveal');
   const [isAnimating, setIsAnimating] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const pickRandomFortune = (): string => {
     const index = Math.floor(Math.random() * FORTUNES.length);
@@ -80,14 +82,13 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
           relative min-w-[280px] max-w-[400px]
           bg-paper border-2 border-structure
           px-6 py-4 text-left
-          transition-all duration-300 ease-in-out
+          transition-transform duration-200 ease-in-out
           hover:border-text-primary
-          hover:shadow-[4px_4px_0px_0px_var(--brand)]
+          ${prefersReducedMotion ? '' : 'hover:shadow-[4px_4px_0px_0px_var(--brand)]'}
           focus-visible:outline-none
           focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-var(--brand)
-          active:shadow-[2px_2px_0px_0px_var(--brand)]
           active:translate-x-[2px] active:translate-y-[2px]
-          ${isAnimating ? 'animate-[shake_0.5s_ease-in-out]' : ''}
+          ${isAnimating && !prefersReducedMotion ? 'animate-[shake_0.5s_ease-in-out]' : ''}
         `}
         aria-label="Reveal a fortune message"
         onClick={revealFortune}

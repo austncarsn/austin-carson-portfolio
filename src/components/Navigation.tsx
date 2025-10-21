@@ -123,8 +123,8 @@ export default function Navigation(): ReactElement {
   return (
     <nav className="sticky top-0 z-50 w-full bg-paper/95 backdrop-blur-lg border-b border-structure/50" aria-label="Main navigation">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-16 xl:px-24">
-        {/* Flex layout: logo left | links right */}
-        <div className="flex items-center justify-between h-20 md:h-24">
+  {/* Flex layout: logo left | links right */}
+  <div className="flex items-center justify-between h-16 md:h-24">
           {/* Left: Logo */}
           <Link
             to="/"
@@ -139,8 +139,8 @@ export default function Navigation(): ReactElement {
             />
           </Link>
 
-          {/* Right: Navigation Links */}
-          <div className="flex items-center gap-8 md:gap-10 lg:gap-12">
+          {/* Right: Navigation Links (hidden on small screens) */}
+          <div className="hidden md:flex items-center gap-8 md:gap-10 lg:gap-12">
             {navItems.map((item) => {
               const sectionId = item.href.replace('#', '');
               const isActive = activeSection === sectionId;
