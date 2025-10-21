@@ -1,0 +1,340 @@
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap");
+
+/* Minimal stylesheet: design tokens + Tailwind directives.
+   Tailwind generates utility classes based on tailwind.config.js which map to CSS variables.
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base resets */
+html, body { overflow-x: hidden; }
+progress { appearance: none; display: none !important; }
+progress::-webkit-progress-bar,
+progress::-webkit-progress-value { background: transparent; }
+
+/* Design Tokens */
+:root {
+  /* User-provided palette */
+  --brand: #7C8F82;
+  --accent: #8A919A;
+  --bg-paper: #E7E3D9;
+  --bg-surface: #FFFFFF;
+  --bg-dark: #4A4E57;
+  --text-primary: #111418;
+  --text-muted: #6B6760;
+  --border: #A8A39B;
+  
+  /* Helpers */
+  --font-size: 16px;
+}
+
+@layer base {
+  :root { font-size: var(--font-size); }
+  body {
+    background: var(--bg-paper);
+    color: var(--text-primary);
+    font-family: Satoshi, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Minimal utility helpers */
+.sr-only { 
+  position: absolute !important; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip: rect(0 0 0 0); 
+  white-space: nowrap; 
+  border: 0; 
+}
+
+.link-underline {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .link-underline:after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 2px; background: currentColor;
+    transform-origin: 0;
+    transform: scaleX(0);
+    transition: transform var(--dur-2) var(--ease-snap);
+  }
+  .link-underline:hover:after { transform: scaleX(1); }
+
+  .cards-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  @container (width >= 520px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @container (width >= 920px) {
+    .cards-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(#e6e6e680 1px, #0000 1px),
+      linear-gradient(90deg, #e6e6e680 1px, #0000 1px);
+    background-size: 80px 80px;
+  }
+  .paper-fiber {
+    background-image:
+      radial-gradient(1px 1px at 25% 32%, #0000000a 50%, #0000 51%),
+      radial-gradient(1px 1px at 75% 62%, #00000008 50%, #0000 51%);
+    background-size: 120px 120px;
+  }
+
+  .nav-speckle { position: relative; overflow: hidden; }
+  .nav-speckle:before {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: .4;
+    background-image: radial-gradient(#adc7ea1f 1px, #0000 1px);
+    background-size: 4px 4px;
+    animation: speckle-move 20s linear infinite;
+  }
+
+  .nav-logo {
+    text-decoration: none;
+    transition: color var(--dur-2) var(--ease-snap);
+  }
+  .nav-logo:hover { color: var(--brand-ice); }
+
+  .nav-link {
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-family: Satoshi, system-ui, sans-serif;
+    font-weight: 500;
+    font-size: .875rem;
+    display: inline-block;
+    transition:
+      color var(--dur-2) var(--ease-snap),
+      transform var(--dur-1) var(--ease-snap);
+  }
+  @media (width >= 768px) {
+    .nav-link { font-size: .9375rem; }
+  }
+  .nav-link:hover { color: var(--foreground); }
+  .nav-link:active { transform: translateY(1px); }
+  .nav-link:focus-visible { outline-offset: 4px; }
+  .nav-link:after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -4px;
+    height: 1px; background: currentColor;
+    transform-origin: 0;
+    transform: scaleX(0);
+    transition: transform var(--dur-2) var(--ease-snap);
+  }
+  .nav-link:hover:after { transform: scaleX(1); }
+
+  .footer-link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    transition: color var(--dur-2) var(--ease-snap), opacity var(--dur-2) var(--ease-snap);
+  }
+  .footer-link:after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -1px;
+    height: 1px; background: currentColor;
+    transform-origin: 0;
+    transform: scaleX(0);
+    transition: transform var(--dur-2) var(--ease-snap);
+  }
+  .footer-link:hover { color: var(--brand-ice); }
+  .footer-link:hover:after { transform: scaleX(1); }
+
+  .project-card {
+    --card-padding: var(--space-4);
+    position: relative; overflow: hidden;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    transition:
+      transform var(--dur-2) var(--ease-soft),
+      border-color var(--dur-2) var(--ease-soft);
+    will-change: transform;
+  }
+  .project-card:hover { transform: translateY(-3px); }
+  @supports (color: color-mix(in lab, red, red)) {
+    .project-card:hover {
+      border-color: color-mix(in oklch, var(--border), var(--brand-ice) 25%);
+    }
+  }
+  .project-card:after {
+    content: "";
+    position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 2px;
+    background: var(--brand-ice);
+    transform-origin: 0;
+    transform: scaleX(0);
+    transition: transform var(--dur-2) var(--ease-snap);
+  }
+  .project-card:hover:after { transform: scaleX(1); }
+
+  .skeleton {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius-sm);
+    background-color: var(--muted);
+    background-image: linear-gradient(90deg, transparent 25%, var(--muted) 50%, transparent 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+  @supports (color: color-mix(in lab, red, red)) {
+    .skeleton {
+      background-color: color-mix(in oklch, var(--muted), #000 5%);
+      background-image: linear-gradient(90deg, transparent 25%, color-mix(in oklch, var(--muted), #fff 15%) 50%, transparent 75%);
+    }
+  }
+
+  .button {
+    --btn-px: var(--space-3);
+    --btn-py: var(--space-2);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: var(--btn-py) var(--btn-px);
+    border: none; cursor: pointer;
+    border-radius: var(--radius-md);
+    font-weight: 600; text-decoration: none;
+    transition:
+      background-color var(--dur-1) var(--ease-snap),
+      color var(--dur-1) var(--ease-snap),
+      transform var(--dur-1) var(--ease-snap),
+      box-shadow var(--dur-1) var(--ease-snap);
+  }
+  .button:active { transform: translateY(1px); }
+  .button--primary { background: var(--primary); color: var(--primary-foreground); }
+  .button--primary:hover { filter: brightness(1.1); }
+  .button--ghost { background: none; color: var(--foreground); border: 1px solid var(--border); }
+  .button--ghost:hover { background: var(--accent); }
+  @supports (color: color-mix(in lab, red, red)) {
+    .button--ghost:hover { background: color-mix(in oklch, var(--accent), white 40%); }
+  }
+  .button--accent { background: var(--brand-ice); color: var(--brand-ink); }
+  .button--accent:hover { filter: saturate(1.05) brightness(.98); }
+  .button--sm { --btn-px: var(--space-2); --btn-py: var(--space-1); font-size: var(--font-scale-sm); }
+  .button--lg { --btn-px: var(--space-4); --btn-py: var(--space-3); font-size: var(--font-scale-lg); }
+
+  .input {
+    display: inline-flex; align-items: center; width: 100%;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: all var(--dur-1) var(--ease-snap);
+  }
+  .input::placeholder { color: var(--muted-foreground); }
+  @supports (color: color-mix(in lab, red, red)) {
+    .input::placeholder { color: color-mix(in oklch, var(--muted-foreground), white 25%); }
+  }
+  .input:focus-within { border-color: var(--ring); box-shadow: 0 0 0 4px var(--ring); }
+  @supports (color: color-mix(in lab, red, red)) {
+    .input:focus-within {
+      border-color: color-mix(in oklch, var(--ring), #000 15%);
+      box-shadow: 0 0 0 4px color-mix(in oklch, var(--ring), transparent 80%);
+    }
+  }
+  .input.invalid { border-color: var(--destructive); box-shadow: 0 0 0 3px var(--destructive); }
+  @supports (color: color-mix(in lab, red, red)) {
+    .input.invalid {
+      border-color: color-mix(in oklch, var(--destructive), #000 10%);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--destructive), transparent 85%);
+    }
+  }
+
+/* ===== Animations ===================================================== */
+@layer animations {
+  @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes speckle-move { to { transform: translate(-4px, -4px); } }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fade-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(2px); } }
+  @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
+  @keyframes slide-in-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slide-in-left { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes scale-in { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes shimmer { 0% { background-position: -200%; } 100% { background-position: 200%; } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+  /* Optional helper classes if you use them directly */
+  .animate-fade-in { animation: fade-in .3s ease-out forwards; }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .animate-slide-in-up { animation: slide-in-up .8s cubic-bezier(.4, 0, .2, 1) forwards; }
+  .animate-slide-in-left { animation: slide-in-left .8s cubic-bezier(.4, 0, .2, 1) forwards; }
+  .animate-scale-in { animation: scale-in .6s cubic-bezier(.4, 0, .2, 1) forwards; }
+}
+
+/* ===== Interactions =================================================== */
+@layer interactions {
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  @supports (color: color-mix(in lab, red, red)) {
+    :focus-visible { outline: 2px solid color-mix(in oklch, var(--ring), var(--brand-ice) 35%); }
+  }
+
+  [data-state="open"] { animation: fade-in var(--dur-2) var(--ease-soft) both; }
+  [data-state="closed"] { animation: fade-out var(--dur-2) var(--ease-soft) both; }
+}
+
+/* ===== Accessibility ================================================== */
+@layer accessibility {
+  @media (forced-colors: active) {
+    :focus-visible { outline: 2px solid highlight; }
+    .skeleton { background-image: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, :before, :after {
+      scroll-behavior: auto !important;
+      transition-duration: .001ms !important;
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+    }
+    .skeleton { background-image: none; animation: none; }
+  }
+}
+
+/* ===== Overrides ====================================================== */
+@layer overrides {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    background-clip: padding-box;
+    border: 2px solid #0000;
+    border-radius: 999px;
+  }
+  @supports (color: color-mix(in lab, red, red)) {
+    ::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--muted-foreground), #000 10%); }
+  }
+  ::-webkit-scrollbar-track { background: none; }
+}
+
+/* ===== Dark mode component tweaks ==================================== */
+@layer dark-mode {
+  .dark .nav-speckle { background-color: #0c0c0cf2; }
+  .dark .grid-pattern {
+    background-image:
+      linear-gradient(#3c3c3c26 1px, #0000 1px),
+      linear-gradient(90deg, #3c3c3c26 1px, #0000 1px);
+  }
+  .dark .paper-fiber {
+    background-image:
+      radial-gradient(1px 1px at 25% 32%, #ffffff0a 50%, #0000 51%),
+      radial-gradient(1px 1px at 75% 62%, #ffffff08 50%, #0000 51%);
+  }
+}
