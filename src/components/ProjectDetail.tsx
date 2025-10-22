@@ -139,7 +139,7 @@ export default function ProjectDetail(): React.JSX.Element {
 
           {/* Title */}
           <div className="space-y-4 mb-12">
-            <h1 className="font-satoshi text-[64px] leading-[1.1] text-text-primary tracking-[-0.02em]">
+            <h1 className="font-barcode text-[64px] leading-[1.1] text-text-primary tracking-[-0.02em]">
               {project.title}
             </h1>
             <div className="w-24 h-[3px] bg-brand rounded-[1px]"></div>
