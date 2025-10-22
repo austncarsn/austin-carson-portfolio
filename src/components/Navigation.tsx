@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { NavLink } from './NavLink';
 import { MobileMenu } from './MobileMenu';
-import squirrelLogo from '@/assets/race_car.svg';
 
 // ---------------- Types
 export type NavItem = { label: string; href: string; external?: boolean };
@@ -135,18 +134,14 @@ export default function Navigation(): ReactElement {
               })}
             </div>
 
-            {/* Center: Logo */}
+            {/* Center: Homepage Link */}
             <Link
               to="/"
               aria-current={isHomePage ? 'page' : undefined}
-              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px]"
+              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] font-semibold text-lg text-brand hover:text-brand/80"
               aria-label="Return to homepage"
             >
-              <img
-                src={squirrelLogo}
-                alt="Austin Carson Logo"
-                className="h-8 md:h-9 lg:h-10 w-auto transition-transform duration-200 ease-out hover:scale-105"
-              />
+              AC
             </Link>
 
             {/* Right Section: Secondary Navigation */}
