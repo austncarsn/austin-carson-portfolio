@@ -115,39 +115,35 @@ export default function Navigation(): ReactElement {
         <div className="mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 xl:px-12">
           {/* Desktop & Tablet Layout: Logo centered | Links balanced */}
           <div className="flex items-center justify-between h-16 md:h-20 lg:h-24">
-            {/* Left Section: Primary Navigation */}
-            <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              {navItems.slice(0, 1).map((item) => {
-                const sectionId = item.href.replace('#', '');
-                const isActive = activeSection === sectionId;
-                return (
-                  <NavLink
-                    key={item.label}
-                    href={item.href}
-                    variant="primary"
-                    isActive={isActive}
-                    onClick={(e) => handleSectionClick(e, item.href)}
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
+            {/* Left: Desktop homepage (barcode) */}
+            <div className="hidden md:flex items-center">
+              <Link
+                to="/"
+                aria-current={isHomePage ? 'page' : undefined}
+                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-3xl text-black hover:text-black/70 uppercase leading-none"
+                style={{ fontFamily: '"Libre Barcode 39", monospace' }}
+                aria-label="Return to homepage"
+              >
+                austin carson
+              </Link>
             </div>
 
-            {/* Center: Homepage Link */}
-            <Link
-              to="/"
-              aria-current={isHomePage ? 'page' : undefined}
-              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-3xl text-black hover:text-black/70 uppercase leading-none"
-              style={{ fontFamily: '"Libre Barcode 39", monospace' }}
-              aria-label="Return to homepage"
-            >
-              austin carson
-            </Link>
+            {/* Center: Homepage Link (mobile) */}
+            <div className="flex md:hidden items-center justify-center">
+              <Link
+                to="/"
+                aria-current={isHomePage ? 'page' : undefined}
+                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-2xl text-black uppercase leading-none"
+                style={{ fontFamily: '"Libre Barcode 39", monospace' }}
+                aria-label="Return to homepage"
+              >
+                austin carson
+              </Link>
+            </div>
 
             {/* Right Section: Secondary Navigation */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              {navItems.slice(1).map((item) => {
+              {navItems.map((item) => {
                 const sectionId = item.href.replace('#', '');
                 const isActive = activeSection === sectionId;
                 return (
