@@ -75,33 +75,35 @@ export const PROJECTS = {
     ],
   },
   },
-  'clothing-web': {
-    id: 'clothing-web',
-  title: 'Clothing Web — Editorial E‑commerce Study',
-    category: 'E-commerce Design Study',
+  'clothing-site-demo': {
+    id: 'clothing-site-demo',
+  title: 'Clothing Site Demo — E‑commerce Platform',
+    category: 'E-commerce Platform',
     year: '2025',
-    role: 'UI/UX Design & Front-end Development',
-  description: 'An editorial e-commerce study exploring modular grids and reusable components for consistent product layouts.',
-  subtitle: 'Scalable design systems with editorial product layouts',
-  longDescription: 'Clothing Web explores editorial product presentation through responsive grid logic and reusable components. The study demonstrates how systematic component design and thoughtful layout detail enable cohesive aesthetics and rapid iteration for scalable commerce experiences.',
-  technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'CSS Grid', 'Vercel'],
+    role: 'Full-stack Development & UI/UX Design',
+  description: 'A comprehensive e-commerce platform featuring product catalog, shopping cart, user authentication, and payment integration.',
+  subtitle: 'Complete e-commerce solution with modern design and functionality',
+  longDescription: 'Clothing Site Demo is a full-featured e-commerce platform built with modern web technologies. It includes a complete product catalog with filtering and search, shopping cart functionality, user authentication, secure payment processing, and an intuitive admin dashboard for inventory management.',
+  technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe', 'PostgreSQL', 'Vercel'],
     
-    liveUrl: 'https://clothing-web-eight.vercel.app',
-  githubUrl: 'https://github.com/austncarsn/clothing-web.git',
+    liveUrl: 'https://clothing-site-demo-lime.vercel.app',
+  githubUrl: 'https://github.com/austncarsn/clothing-site-demo.git',
   caseStudy: {
     problem: [
-      'Create a flexible layout that supports both editorial content and product catalog experiences.',
-      'Ensure layout consistency and clear product hierarchy across breakpoints.'
+      'Build a complete e-commerce platform with modern user experience and secure payment processing.',
+      'Implement scalable architecture for product catalog and inventory management.',
+      'Create intuitive user interfaces for both customers and administrators.'
     ],
     approach: [
-      'Develop a modular grid system with responsive breakpoints and a consistent spacing scale.',
-      'Design reusable product card components that express hierarchy and scale across contexts.',
-      'Systematize patterns to support rapid iteration and visual consistency.'
+      'Develop a full-stack application using Next.js with TypeScript for type safety.',
+      'Implement secure payment processing with Stripe integration.',
+      'Design responsive UI components with Tailwind CSS and focus on accessibility.',
+      'Create database schema for products, users, and orders with PostgreSQL.'
     ],
     impact: [
-      'Faster iteration using reusable components and consistent grid rules.',
-      'More cohesive visual language across editorial and product pages.',
-      'Improved readability and responsiveness on all devices.'
+      'Delivered a fully functional e-commerce platform ready for production use.',
+      'Implemented secure payment processing and user authentication systems.',
+      'Created scalable architecture supporting future feature expansions.'
     ],
   },
   },
