@@ -171,6 +171,34 @@ export const PROJECTS = {
     ],
   },
   },
+  'ai-prompt-studio-vehicles': {
+    id: 'ai-prompt-studio-vehicles',
+    title: 'AI Prompt Studio — Vehicles',
+    category: 'AI Tooling',
+    year: '2025',
+    role: 'Front-end Development & Prompt Engineering',
+    description: 'AI Prompt Studio — Vehicles is an experimental interface for crafting and testing AI prompts tailored to vehicle imagery and descriptions. It provides an interactive workspace for designers and engineers to iterate on prompts, preview generated images, and export successful prompts and assets.',
+    subtitle: 'Interactive prompt authoring for vehicle-focused AI generation',
+    longDescription: 'AI Prompt Studio — Vehicles is a focused prompt-authoring tool for generating vehicle imagery and related content using modern generative models. The studio includes a live preview area, prompt versioning, parameter controls for style and composition, and export options for prompts and generated assets. Built with React and TypeScript, it streamlines experimentation and iteration for AI-assisted creative workflows.',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vercel', 'OpenAI'],
+    liveUrl: 'https://ai-prompt-studio-vehicles.vercel.app',
+    githubUrl: 'https://github.com/austncarsn/ai-prompt-studio-vehicles.git',
+    caseStudy: {
+      problem: [
+        'Iterating on AI prompts for vehicle imagery is time-consuming and hard to reproduce.',
+        'Designers need a predictable interface to tweak style and composition parameters.',
+      ],
+      approach: [
+        'Create an interactive prompt authoring workspace with live previews.',
+        'Add parameter controls for style, lighting, and composition to make prompts reproducible.',
+        'Implement prompt versioning and export to capture successful iterations.'
+      ],
+      impact: [
+        'Reduced iteration time for prompt engineering by enabling rapid experimentation.',
+        'Captured reproducible prompts and assets to streamline handoff between teams.'
+      ],
+    },
+  },
 } as const;
 
 export type ProjectId = keyof typeof PROJECTS;
