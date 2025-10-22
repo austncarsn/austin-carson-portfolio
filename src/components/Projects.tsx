@@ -33,14 +33,16 @@ export const PROJECTS = {
       'Generating variations of floral designs for different branding contexts.'
     ],
     approach: [
-      'Develop a Figma plugin with intuitive parameter controls for floral generation.',
-      'Implement procedural algorithms for realistic petal and stem creation.',
-      'Create a clean UI that integrates seamlessly with Figma\'s design workflow.'
+      'Develop a minimalist web app with intuitive preset compositions for floral generation.',
+      'Implement real-time preview functionality for instant design feedback.',
+      'Create a clean, accessible UI with high-resolution export capabilities.',
+      'Build with React and TypeScript for performance and maintainability.'
     ],
     impact: [
       'Accelerated floral illustration creation by 80% for design teams.',
       'Ensured visual consistency across botanical design elements.',
-      'Enabled rapid prototyping of floral designs for various brand applications.'
+      'Enabled rapid prototyping of floral designs for various brand applications.',
+      'Provided a lightweight alternative to complex vector software.'
     ],
   },
   },
