@@ -6,6 +6,11 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				'satoshi': ['Satoshi', 'sans-serif'],
+				'plex': ['IBM Plex Sans', 'sans-serif'],
+				'barcode': ['Libre Barcode 39', 'monospace']
+			},
 			colors: {
 				brand: 'var(--brand)',
 				accent: 'var(--accent)',

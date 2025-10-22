@@ -1,4 +1,5 @@
 @import url("https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap");
 
 /* Minimal stylesheet: design tokens + Tailwind directives.
    Tailwind generates utility classes based on tailwind.config.js which map to CSS variables.

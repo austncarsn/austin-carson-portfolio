@@ -138,10 +138,10 @@ export default function Navigation(): ReactElement {
             <Link
               to="/"
               aria-current={isHomePage ? 'page' : undefined}
-              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] font-semibold text-lg text-brand hover:text-brand/80"
+              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] font-barcode text-lg text-brand hover:text-brand/80 uppercase tracking-wider"
               aria-label="Return to homepage"
             >
-              AC
+              austin carson
             </Link>
 
             {/* Right Section: Secondary Navigation */}
