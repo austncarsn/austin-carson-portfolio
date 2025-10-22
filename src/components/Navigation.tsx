@@ -138,7 +138,8 @@ export default function Navigation(): ReactElement {
             <Link
               to="/"
               aria-current={isHomePage ? 'page' : undefined}
-              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] font-barcode text-lg text-brand hover:text-brand/80 uppercase tracking-wider"
+              className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-xl text-brand hover:text-brand/60 uppercase tracking-[0.5em] leading-none"
+              style={{ fontFamily: '"Libre Barcode 39", monospace' }}
               aria-label="Return to homepage"
             >
               austin carson
