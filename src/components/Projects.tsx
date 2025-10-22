@@ -15,14 +15,14 @@ export const PROJECTS = {
 
   'floral-design-svg': {
     id: 'floral-design-svg',
-  title: 'Floral Design SVG — Figma Plugin',
+  title: 'Floral Design SVG — Web App',
     category: 'Design Tool',
     year: '2025',
-    role: 'Plugin Development & UI Design',
-  description: 'A Figma plugin that generates intricate floral SVG illustrations with customizable parameters for petals, stems, and color palettes.',
-  subtitle: 'Procedural floral illustrations for design workflows',
-  longDescription: 'Floral Design SVG is a Figma plugin that creates beautiful, customizable floral illustrations using procedural generation. Users can adjust parameters for petal count, stem curvature, color schemes, and complexity levels to generate unique botanical designs perfect for branding, illustrations, and decorative elements.',
-  technologies: ['Figma Plugin API', 'TypeScript', 'SVG', 'Canvas API', 'React'],
+    role: 'Web App Development & UI Design',
+  description: 'Floral Design SVG — A minimalist web app for generating elegant, nature-inspired floral illustrations. Users can explore preset compositions, preview their designs, and download high-resolution PNG or SVG files for creative use across print and digital projects. Built with React and TypeScript, it blends accessibility with precision, offering a lightweight alternative to complex vector software.',
+  subtitle: 'Elegant floral illustrations for creative projects',
+  longDescription: 'Floral Design SVG is a minimalist web application that generates elegant, nature-inspired floral illustrations. Users can explore preset compositions, preview their designs in real-time, and download high-resolution PNG or SVG files for use across print and digital projects. Built with React and TypeScript, it combines accessibility with precision, offering a lightweight alternative to complex vector software.',
+  technologies: ['React', 'TypeScript', 'SVG', 'Canvas API', 'Vite'],
     
     liveUrl: 'https://floral-design-svg.vercel.app',
   githubUrl: 'https://floral-design-svg-git-main-austncarsns-projects.vercel.app',
