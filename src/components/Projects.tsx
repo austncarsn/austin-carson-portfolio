@@ -118,8 +118,8 @@ export const PROJECTS = {
   longDescription: 'Graphic Design Gallery is a sophisticated portfolio platform designed to showcase creative work in an engaging and professional manner. Features include responsive grid layouts, smooth hover animations, detailed project views, and optimized performance for fast loading across all devices.',
   technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
     
-    liveUrl: 'https://graphicdesigngallery.vercel.app',
-  githubUrl: 'https://github.com/austncarsn/graphic-design-gallery.git',
+    liveUrl: 'https://design-gallery-kappa.vercel.app',
+  githubUrl: 'https://github.com/austncarsn/design-gallery.git',
   caseStudy: {
     problem: [
       'Create an elegant platform to showcase diverse graphic design work effectively.',
