@@ -109,7 +109,7 @@ export default function Navigation(): ReactElement {
   return (
     <>
       <nav
-        className="sticky top-0 z-50 w-full bg-paper/95 backdrop-blur-lg border-b border-structure/50"
+        className="sticky top-0 z-50 w-full bg-paper/95 backdrop-blur-lg"
         aria-label="Main navigation"
       >
         <div className="mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 xl:px-12">
