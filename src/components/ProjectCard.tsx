@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, Github } from 'lucide-react';
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 interface ProjectCardProps {
   id?: string;
@@ -27,16 +27,46 @@ export const ProjectCard = memo(function ProjectCard({
   githubUrl,
   
 }: ProjectCardProps) {
+  const [isInView, setIsInView] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the card is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully in view
+      }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const groupClasses = isInView ? 'group-active' : '';
+  const hoverClasses = isInView ? 'border-brand/30 -translate-y-1' : '';
+  const accentClasses = isInView ? 'scale-y-100' : 'scale-y-0';
+  const cornerClasses = isInView ? 'translate-x-8 -translate-y-8' : 'translate-x-16 -translate-y-16';
+  const titleClasses = isInView ? 'text-brand' : '';
+  const yearBadgeClasses = isInView ? 'border-brand bg-white' : '';
+  const dividerClasses = isInView ? 'scale-x-100' : 'scale-x-0';
+  const bottomAccentClasses = isInView ? 'scale-x-100' : 'scale-x-0';
+
   return (
-  <article className="group relative bg-surface border border-structure overflow-hidden transition-transform duration-300 hover:border-brand/30 hover:-translate-y-1" style={{ willChange: 'transform' }}>
+  <article ref={cardRef} className={`group relative bg-surface border border-structure overflow-hidden transition-all duration-500 ${hoverClasses}`} style={{ willChange: 'transform' }}>
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none project-card-grid" />
       
-      {/* Left accent border - animates on hover */}
-  <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand transform scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+      {/* Left accent border - animates on scroll */}
+  <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-brand transform transition-transform duration-700 origin-top ${accentClasses}`} />
       
   {/* Top corner decorative element */}
-  <div className="absolute top-0 right-0 w-32 h-32 bg-brand opacity-[0.02] rounded-full blur-3xl transform translate-x-16 -translate-y-16 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-700" />
+  <div className={`absolute top-0 right-0 w-32 h-32 bg-brand opacity-[0.02] rounded-full blur-3xl transform transition-transform duration-700 ${cornerClasses}`} />
 
       <div className="relative p-8 md:p-12">
         {/* Numeric order badge */}
@@ -62,7 +92,7 @@ export const ProjectCard = memo(function ProjectCard({
               </div>
             )}
 
-            <h3 className="font-['Satoshi'] text-[28px] md:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 group-hover:text-brand">
+            <h3 className={`font-['Satoshi'] text-[28px] md:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
@@ -80,7 +110,7 @@ export const ProjectCard = memo(function ProjectCard({
           </div>
 
           {/* Year Badge - Large */}
-          <div className="hidden md:flex items-center justify-center w-20 h-20 border border-structure bg-paper transition-all duration-500 group-hover:border-brand group-hover:bg-white">
+          <div className={`hidden md:flex items-center justify-center w-20 h-20 border border-structure bg-paper transition-all duration-500 ${yearBadgeClasses}`}>
             <span className="font-['Satoshi'] text-[18px] font-medium text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
@@ -89,7 +119,7 @@ export const ProjectCard = memo(function ProjectCard({
 
   {/* Divider Line */}
         <div className="relative h-[1px] bg-structure my-8">
-          <div className="absolute left-0 top-0 h-full bg-brand transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" 
+          <div className={`absolute left-0 top-0 h-full bg-brand transform transition-transform duration-700 origin-left ${dividerClasses}`} 
             style={{ width: '80px' }}
           />
         </div>
@@ -133,8 +163,8 @@ export const ProjectCard = memo(function ProjectCard({
         </div>
       </div>
 
-      {/* Bottom accent line - expands on hover */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
+      {/* Bottom accent line - expands on scroll */}
+      <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-brand transform transition-transform duration-700 origin-left ${bottomAccentClasses}`} />
     </article>
   );
 });
