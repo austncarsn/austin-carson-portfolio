@@ -34,22 +34,6 @@ export const CASE_STUDIES = {
       'A scalable visual system that supports future product expansions.'
     ],
   },
-  'clothing-web': {
-    problem: [
-      'Create a flexible layout that supports both editorial content and product catalog experiences.',
-      'Ensure layout consistency and clear product hierarchy across breakpoints.'
-    ],
-    approach: [
-      'Develop a modular grid system with responsive breakpoints and a consistent spacing scale.',
-      'Design reusable product card components that express hierarchy and scale across contexts.',
-      'Systematize patterns to support rapid iteration and visual consistency.'
-    ],
-    impact: [
-      'Faster iteration using reusable components and consistent grid rules.',
-      'More cohesive visual language across editorial and product pages.',
-      'Improved readability and responsiveness on all devices.'
-    ],
-  },
   'icon-library': {
     problem: [
       'Need for a consistent, legible icon set that works across multiple products and sizes.',

@@ -77,38 +77,6 @@ export const PROJECTS = {
     ],
   },
   },
-  'clothing-site-demo': {
-    id: 'clothing-site-demo',
-  title: 'Clothing Site Demo — E‑commerce Platform',
-    category: 'E-commerce Platform',
-    year: '2025',
-    role: 'Full-stack Development & UI/UX Design',
-  description: 'A comprehensive e-commerce platform featuring product catalog, shopping cart, user authentication, and payment integration.',
-  subtitle: 'Complete e-commerce solution with modern design and functionality',
-  longDescription: 'Clothing Site Demo is a full-featured e-commerce platform built with modern web technologies. It includes a complete product catalog with filtering and search, shopping cart functionality, user authentication, secure payment processing, and an intuitive admin dashboard for inventory management.',
-  technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe', 'PostgreSQL', 'Vercel'],
-    
-    liveUrl: 'https://clothing-site-demo-lime.vercel.app',
-  githubUrl: 'https://github.com/austncarsn/clothing-site-demo.git',
-  caseStudy: {
-    problem: [
-      'Build a complete e-commerce platform with modern user experience and secure payment processing.',
-      'Implement scalable architecture for product catalog and inventory management.',
-      'Create intuitive user interfaces for both customers and administrators.'
-    ],
-    approach: [
-      'Develop a full-stack application using Next.js with TypeScript for type safety.',
-      'Implement secure payment processing with Stripe integration.',
-      'Design responsive UI components with Tailwind CSS and focus on accessibility.',
-      'Create database schema for products, users, and orders with PostgreSQL.'
-    ],
-    impact: [
-      'Delivered a fully functional e-commerce platform ready for production use.',
-      'Implemented secure payment processing and user authentication systems.',
-      'Created scalable architecture supporting future feature expansions.'
-    ],
-  },
-  },
   'icon-library': {
     id: 'icon-library',
   title: 'American Heritage Icon Library — Icon System',
