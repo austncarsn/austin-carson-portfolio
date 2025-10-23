@@ -76,11 +76,11 @@ export const ProjectCard = memo(function ProjectCard({
           <div className="flex-1">
             {/* Category & Year */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="font-['Satoshi'] text-[11px] tracking-[0.1em] uppercase text-brand font-semibold">
+              <span className="font-satoshi text-[11px] tracking-[0.1em] uppercase text-brand font-semibold">
                 {category}
               </span>
               <div className="w-[2px] h-[2px] bg-structure rounded-full" />
-              <span className="font-['Satoshi'] text-[11px] tracking-[0.08em] uppercase text-text-muted font-medium">
+              <span className="font-satoshi text-[11px] tracking-[0.08em] uppercase text-text-muted font-medium">
                 {year}
               </span>
             </div>
@@ -88,30 +88,30 @@ export const ProjectCard = memo(function ProjectCard({
             {/* Title */}
             {role && (
               <div className="mb-2">
-                <span className="font-['Satoshi'] text-[12px] text-text-muted">{role}</span>
+                <span className="font-satoshi text-[12px] text-text-muted">{role}</span>
               </div>
             )}
 
-            <h3 className={`font-['Satoshi'] text-[28px] md:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
+            <h3 className={`font-satoshi text-[20px] md:text-[28px] lg:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-['Satoshi'] text-[14px] leading-[1.6] text-text-muted max-w-[680px] mb-2">
+              <p className="font-plex text-[14px] leading-[1.6] text-text-muted max-w-[680px] mb-2">
                 {subtitle}
               </p>
             )}
 
             {/* Description */}
-            <p className="font-['Satoshi'] text-[16px] leading-[1.7] text-text-muted max-w-[680px]">
+            <p className="font-plex text-[16px] leading-[1.7] text-text-muted max-w-[680px]">
               {description}
             </p>
           </div>
 
           {/* Year Badge - Large */}
           <div className={`hidden md:flex items-center justify-center w-20 h-20 border border-structure bg-paper transition-all duration-500 ${yearBadgeClasses}`}>
-            <span className="font-['Satoshi'] text-[18px] font-medium text-text-primary tracking-tight">
+            <span className="font-satoshi text-[18px] font-medium text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
           </div>
@@ -129,7 +129,7 @@ export const ProjectCard = memo(function ProjectCard({
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-text-on-dark transition-colors duration-300 hover:bg-brand hover:gap-3"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-text-on-dark transition-colors duration-300 hover:bg-brand hover:gap-3"
               style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
@@ -142,7 +142,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
             >
               LIVE DEMO
               <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
@@ -154,7 +154,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-['Satoshi'] font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
             >
               <Github className="w-4 h-4 transition-transform duration-300 group-hover/btn:rotate-12" />
               GITHUB

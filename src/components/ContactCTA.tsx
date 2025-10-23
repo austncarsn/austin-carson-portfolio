@@ -12,10 +12,10 @@ export default function ContactCTA(): ReactElement {
         <FadeInSection delay={0} direction="right">
           <div className="space-y-4">
             <h2 className="font-['Satoshi'] text-[32px] leading-[1.0] tracking-[-0.02em] sm:text-[52px] lg:text-[72px]">
-              LET'S BUILD SOMETHING USEFUL
+              Let's build something together.
             </h2>
             <p className="font-['Satoshi'] text-[18px] text-text-muted max-w-[520px]">
-              I work with companies and individuals to design simple, useful tools and polished product experiences. If you have an idea, a brief, or just want to say hello — let’s talk.
+              If you have a project, an idea, or just want to collaborate, reach out and say hello.
             </p>
             <div className="mt-2 h-[3px] w-12 rounded-[1px] bg-brand" />
           </div>
@@ -31,8 +31,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Mail className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               <div className="flex flex-col items-start">
-                <span className="font-['Satoshi'] text-[14px] font-semibold tracking-wide uppercase">EMAIL</span>
-                <span className="font-['Satoshi'] text-[13px] opacity-80">austncarsn@gmail.com</span>
+                <span className="font-satoshi text-[14px] font-semibold tracking-wide uppercase">EMAIL</span>
+                <span className="font-plex text-[13px] opacity-80">austncarsn@gmail.com</span>
               </div>
             </a>
 
@@ -44,8 +44,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Linkedin className="w-5 h-5 transition-all duration-300 group-hover:text-brand group-hover:scale-110" />
               <div className="flex flex-col items-start">
-                <span className="font-['Satoshi'] text-[14px] font-semibold tracking-wide uppercase">LINKEDIN</span>
-                <span className="font-['Satoshi'] text-[13px] text-text-muted">View professional profile</span>
+                <span className="font-satoshi text-[14px] font-semibold tracking-wide uppercase">LINKEDIN</span>
+                <span className="font-plex text-[13px] text-text-muted">View professional profile</span>
               </div>
             </a>
 
@@ -57,8 +57,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Github className="w-5 h-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
               <div className="flex flex-col items-start">
-                <span className="font-['Satoshi'] text-[14px] font-semibold tracking-wide uppercase">GITHUB</span>
-                <span className="font-['Satoshi'] text-[13px] text-text-muted">Browse code repositories</span>
+                <span className="font-satoshi text-[14px] font-semibold tracking-wide uppercase">GITHUB</span>
+                <span className="font-plex text-[13px] text-text-muted">Browse code repositories</span>
               </div>
             </a>
           </div>

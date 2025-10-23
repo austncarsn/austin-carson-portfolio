@@ -7,8 +7,10 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				'satoshi': ['Satoshi', 'sans-serif'],
-				'plex': ['IBM Plex Sans', 'sans-serif'],
+				// Keep the existing utility names but map them to the new typefaces
+				'satoshi': ['"Space Grotesk"', 'sans-serif'], // H1 / major headings
+				'plex': ['"IBM Plex Sans"', 'sans-serif'], // body & UI
+				'jetbrains': ['"JetBrains Mono"', 'monospace'], // code snippets
 				'barcode': ['Libre Barcode 39', 'monospace']
 			},
 			colors: {

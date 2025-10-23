@@ -56,7 +56,7 @@ export default function Section({
             <FadeInSection delay={labelDelay}>
               <div className="mb-16">
                 <div className={`flex items-center gap-3 ${labelClassName}`}>
-                  <span className="font-['Satoshi'] text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
+                  <span className="font-satoshi text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
                     SECTION {labelNumber}
                   </span>
                   <span className="text-structure">—</span>

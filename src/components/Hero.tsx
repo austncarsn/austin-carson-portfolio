@@ -30,7 +30,7 @@ export default function Hero(): React.JSX.Element {
             {/* Name Display with Accent */}
             <FadeInSection delay={100} direction="up">
               <div>
-                  <h1 className="font-['Satoshi'] text-[40px] md:text-[80px] tracking-[-0.02em] leading-[0.95] mb-6 transition-all duration-700 group-hover:tracking-[-0.03em]">
+                  <h1 className="font-satoshi text-[40px] md:text-[48px] lg:text-[72px] tracking-[-0.02em] leading-[0.95] mb-6 transition-all duration-700 group-hover:tracking-[-0.03em]">
                   AUSTIN CARSON
                 </h1>
               </div>
@@ -38,7 +38,7 @@ export default function Hero(): React.JSX.Element {
 
             {/* Subtitle */}
             <FadeInSection delay={200} direction="up">
-              <h2 className="font-['Satoshi'] font-medium text-[20px] md:text-[36px] leading-[1.3] text-text-primary tracking-[-0.01em]">
+              <h2 className="font-satoshi font-medium text-[24px] md:text-[36px] lg:text-[48px] leading-[1.3] text-text-primary tracking-[-0.01em]">
                 Creative Technology and Interface Systems
               </h2>
             </FadeInSection>
@@ -46,11 +46,11 @@ export default function Hero(): React.JSX.Element {
             {/* Supporting Content */}
             <FadeInSection delay={300} direction="up">
               <div className="space-y-6">
-                <p className="font-['Satoshi'] text-[15px] leading-[1.6] text-text-muted">
+                <p className="font-plex text-[18px] leading-[1.6] text-text-muted">
                   I design clean, scalable interfaces that prioritize structure, clarity, and usability. My work combines front-end engineering with system-driven design to create products that feel effortless and are simple to maintain.
                 </p>
 
-                <p className="font-['Satoshi'] text-[13px] leading-[1.5] text-text-muted opacity-70">
+                <p className="font-plex text-[14px] leading-[1.5] text-text-muted opacity-70">
                   Currently crafting modern UI systems and refining component logic — one build at a time.
                 </p>
               </div>
@@ -63,7 +63,7 @@ export default function Hero(): React.JSX.Element {
               <div className="border-l-2 border-brand pl-6 py-2">
                 <TypewriterText 
                   lines={manifestoLines}
-                  className="font-['Satoshi'] text-[15px] text-text-muted leading-relaxed space-y-1 opacity-95"
+                  className="font-plex text-[18px] text-text-muted leading-relaxed space-y-1 opacity-95"
                   typingSpeed={20}
                   lineDelay={150}
                 />
