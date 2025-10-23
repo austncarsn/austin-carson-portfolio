@@ -153,20 +153,38 @@ export default memo(function TypewriterText({
 
   // Memoize the rendered output with smooth cursor
   const renderedLines = useMemo(() => {
-    return displayedLines.map((line, index) => (
-      <div key={index} className="min-h-[1.5em]">
-        {line || '\u00A0'}
-        {index === currentLineIndex && !isComplete && (
-          <span 
-            className={`inline-block w-[2px] h-[1.1em] bg-brand ml-[2px] align-text-bottom transition-opacity duration-100 ${
-              cursorVisible ? 'opacity-100' : 'opacity-0'
-            }`}
-            aria-hidden="true"
-          />
-        )}
-      </div>
-    ));
-  }, [displayedLines, currentLineIndex, isComplete, cursorVisible]);
+    // Reserve space for all lines from the start to prevent layout shifts
+    const totalLines = lines.length;
+    const linesToRender = [];
+    
+    for (let i = 0; i < totalLines; i++) {
+      if (i < displayedLines.length) {
+        // Show typed content
+        linesToRender.push(
+          <div key={i} className="min-h-[1.5em]">
+            {displayedLines[i] || '\u00A0'}
+            {i === currentLineIndex && !isComplete && (
+              <span 
+                className={`inline-block w-[2px] h-[1.1em] bg-brand ml-[2px] align-text-bottom transition-opacity duration-100 ${
+                  cursorVisible ? 'opacity-100' : 'opacity-0'
+                }`}
+                aria-hidden="true"
+              />
+            )}
+          </div>
+        );
+      } else {
+        // Reserve space for upcoming lines
+        linesToRender.push(
+          <div key={i} className="min-h-[1.5em]">
+            {'\u00A0'}
+          </div>
+        );
+      }
+    }
+    
+    return linesToRender;
+  }, [displayedLines, currentLineIndex, isComplete, cursorVisible, lines.length]);
 
   return (
     <div className={className} role="status" aria-live="polite" aria-atomic="false">
