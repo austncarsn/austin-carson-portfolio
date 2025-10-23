@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
 
 const externalLinks: NavItem[] = [
   { label: 'GitHub', href: 'https://github.com/austncarsn', external: true },
+  { label: 'Resume', href: '/resume', external: false }
 ];
 
 // ---------------- Utils

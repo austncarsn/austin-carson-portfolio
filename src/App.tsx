@@ -14,6 +14,7 @@ const Hero = lazy(() => import('./components/Hero'));
 const Projects = lazy(() => import('./components/Projects'));
 const ContactCTA = lazy(() => import('./components/ContactCTA'));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
+const Resume = lazy(() => import('./components/Resume'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
 // ─── LOADING STATES ─────────────────────────────────────────────────────────
@@ -78,6 +79,15 @@ export default function App(): ReactElement {
                     <ProjectDetail />
                   </RouteTransition>
                 } 
+              />
+
+              <Route
+                path="/resume"
+                element={
+                  <RouteTransition>
+                    <Resume />
+                  </RouteTransition>
+                }
               />
               
               <Route 
