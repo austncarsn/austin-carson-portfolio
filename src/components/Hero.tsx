@@ -5,19 +5,15 @@ import React from 'react';
 
 export default function Hero(): React.JSX.Element {
   const manifestoLines = [
-  "I don't always know what I'm doing with my life,",
-  "but I do have a consistent strategy:",
-    "",
-    "Panic",
-    "",
-    "Reinvent entire personality",
-    "",
-    "Buy a notebook",
-    "",
-    "Do absolutely nothing in that notebook",
-    "",
-    "Then I say things like",
-    "\"the vision is still forming.\""
+  "The notebook is for ideas.",
+  "The code is for products.",
+  "The coffee is for both.",
+  "",
+  "My process: Question everything,",
+  "prototype quickly, refine obsessively.",
+  "",
+  "Also: I take notes I never reference.",
+  "But they help me think."
   ];
 
   return (
