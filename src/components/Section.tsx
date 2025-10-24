@@ -60,7 +60,7 @@ export default function Section({
                     SECTION {labelNumber}
                   </span>
                   <span className="text-structure">—</span>
-                  <span className="font-['Satoshi'] text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
+                  <span className="font-satoshi text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
                     {labelTitle}
                   </span>
                   <div className="flex-1 h-[1px] bg-brand ml-3" style={{ width: '24px', flexGrow: 0 }} />

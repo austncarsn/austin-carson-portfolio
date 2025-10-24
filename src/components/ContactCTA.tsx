@@ -11,10 +11,10 @@ export default function ContactCTA(): ReactElement {
         {/* Left — Heading */}
         <FadeInSection delay={0} direction="right">
           <div className="space-y-4">
-            <h2 className="font-['Satoshi'] text-[32px] leading-[1.0] tracking-[-0.02em] sm:text-[52px] lg:text-[72px]">
+            <h2 className="font-satoshi text-[32px] leading-[1.0] tracking-[-0.02em] sm:text-[52px] lg:text-[72px]">
               Let's build something together.
             </h2>
-            <p className="font-['Satoshi'] text-[18px] text-text-muted max-w-[520px]">
+            <p className="font-satoshi text-[18px] text-text-muted max-w-[520px]">
               If you have a project, an idea, or just want to collaborate, reach out and say hello.
             </p>
             <div className="mt-2 h-[3px] w-12 rounded-[1px] bg-brand" />

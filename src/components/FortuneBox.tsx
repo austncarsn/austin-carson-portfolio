@@ -92,16 +92,16 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
         onClick={revealFortune}
         onAnimationEnd={handleAnimationEnd}
       >
-        <div className="font-['Satoshi'] tracking-[0.15em] text-[11px] text-text-muted uppercase mb-3">
+  <div className="font-satoshi tracking-[0.15em] text-[11px] text-text-muted uppercase mb-3">
           Fortune
         </div>
         <p
-          className="font-['Satoshi'] text-sm text-text-primary leading-relaxed mb-3 min-h-[60px] flex items-center"
+          className="font-satoshi text-sm text-text-primary leading-relaxed mb-3 min-h-[60px] flex items-center"
           aria-live="polite"
         >
           {currentFortune}
         </p>
-        <div className="font-['Satoshi'] text-xs text-text-muted opacity-60">
+  <div className="font-satoshi text-xs text-text-muted opacity-60">
           Tap Again for Another.
         </div>
         <div className="pointer-events-none absolute bottom-4 right-6 h-[2px] w-8 rounded-[1px] bg-brand" />

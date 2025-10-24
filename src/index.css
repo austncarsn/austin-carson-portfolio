@@ -225,7 +225,8 @@ code, pre, kbd {
     text-decoration: none;
     text-transform: uppercase;
     color: var(--muted-foreground);
-    font-family: Satoshi, system-ui, sans-serif;
+    /* Use Space Grotesk for navigation labels to match heading tone */
+    font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
     font-weight: 500;
     font-size: .875rem;
     display: inline-block;
