@@ -43,28 +43,8 @@ module.exports = {
 			'barcode': ['Libre Barcode 39', 'monospace']
 		},
 		colors: {
-			},
-			fontFamily: {
-				// All variants map to Space Grotesk (Satoshi)
-				'sans': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'satoshi': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'display': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'heading': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'body': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'ui': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'mono': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'code': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				
-				// Legacy aliases for backward compatibility
-				'plex': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'jetbrains': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				
-				// Barcode font only for branding
-				'barcode': ['Libre Barcode 39', 'monospace']
-			},
-			colors: {
-				// Brand colors
-				brand: {
+			// Brand colors
+			brand: {
 					50: 'var(--brand-50)',
 					100: 'var(--brand-100)',
 					200: 'var(--brand-200)',
