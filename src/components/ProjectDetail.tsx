@@ -15,7 +15,7 @@ function isExternal(url: string | undefined): boolean {
 
 function TechPill({ label }: { label: string }): React.JSX.Element {
   return (
-    <span className="font-plex text-sm text-text-primary bg-surface border border-structure rounded-md px-4 py-2 transition-colors duration-200 hover:border-brand">
+    <span className="font-satoshi text-sm text-text-primary bg-surface border border-structure rounded-md px-4 py-2 transition-colors duration-200 hover:border-brand">
       {label}
     </span>
   );
@@ -34,7 +34,7 @@ function CtaLink({
 }): React.JSX.Element | null {
   if (!isExternal(href)) return null;
   
-  const baseClasses = "inline-flex items-center gap-3 font-plex font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50";
+  const baseClasses = "inline-flex items-center gap-3 font-satoshi font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50";
   const variantClasses = variant === "primary"
     ? "bg-brand text-white hover:opacity-90"
     : "bg-surface border border-structure text-text-primary hover:border-brand hover:text-brand";
@@ -61,11 +61,11 @@ function ProjectMeta({
 }): React.JSX.Element {
   return (
     <div className="flex items-center gap-3">
-      <span className="font-plex text-sm text-text-muted uppercase tracking-wider">
+      <span className="font-satoshi text-sm text-text-muted uppercase tracking-wider">
         {category}
       </span>
       <span className="w-1 h-1 rounded-full bg-brand" aria-hidden="true" />
-      <span className="font-plex text-sm text-text-muted uppercase tracking-wider">
+      <span className="font-satoshi text-sm text-text-muted uppercase tracking-wider">
         {year}
       </span>
     </div>
@@ -103,10 +103,10 @@ export default function ProjectDetail(): React.JSX.Element {
       <div className="min-h-screen bg-paper flex items-center justify-center px-4">
         <div className="text-center space-y-6">
             <h1 className="font-satoshi text-4xl text-text-primary">Project Not Found</h1>
-            <p className="font-plex text-text-muted">The project you're looking for doesn't exist.</p>
+            <p className="font-satoshi text-text-muted">The project you're looking for doesn't exist.</p>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 font-plex font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
+            className="inline-flex items-center gap-2 font-satoshi font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Return Home
@@ -125,7 +125,7 @@ export default function ProjectDetail(): React.JSX.Element {
           <div className="mb-12">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 font-plex font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
+              className="inline-flex items-center gap-2 font-satoshi font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Projects
@@ -146,7 +146,7 @@ export default function ProjectDetail(): React.JSX.Element {
           </div>
 
           {/* Description */}
-          <p className="font-plex text-lead leading-[1.7] text-text-muted max-w-[800px]">
+          <p className="font-satoshi text-lead leading-[1.7] text-text-muted max-w-[800px]">
             {project.description}
           </p>
 
@@ -157,7 +157,7 @@ export default function ProjectDetail(): React.JSX.Element {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <h4 className="font-satoshi text-sm text-text-primary mb-2">Problem</h4>
-                  <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
+                  <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
                     {caseStudy.problem.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
@@ -166,7 +166,7 @@ export default function ProjectDetail(): React.JSX.Element {
 
                 <div>
                   <h4 className="font-satoshi text-sm text-text-primary mb-2">Approach</h4>
-                  <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
+                  <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
                     {caseStudy.approach.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
@@ -176,7 +176,7 @@ export default function ProjectDetail(): React.JSX.Element {
                 {caseStudy.impact && (
                   <div>
                     <h4 className="font-satoshi text-sm text-text-primary mb-2">Impact</h4>
-                    <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
+                    <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
                       {caseStudy.impact.map((item, idx) => (
                         <li key={idx}>{item}</li>
                       ))}
@@ -199,7 +199,7 @@ export default function ProjectDetail(): React.JSX.Element {
                 Overview
               </h2>
               <div className="prose prose-lg max-w-none">
-                <p className="font-plex text-[18px] leading-[1.8] text-text-muted whitespace-pre-line">
+                <p className="font-satoshi text-[18px] leading-[1.8] text-text-muted whitespace-pre-line">
                   {project.longDescription}
                 </p>
               </div>

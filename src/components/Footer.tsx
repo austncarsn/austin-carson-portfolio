@@ -15,7 +15,7 @@ export default function Footer(): ReactElement {
               <h3 className="font-satoshi text-2xl tracking-wide text-text-on-dark">
                 AUSTIN CARSON
               </h3>
-              <p className="font-plex text-sm text-text-on-dark opacity-60">
+              <p className="font-satoshi text-sm text-text-on-dark opacity-60">
                 Design + Technology
               </p>
             </div>
@@ -23,7 +23,7 @@ export default function Footer(): ReactElement {
 
           {/* Right: Links (animate, keep top/baseline stable) */}
           <FadeInSection delay={60} direction="up">
-            <nav className="flex flex-wrap items-center justify-start gap-6 font-plex text-sm text-text-on-dark md:justify-end">
+            <nav className="flex flex-wrap items-center justify-start gap-6 font-satoshi text-sm text-text-on-dark md:justify-end">
               <a
                 href="https://www.linkedin.com/in/austncarsn"
                 target="_blank"
@@ -53,12 +53,12 @@ export default function Footer(): ReactElement {
         {/* Bottom row */}
         <div className="flex flex-col items-start justify-between gap-4 pt-8 sm:flex-row sm:items-center">
           <FadeInSection delay={120} direction="up">
-            <p className="font-plex text-xs text-text-on-dark opacity-50">
+            <p className="font-satoshi text-xs text-text-on-dark opacity-50">
               Missoula, Montana
             </p>
           </FadeInSection>
           <FadeInSection delay={150} direction="up">
-            <p className="font-plex text-xs text-text-on-dark opacity-50">
+            <p className="font-satoshi text-xs text-text-on-dark opacity-50">
               © 2025 All Rights Reserved
             </p>
           </FadeInSection>

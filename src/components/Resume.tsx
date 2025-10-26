@@ -7,8 +7,8 @@ export default function Resume(): React.JSX.Element {
         {/* Header */}
         <header className="text-center mb-6">
           <div className="text-4xl font-extrabold tracking-tight">AUSTIN CARSON</div>
-          <div className="font-plex text-lg text-text-muted mt-1">Creative Technologist &amp; AI Trainer</div>
-          <div className="font-plex text-sm text-text-muted mt-2">
+          <div className="font-satoshi text-lg text-text-muted mt-1">Creative Technologist &amp; AI Trainer</div>
+          <div className="font-satoshi text-sm text-text-muted mt-2">
             Missoula, MT • <a href="https://austincarson.dev" className="underline">austincarson.dev</a> • <a href="https://linkedin.com/in/austin-carson-4b059731a" className="underline">linkedin.com/in/austin-carson</a>
             <br />austincarson@gmail.com • (206) 620-4803
           </div>
@@ -19,7 +19,7 @@ export default function Resume(): React.JSX.Element {
         {/* Summary */}
         <section className="mb-6">
           <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Summary</h2>
-          <p className="font-plex text-[15px] leading-[1.7] text-text-primary">Creative technologist bridging design, code, and machine learning. Combines expertise in interactive development, AI training (RLHF), and UX systems to build intelligent tools and refine model behavior. Proven in rapid prototyping, prompt engineering, bias detection, and crafting human-aligned AI experiences. Drives clarity through both technical precision and visual refinement.</p>
+          <p className="font-satoshi text-[15px] leading-[1.7] text-text-primary">Creative technologist bridging design, code, and machine learning. Combines expertise in interactive development, AI training (RLHF), and UX systems to build intelligent tools and refine model behavior. Proven in rapid prototyping, prompt engineering, bias detection, and crafting human-aligned AI experiences. Drives clarity through both technical precision and visual refinement.</p>
         </section>
 
         {/* Core Competencies */}
@@ -27,7 +27,7 @@ export default function Resume(): React.JSX.Element {
           <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Core Competencies</h2>
 
           <div className="mb-4">
-            <div className="font-plex font-semibold">AI Training &amp; Evaluation</div>
+            <div className="font-satoshi font-semibold">AI Training &amp; Evaluation</div>
             <ul className="list-disc list-inside text-text-muted mt-2">
               <li>Reinforcement Learning from Human Feedback (RLHF)</li>
               <li>Prompt Engineering &amp; Instruction Design</li>
@@ -38,7 +38,7 @@ export default function Resume(): React.JSX.Element {
           </div>
 
           <div className="mb-4">
-            <div className="font-plex font-semibold">Frontend Development</div>
+            <div className="font-satoshi font-semibold">Frontend Development</div>
             <ul className="list-disc list-inside text-text-muted mt-2">
               <li>React | Next.js | TypeScript | Tailwind CSS</li>
               <li>Responsive UIs | Component Libraries | Theme Systems</li>
@@ -47,7 +47,7 @@ export default function Resume(): React.JSX.Element {
           </div>
 
           <div>
-            <div className="font-plex font-semibold">Design &amp; Prototyping</div>
+            <div className="font-satoshi font-semibold">Design &amp; Prototyping</div>
             <ul className="list-disc list-inside text-text-muted mt-2">
               <li>Figma | Design Systems | UI/UX Prototyping</li>
               <li>SVG Tooling | Visual Asset Automation</li>
@@ -62,7 +62,7 @@ export default function Resume(): React.JSX.Element {
           <div className="mb-4">
             <div className="flex justify-between items-start">
               <div>
-                <div className="font-plex font-semibold">AI Evaluator</div>
+                <div className="font-satoshi font-semibold">AI Evaluator</div>
                 <div className="text-text-muted">Various Platforms (Contract)</div>
               </div>
               <div className="text-text-muted">2023–Present</div>
@@ -81,7 +81,7 @@ export default function Resume(): React.JSX.Element {
           <div className="mb-4">
             <div className="flex justify-between items-start">
               <div>
-                <div className="font-plex font-semibold">Client &amp; Product Specialist</div>
+                <div className="font-satoshi font-semibold">Client &amp; Product Specialist</div>
                 <div className="text-text-muted">Swarovski Crystal — Seattle, WA</div>
               </div>
               <div className="text-text-muted">2024–Present</div>
@@ -97,14 +97,14 @@ export default function Resume(): React.JSX.Element {
         <section className="mb-6">
           <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Key Projects &amp; Creative Work</h2>
           <div className="mb-4">
-            <div className="font-plex font-semibold">Floral Design SVG — AI-Powered Web App</div>
+            <div className="font-satoshi font-semibold">Floral Design SVG — AI-Powered Web App</div>
             <ul className="list-disc list-inside mt-2 text-text-muted">
               <li>Built a generative tool allowing creators to produce, preview, and export scalable floral illustrations as SVGs.</li>
               <li>Integrated image-to-vector workflows and AI-assisted styling for rapid creative iteration.</li>
             </ul>
           </div>
           <div className="mb-4">
-            <div className="font-plex font-semibold">AI Prompt Studio: Vehicles</div>
+            <div className="font-satoshi font-semibold">AI Prompt Studio: Vehicles</div>
             <ul className="list-disc list-inside mt-2 text-text-muted">
               <li>Designed a focused interface for engineering and testing vehicle design prompts.</li>
               <li>Improved output consistency by standardizing prompt structures and evaluation criteria.</li>
@@ -115,7 +115,7 @@ export default function Resume(): React.JSX.Element {
 
         <section className="mb-6">
           <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Education</h2>
-          <p className="font-plex font-semibold">B.S. in Biological Sciences — Southern Methodist University <span className="text-text-muted">2020</span></p>
+          <p className="font-satoshi font-semibold">B.S. in Biological Sciences — Southern Methodist University <span className="text-text-muted">2020</span></p>
         </section>
 
         <div className="mt-8 text-center no-print">

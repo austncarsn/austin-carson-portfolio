@@ -26,7 +26,7 @@ export default function NotFound(): React.JSX.Element {
         </div>
 
         {/* Description */}
-        <p className="font-plex text-base leading-[1.7] text-text-muted max-w-md mx-auto">
+        <p className="font-satoshi text-base leading-[1.7] text-text-muted max-w-md mx-auto">
           Sorry, the page you're looking for doesn't exist or has been moved.
         </p>
 
@@ -35,7 +35,7 @@ export default function NotFound(): React.JSX.Element {
           {/* Primary Action */}
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-plex font-medium text-[15px] hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-satoshi font-medium text-[15px] hover:opacity-90 transition-opacity"
           >
             <Home className="w-4 h-4" />
             Back to Home
@@ -44,7 +44,7 @@ export default function NotFound(): React.JSX.Element {
           {/* Secondary Action */}
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-structure text-text-primary font-plex font-medium text-[15px] hover:border-brand transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-structure text-text-primary font-satoshi font-medium text-[15px] hover:border-brand transition-colors"
           >
             Get in Touch
             <Mail className="w-4 h-4" />

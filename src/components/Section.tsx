@@ -41,9 +41,9 @@ export default function Section({
         ? 'border-t border-text-muted'
       : '';
 
-  // Centralized spacing rhythm — tweak here to affect all sections
-  // Increased vertical padding so sections have more breathing room by default.
-  const baseSpacing = 'px-6 py-16 sm:px-10 sm:py-18 md:py-20 lg:px-16 lg:py-24 xl:px-20';
+  // Centralized spacing rhythm — professional vertical rhythm with generous breathing room
+  // Responsive padding scales: mobile → tablet → desktop → wide
+  const baseSpacing = 'px-6 py-20 sm:px-10 sm:py-24 md:py-28 lg:px-16 lg:py-32 xl:px-20 xl:py-36';
 
   return (
   <section id={id} className={`relative w-full overflow-hidden ${borderClasses} ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`} style={{ scrollMarginTop: '4rem' }}>

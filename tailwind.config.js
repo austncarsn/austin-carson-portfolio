@@ -25,22 +25,21 @@ module.exports = {
 				'caption': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.025em' }], // 13.5px
 			},
 			fontFamily: {
-				// Display & Headings - Space Grotesk (geometric, technical, modern)
+				// All variants map to Space Grotesk (Satoshi)
+				'sans': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				'satoshi': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
 				'display': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
 				'heading': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-				'satoshi': ['"Space Grotesk"', 'system-ui', 'sans-serif'], // Legacy alias
+				'body': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				'ui': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				'mono': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				'code': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
 				
-				// Body & UI - IBM Plex Sans (humanist, legible, professional)
-				'body': ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
-				'ui': ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
-				'plex': ['"IBM Plex Sans"', 'system-ui', 'sans-serif'], // Legacy alias
+				// Legacy aliases for backward compatibility
+				'plex': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				'jetbrains': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
 				
-				// Code - JetBrains Mono (monospace, optimized for code)
-				'mono': ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-				'code': ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-				'jetbrains': ['"JetBrains Mono"', 'ui-monospace', 'monospace'], // Legacy alias
-				
-				// Decorative - Libre Barcode 39
+				// Barcode font only for branding
 				'barcode': ['Libre Barcode 39', 'monospace']
 			},
 			colors: {

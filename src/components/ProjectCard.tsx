@@ -69,56 +69,56 @@ export const ProjectCard = memo(function ProjectCard({
   {/* Top corner decorative element */}
   <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-brand-400 to-accent-400 opacity-[0.025] rounded-full blur-3xl transform transition-transform duration-700 ${cornerClasses}`} />
 
-      <div className="relative p-8 md:p-14">
+      <div className="relative p-10 md:p-16">
         {/* Responsive preview image: top on mobile, left on md+ */}
         {previewImage ? (
-          <div className="mb-6 md:mb-0 md:mr-8 md:float-left md:w-56 md:h-56">
-            <img src={previewImage} alt={`${title} preview`} className="w-full h-44 md:h-56 object-cover rounded-sm border border-structure" />
+          <div className="mb-8 md:mb-0 md:mr-10 md:float-left md:w-60 md:h-60">
+            <img src={previewImage} alt={`${title} preview`} className="w-full h-48 md:h-60 object-cover rounded-sm border border-structure" />
           </div>
         ) : null}
         
         {/* Numeric order badge */}
         
         {/* Header Section */}
-        <div className="flex items-start justify-between gap-6 mb-8">
+        <div className="flex items-start justify-between gap-6 mb-10">
           <div className="flex-1">
             {/* Category & Year */}
-            <div className="flex items-center gap-3 mb-5">
-              <span className="font-satoshi text-xs tracking-wider uppercase text-brand font-semibold">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-satoshi font-semibold text-xs tracking-wider uppercase text-brand">
                 {category}
               </span>
               <div className="w-[3px] h-[3px] bg-brand/40 rounded-full" />
-              <span className="font-satoshi text-xs tracking-wide uppercase text-text-muted font-medium">
+              <span className="font-satoshi font-medium text-xs tracking-wide uppercase text-text-muted">
                 {year}
               </span>
             </div>
 
             {/* Title */}
             {role && (
-              <div className="mb-3">
-                <span className="font-satoshi text-sm text-text-muted">{role}</span>
+              <div className="mb-4">
+                <span className="font-satoshi font-normal text-sm text-text-muted">{role}</span>
               </div>
             )}
 
-            <h3 className={`font-satoshi text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-5 transition-colors duration-500 ${titleClasses}`}>
+            <h3 className={`font-satoshi font-bold text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-6 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-satoshi text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-3">
+              <p className="font-satoshi font-normal text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-4">
                 {subtitle}
               </p>
             )}
 
             {/* Description */}
-            <p className="font-satoshi text-base leading-relaxed text-text-muted max-w-[680px]">
+            <p className="font-satoshi font-normal text-base leading-relaxed text-text-muted max-w-[680px]">
               {description}
             </p>
           </div>
 
           {/* Year Badge - Large */}
-          <div className={`hidden md:flex items-center justify-center w-24 h-24 rounded-sm border-2 border-structure bg-surface transition-all duration-500 ${yearBadgeClasses}`}>
+          <div className={`hidden md:flex items-center justify-center w-28 h-28 rounded-sm border-2 border-structure bg-surface transition-all duration-500 ${yearBadgeClasses}`}>
             <span className="font-satoshi text-body-lg font-semibold text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
@@ -126,9 +126,9 @@ export const ProjectCard = memo(function ProjectCard({
         </div>
 
   {/* Divider Line */}
-        <div className="relative h-[2px] bg-structure/50 my-8 rounded-full">
+        <div className="relative h-[2px] bg-structure/50 my-10 rounded-full">
           <div className={`absolute left-0 top-0 h-full bg-gradient-to-r from-brand via-accent to-transparent rounded-full transform transition-transform duration-700 origin-left ${dividerClasses}`} 
-            style={{ width: '120px' }}
+            style={{ width: '140px' }}
           />
         </div>
 
@@ -137,7 +137,7 @@ export const ProjectCard = memo(function ProjectCard({
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3.5 bg-dark text-text-on-dark rounded-md transition-all duration-base hover:bg-brand hover:gap-3 hover:shadow-md"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-7 py-4 bg-dark text-text-on-dark rounded-md transition-all duration-base hover:bg-brand hover:gap-3 hover:shadow-md"
               style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
@@ -150,7 +150,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-brand hover:text-text-primary hover:bg-elevated hover:shadow-sm"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-7 py-4 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-brand hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
               LIVE DEMO
               <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
@@ -162,7 +162,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-dark hover:text-text-primary hover:bg-elevated hover:shadow-sm"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-7 py-4 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-dark hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
               <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
               GITHUB
