@@ -59,7 +59,7 @@ export const ProjectCard = memo(function ProjectCard({
   const bottomAccentClasses = isInView ? 'scale-x-100' : 'scale-x-0';
 
   return (
-  <article ref={cardRef} className={`group relative bg-paper border border-structure rounded-lg overflow-hidden transition-all duration-500 ${hoverClasses}`} style={{ willChange: 'transform' }}>
+  <article ref={cardRef} className={`group relative bg-paper border border-structure rounded-md overflow-hidden transition-all duration-500 ${hoverClasses}`} style={{ willChange: 'transform' }}>
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />
       
@@ -73,7 +73,7 @@ export const ProjectCard = memo(function ProjectCard({
         {/* Responsive preview image: top on mobile, left on md+ */}
         {previewImage ? (
           <div className="mb-6 md:mb-0 md:mr-8 md:float-left md:w-56 md:h-56">
-            <img src={previewImage} alt={`${title} preview`} className="w-full h-44 md:h-56 object-cover rounded-md shadow-sm border border-structure" />
+            <img src={previewImage} alt={`${title} preview`} className="w-full h-44 md:h-56 object-cover rounded-sm border border-structure" />
           </div>
         ) : null}
         
@@ -84,11 +84,11 @@ export const ProjectCard = memo(function ProjectCard({
           <div className="flex-1">
             {/* Category & Year */}
             <div className="flex items-center gap-3 mb-5">
-              <span className="font-display text-xs tracking-wider uppercase text-brand font-semibold">
+              <span className="font-satoshi text-xs tracking-wider uppercase text-brand font-semibold">
                 {category}
               </span>
               <div className="w-[3px] h-[3px] bg-brand/40 rounded-full" />
-              <span className="font-display text-xs tracking-wide uppercase text-text-muted font-medium">
+              <span className="font-satoshi text-xs tracking-wide uppercase text-text-muted font-medium">
                 {year}
               </span>
             </div>
@@ -96,30 +96,30 @@ export const ProjectCard = memo(function ProjectCard({
             {/* Title */}
             {role && (
               <div className="mb-3">
-                <span className="font-body text-sm text-text-muted">{role}</span>
+                <span className="font-satoshi text-sm text-text-muted">{role}</span>
               </div>
             )}
 
-            <h3 className={`font-display text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-5 transition-colors duration-500 ${titleClasses}`}>
+            <h3 className={`font-satoshi text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-5 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-body text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-3">
+              <p className="font-satoshi text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-3">
                 {subtitle}
               </p>
             )}
 
             {/* Description */}
-            <p className="font-body text-base leading-relaxed text-text-muted max-w-[680px]">
+            <p className="font-satoshi text-base leading-relaxed text-text-muted max-w-[680px]">
               {description}
             </p>
           </div>
 
           {/* Year Badge - Large */}
-          <div className={`hidden md:flex items-center justify-center w-24 h-24 rounded-lg border-2 border-structure bg-surface transition-all duration-500 ${yearBadgeClasses}`}>
-            <span className="font-display text-body-lg font-semibold text-text-primary tracking-tight">
+          <div className={`hidden md:flex items-center justify-center w-24 h-24 rounded-sm border-2 border-structure bg-surface transition-all duration-500 ${yearBadgeClasses}`}>
+            <span className="font-satoshi text-body-lg font-semibold text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
           </div>
@@ -137,7 +137,7 @@ export const ProjectCard = memo(function ProjectCard({
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-semibold text-sm tracking-wide px-6 py-3.5 bg-dark text-text-on-dark rounded-lg transition-all duration-base hover:bg-brand hover:gap-3 hover:shadow-md"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3.5 bg-dark text-text-on-dark rounded-md transition-all duration-base hover:bg-brand hover:gap-3 hover:shadow-md"
               style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
@@ -150,7 +150,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-lg transition-all duration-base hover:border-brand hover:text-text-primary hover:bg-elevated hover:shadow-sm"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-brand hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
               LIVE DEMO
               <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
@@ -162,7 +162,7 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-lg transition-all duration-base hover:border-dark hover:text-text-primary hover:bg-elevated hover:shadow-sm"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-md transition-all duration-base hover:border-dark hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
               <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
               GITHUB

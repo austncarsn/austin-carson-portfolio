@@ -30,7 +30,7 @@ export default function Hero(): React.JSX.Element {
             {/* Name Display with refined typography */}
             <FadeInSection delay={100} direction="up">
               <div>
-                  <h1 className="font-display text-h2 md:text-display-lg lg:text-display-xl tracking-tighter leading-none mb-8 text-text-primary transition-all duration-700">
+                  <h1 className="font-satoshi text-h2 md:text-display-lg lg:text-display-xl tracking-tighter leading-none mb-8 text-text-primary transition-all duration-700">
                   AUSTIN CARSON
                 </h1>
                 <div className="h-[3px] w-16 bg-gradient-to-r from-brand to-accent rounded-full" />
@@ -39,7 +39,7 @@ export default function Hero(): React.JSX.Element {
 
             {/* Subtitle with semantic spacing */}
             <FadeInSection delay={200} direction="up">
-              <h2 className="font-display font-semibold text-h4 md:text-h3 lg:text-h2 leading-snug text-text-secondary tracking-tight max-w-xl">
+              <h2 className="font-satoshi font-semibold text-h4 md:text-h3 lg:text-h2 leading-snug text-text-secondary tracking-tight max-w-xl">
                 Creative Technology and Interface Systems
               </h2>
             </FadeInSection>
@@ -47,11 +47,11 @@ export default function Hero(): React.JSX.Element {
             {/* Supporting Content with refined hierarchy */}
             <FadeInSection delay={300} direction="up">
               <div className="space-y-5 max-w-lg">
-                <p className="font-body text-body-lg leading-relaxed text-text-secondary">
+                <p className="font-satoshi text-body-lg leading-relaxed text-text-secondary">
                   I design clean, scalable interfaces that prioritize structure, clarity, and usability. My work combines front-end engineering with system-driven design to create products that feel effortless and are simple to maintain.
                 </p>
 
-                <p className="font-body text-base leading-relaxed text-text-muted">
+                <p className="font-satoshi text-base leading-relaxed text-text-muted">
                   Currently crafting modern UI systems and refining component logic — one build at a time.
                 </p>
               </div>
@@ -62,12 +62,9 @@ export default function Hero(): React.JSX.Element {
           <FadeInSection delay={400} direction="up">
             <div className="lg:pt-20">
               <div className="relative border-l-[3px] border-brand pl-8 py-4 bg-gradient-to-br from-brand-subtle/30 to-transparent">
-                {/* Accent dot */}
-                <div className="absolute -left-[7px] top-4 h-3 w-3 rounded-full bg-brand ring-4 ring-canvas" />
-                
                 <TypewriterText 
                   lines={manifestoLines}
-                  className="font-body text-base text-text-secondary leading-relaxed space-y-1.5"
+                  className="font-satoshi text-base text-text-secondary leading-relaxed space-y-1.5"
                   typingSpeed={20}
                   lineDelay={150}
                 />

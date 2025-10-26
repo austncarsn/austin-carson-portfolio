@@ -11,10 +11,10 @@ export default function ContactCTA(): ReactElement {
         {/* Left — Heading */}
         <FadeInSection delay={0} direction="right">
           <div className="space-y-6">
-            <h2 className="font-display text-h3 sm:text-h2 lg:text-display-lg leading-none tracking-tighter text-text-primary">
+            <h2 className="font-satoshi text-h3 sm:text-h2 lg:text-display-lg leading-none tracking-tighter text-text-primary">
               Let's build something together.
             </h2>
-            <p className="font-body text-body-lg text-text-secondary leading-relaxed max-w-[540px]">
+            <p className="font-satoshi text-body-lg text-text-secondary leading-relaxed max-w-[540px]">
               If you have a project, an idea, or just want to collaborate, reach out and say hello.
             </p>
             <div className="mt-3 h-[3px] w-14 rounded-full bg-gradient-to-r from-brand to-accent" />
@@ -31,8 +31,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Mail className="w-5 h-5 transition-transform duration-base group-hover:scale-110" />
               <div className="flex flex-col items-start">
-                <span className="font-display text-xs font-semibold tracking-wider uppercase">EMAIL</span>
-                <span className="font-body text-sm opacity-90">austncarsn@gmail.com</span>
+                <span className="font-satoshi text-xs font-semibold tracking-wider uppercase">EMAIL</span>
+                <span className="font-satoshi text-sm opacity-90">austncarsn@gmail.com</span>
               </div>
             </a>
 
@@ -44,8 +44,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Linkedin className="w-5 h-5 transition-all duration-base group-hover:text-brand group-hover:scale-110" />
               <div className="flex flex-col items-start">
-                <span className="font-display text-xs font-semibold tracking-wider uppercase">LINKEDIN</span>
-                <span className="font-body text-sm text-text-muted">View professional profile</span>
+                <span className="font-satoshi text-xs font-semibold tracking-wider uppercase">LINKEDIN</span>
+                <span className="font-satoshi text-sm text-text-muted">View professional profile</span>
               </div>
             </a>
 
@@ -57,8 +57,8 @@ export default function ContactCTA(): ReactElement {
             >
               <Github className="w-5 h-5 transition-all duration-base group-hover:scale-110 group-hover:rotate-12" />
               <div className="flex flex-col items-start">
-                <span className="font-display text-xs font-semibold tracking-wider uppercase">GITHUB</span>
-                <span className="font-body text-sm text-text-muted">Browse code repositories</span>
+                <span className="font-satoshi text-xs font-semibold tracking-wider uppercase">GITHUB</span>
+                <span className="font-satoshi text-sm text-text-muted">Browse code repositories</span>
               </div>
             </a>
           </div>
