@@ -13,6 +13,38 @@ export type CaseStudy = {
 
 export const PROJECTS = {
 
+  'graphic-design-gallery': {
+    id: 'graphic-design-gallery',
+  title: 'Graphic Design Gallery — Creative Portfolio',
+    category: 'Design Portfolio',
+    year: '2025',
+    role: 'Design & Front-end Development',
+  description: 'A curated gallery showcasing graphic design work with elegant layouts, smooth animations, and responsive design.',
+  subtitle: 'Elegant showcase for creative design portfolios',
+  longDescription: 'Graphic Design Gallery is a sophisticated portfolio platform designed to showcase creative work in an engaging and professional manner. Features include responsive grid layouts, smooth hover animations, detailed project views, and optimized performance for fast loading across all devices.',
+  technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
+    
+    liveUrl: 'https://design-gallery-kappa.vercel.app',
+  githubUrl: 'https://github.com/austncarsn/design-gallery.git',
+  caseStudy: {
+    problem: [
+      'Create an elegant platform to showcase diverse graphic design work effectively.',
+      'Ensure fast loading and smooth user experience across all devices.',
+      'Design intuitive navigation for exploring creative portfolios.'
+    ],
+    approach: [
+      'Develop a responsive grid system with elegant hover animations and transitions.',
+      'Implement optimized image loading and lazy loading for performance.',
+      'Create detailed project views with smooth navigation and back functionality.',
+      'Use modern CSS techniques and animations for enhanced visual appeal.'
+    ],
+    impact: [
+      'Provided a professional platform for showcasing creative work.',
+      'Improved user engagement with smooth animations and responsive design.',
+      'Enhanced accessibility and performance for better user experience.'
+    ],
+  },
+  },
   'floral-design-svg': {
     id: 'floral-design-svg',
   title: 'Floral Design SVG — Web App',
@@ -107,38 +139,7 @@ export const PROJECTS = {
     ],
   },
   },
-  'graphic-design-gallery': {
-    id: 'graphic-design-gallery',
-  title: 'Graphic Design Gallery — Creative Portfolio',
-    category: 'Design Portfolio',
-    year: '2025',
-    role: 'Design & Front-end Development',
-  description: 'A curated gallery showcasing graphic design work with elegant layouts, smooth animations, and responsive design.',
-  subtitle: 'Elegant showcase for creative design portfolios',
-  longDescription: 'Graphic Design Gallery is a sophisticated portfolio platform designed to showcase creative work in an engaging and professional manner. Features include responsive grid layouts, smooth hover animations, detailed project views, and optimized performance for fast loading across all devices.',
-  technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
-    
-    liveUrl: 'https://design-gallery-kappa.vercel.app',
-  githubUrl: 'https://github.com/austncarsn/design-gallery.git',
-  caseStudy: {
-    problem: [
-      'Create an elegant platform to showcase diverse graphic design work effectively.',
-      'Ensure fast loading and smooth user experience across all devices.',
-      'Design intuitive navigation for exploring creative portfolios.'
-    ],
-    approach: [
-      'Develop a responsive grid system with elegant hover animations and transitions.',
-      'Implement optimized image loading and lazy loading for performance.',
-      'Create detailed project views with smooth navigation and back functionality.',
-      'Use modern CSS techniques and animations for enhanced visual appeal.'
-    ],
-    impact: [
-      'Provided a professional platform for showcasing creative work.',
-      'Improved user engagement with smooth animations and responsive design.',
-      'Enhanced accessibility and performance for better user experience.'
-    ],
-  },
-  },
+  
   'ai-prompt-studio-vehicles': {
     id: 'ai-prompt-studio-vehicles',
     title: 'AI Prompt Studio — Vehicles',
