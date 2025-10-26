@@ -59,76 +59,76 @@ export const ProjectCard = memo(function ProjectCard({
   const bottomAccentClasses = isInView ? 'scale-x-100' : 'scale-x-0';
 
   return (
-  <article ref={cardRef} className={`group relative bg-surface border border-structure overflow-hidden transition-all duration-500 ${hoverClasses}`} style={{ willChange: 'transform' }}>
+  <article ref={cardRef} className={`group relative bg-paper border border-structure rounded-lg overflow-hidden transition-all duration-500 ${hoverClasses}`} style={{ willChange: 'transform' }}>
       {/* Subtle grid pattern background */}
-      <div className="absolute inset-0 opacity-[0.015] pointer-events-none project-card-grid" />
+      <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />
       
       {/* Left accent border - animates on scroll */}
-  <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-brand transform transition-transform duration-700 origin-top ${accentClasses}`} />
+  <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-brand to-accent transform transition-transform duration-700 origin-top ${accentClasses}`} />
       
   {/* Top corner decorative element */}
-  <div className={`absolute top-0 right-0 w-32 h-32 bg-brand opacity-[0.02] rounded-full blur-3xl transform transition-transform duration-700 ${cornerClasses}`} />
+  <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-brand-400 to-accent-400 opacity-[0.025] rounded-full blur-3xl transform transition-transform duration-700 ${cornerClasses}`} />
 
-      <div className="relative p-6 md:p-12">
+      <div className="relative p-8 md:p-14">
         {/* Responsive preview image: top on mobile, left on md+ */}
         {previewImage ? (
-          <div className="mb-4 md:mb-0 md:mr-6 md:float-left md:w-48 md:h-48">
-            <img src={previewImage} alt={`${title} preview`} className="w-full h-40 md:h-48 object-cover rounded-md shadow-sm" />
+          <div className="mb-6 md:mb-0 md:mr-8 md:float-left md:w-56 md:h-56">
+            <img src={previewImage} alt={`${title} preview`} className="w-full h-44 md:h-56 object-cover rounded-md shadow-sm border border-structure" />
           </div>
         ) : null}
         
         {/* Numeric order badge */}
         
         {/* Header Section */}
-        <div className="flex items-start justify-between gap-6 mb-6">
+        <div className="flex items-start justify-between gap-6 mb-8">
           <div className="flex-1">
             {/* Category & Year */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="font-satoshi text-[11px] tracking-[0.1em] uppercase text-brand font-semibold">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="font-display text-xs tracking-wider uppercase text-brand font-semibold">
                 {category}
               </span>
-              <div className="w-[2px] h-[2px] bg-structure rounded-full" />
-              <span className="font-satoshi text-[11px] tracking-[0.08em] uppercase text-text-muted font-medium">
+              <div className="w-[3px] h-[3px] bg-brand/40 rounded-full" />
+              <span className="font-display text-xs tracking-wide uppercase text-text-muted font-medium">
                 {year}
               </span>
             </div>
 
             {/* Title */}
             {role && (
-              <div className="mb-2">
-                <span className="font-satoshi text-[12px] text-text-muted">{role}</span>
+              <div className="mb-3">
+                <span className="font-body text-sm text-text-muted">{role}</span>
               </div>
             )}
 
-            <h3 className={`font-satoshi text-h4 md:text-h3 lg:text-h2 leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
+            <h3 className={`font-display text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-5 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-plex text-sm leading-[1.6] text-text-muted max-w-[680px] mb-2">
+              <p className="font-body text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-3">
                 {subtitle}
               </p>
             )}
 
             {/* Description */}
-            <p className="font-plex text-base leading-[1.7] text-text-muted max-w-[680px]">
+            <p className="font-body text-base leading-relaxed text-text-muted max-w-[680px]">
               {description}
             </p>
           </div>
 
           {/* Year Badge - Large */}
-          <div className={`hidden md:flex items-center justify-center w-20 h-20 border border-structure bg-paper transition-all duration-500 ${yearBadgeClasses}`}>
-            <span className="font-satoshi text-base font-medium text-text-primary tracking-tight">
+          <div className={`hidden md:flex items-center justify-center w-24 h-24 rounded-lg border-2 border-structure bg-surface transition-all duration-500 ${yearBadgeClasses}`}>
+            <span className="font-display text-body-lg font-semibold text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
           </div>
         </div>
 
   {/* Divider Line */}
-        <div className="relative h-[1px] bg-structure my-8">
-          <div className={`absolute left-0 top-0 h-full bg-brand transform transition-transform duration-700 origin-left ${dividerClasses}`} 
-            style={{ width: '80px' }}
+        <div className="relative h-[2px] bg-structure/50 my-8 rounded-full">
+          <div className={`absolute left-0 top-0 h-full bg-gradient-to-r from-brand via-accent to-transparent rounded-full transform transition-transform duration-700 origin-left ${dividerClasses}`} 
+            style={{ width: '120px' }}
           />
         </div>
 
@@ -137,11 +137,11 @@ export const ProjectCard = memo(function ProjectCard({
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-[14px] tracking-[0.02em] px-4 py-3 bg-dark text-text-on-dark transition-colors duration-300 hover:bg-brand hover:gap-3"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-semibold text-sm tracking-wide px-6 py-3.5 bg-dark text-text-on-dark rounded-lg transition-all duration-base hover:bg-brand hover:gap-3 hover:shadow-md"
               style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-base group-hover/btn:translate-x-0.5" />
             </Link>
           )}
           
@@ -150,10 +150,10 @@ export const ProjectCard = memo(function ProjectCard({
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-brand hover:text-text-primary hover:bg-paper"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-lg transition-all duration-base hover:border-brand hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
               LIVE DEMO
-              <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+              <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
             </a>
           )}
 
@@ -162,9 +162,9 @@ export const ProjectCard = memo(function ProjectCard({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-medium text-[14px] tracking-[0.02em] px-4 py-3 border border-structure text-text-muted transition-colors duration-300 hover:border-dark hover:text-text-primary hover:bg-white"
+              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-display font-medium text-sm tracking-wide px-6 py-3.5 border-2 border-structure text-text-muted rounded-lg transition-all duration-base hover:border-dark hover:text-text-primary hover:bg-elevated hover:shadow-sm"
             >
-              <Github className="w-4 h-4 transition-transform duration-300 group-hover/btn:rotate-12" />
+              <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
               GITHUB
             </a>
           )}
@@ -172,7 +172,7 @@ export const ProjectCard = memo(function ProjectCard({
       </div>
 
       {/* Bottom accent line - expands on scroll */}
-      <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-brand transform transition-transform duration-700 origin-left ${bottomAccentClasses}`} />
+      <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand via-accent to-transparent rounded-full transform transition-transform duration-700 origin-left ${bottomAccentClasses}`} />
     </article>
   );
 });

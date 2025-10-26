@@ -17,40 +17,41 @@ export default function Hero(): React.JSX.Element {
   ];
 
   return (
-  <Section id="hero" border="bottom" bgClass="bg-paper" labelNumber="01" labelTitle="HERO" labelDelay={0}>
-    {/* Subtle decorative element */}
-  <div className="pointer-events-none absolute top-24 right-6 h-[220px] w-[220px] rounded-full bg-brand opacity-[0.03] blur-3xl sm:right-12 sm:h-[260px] sm:w-[260px] lg:top-32 lg:right-20 lg:h-[300px] lg:w-[300px]"></div>
+  <Section id="hero" border="bottom" bgClass="bg-canvas" labelNumber="01" labelTitle="HERO" labelDelay={0}>
+    {/* Ambient gradient blur - modern, state-of-the-art aesthetic */}
+  <div className="pointer-events-none absolute top-20 right-8 h-[280px] w-[280px] rounded-full bg-gradient-to-br from-brand-400 to-accent-400 opacity-[0.04] blur-3xl sm:right-16 sm:h-[320px] sm:w-[320px] lg:top-24 lg:right-24 lg:h-[400px] lg:w-[400px]"></div>
 
       {/* Section Label is rendered by Section via props */}
 
       {/* Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-24 items-start">
           {/* Left Column - Main Hero Content */}
-          <div className="space-y-8">
-            {/* Name Display with Accent */}
+          <div className="space-y-10">
+            {/* Name Display with refined typography */}
             <FadeInSection delay={100} direction="up">
               <div>
-                  <h1 className="font-satoshi text-h3 md:text-h2 lg:text-h1 tracking-[-0.02em] leading-[0.95] mb-6 transition-all duration-700 group-hover:tracking-[-0.03em]">
+                  <h1 className="font-display text-h2 md:text-display-lg lg:text-display-xl tracking-tighter leading-none mb-8 text-text-primary transition-all duration-700">
                   AUSTIN CARSON
                 </h1>
+                <div className="h-[3px] w-16 bg-gradient-to-r from-brand to-accent rounded-full" />
               </div>
             </FadeInSection>
 
-            {/* Subtitle */}
+            {/* Subtitle with semantic spacing */}
             <FadeInSection delay={200} direction="up">
-              <h2 className="font-satoshi font-medium text-h5 md:text-h4 lg:text-h2 leading-[1.3] text-text-primary tracking-[-0.01em]">
+              <h2 className="font-display font-semibold text-h4 md:text-h3 lg:text-h2 leading-snug text-text-secondary tracking-tight max-w-xl">
                 Creative Technology and Interface Systems
               </h2>
             </FadeInSection>
 
-            {/* Supporting Content */}
+            {/* Supporting Content with refined hierarchy */}
             <FadeInSection delay={300} direction="up">
-              <div className="space-y-6">
-                <p className="font-plex text-base leading-[1.6] text-text-muted">
+              <div className="space-y-5 max-w-lg">
+                <p className="font-body text-body-lg leading-relaxed text-text-secondary">
                   I design clean, scalable interfaces that prioritize structure, clarity, and usability. My work combines front-end engineering with system-driven design to create products that feel effortless and are simple to maintain.
                 </p>
 
-                <p className="font-plex text-sm leading-[1.5] text-text-muted opacity-70">
+                <p className="font-body text-base leading-relaxed text-text-muted">
                   Currently crafting modern UI systems and refining component logic — one build at a time.
                 </p>
               </div>
@@ -59,11 +60,14 @@ export default function Hero(): React.JSX.Element {
 
           {/* Right Column - Manifesto */}
           <FadeInSection delay={400} direction="up">
-            <div className="lg:pt-16">
-              <div className="border-l-2 border-brand pl-6 py-2">
+            <div className="lg:pt-20">
+              <div className="relative border-l-[3px] border-brand pl-8 py-4 bg-gradient-to-br from-brand-subtle/30 to-transparent">
+                {/* Accent dot */}
+                <div className="absolute -left-[7px] top-4 h-3 w-3 rounded-full bg-brand ring-4 ring-canvas" />
+                
                 <TypewriterText 
                   lines={manifestoLines}
-                  className="font-plex text-base text-text-muted leading-relaxed space-y-1 opacity-95"
+                  className="font-body text-base text-text-secondary leading-relaxed space-y-1.5"
                   typingSpeed={20}
                   lineDelay={150}
                 />

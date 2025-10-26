@@ -179,12 +179,12 @@ export const projects = Object.values(PROJECTS);
 
 export default function Projects(): React.JSX.Element {
   return (
-  <Section id="work" border="bottom" bgClass="bg-paper" labelNumber="02" labelTitle="WORK" labelDelay={0}>
+  <Section id="work" border="bottom" bgClass="bg-canvas" labelNumber="02" labelTitle="WORK" labelDelay={0}>
       {/* Decorative Line Accent */}
       <div className="absolute top-24 left-1/2 w-full -translate-x-1/2 sm:top-32"></div>
 
-      {/* Subtle decorative element */}
-  <div className="pointer-events-none absolute bottom-24 left-6 h-[160px] w-[160px] rounded-full bg-brand opacity-[0.03] blur-3xl sm:left-12 sm:h-[180px] sm:w-[180px] lg:bottom-32 lg:left-20 lg:h-[200px] lg:w-[200px]"></div>
+      {/* Ambient gradient blur */}
+  <div className="pointer-events-none absolute bottom-32 left-8 h-[240px] w-[240px] rounded-full bg-gradient-to-tr from-accent-400 to-brand-400 opacity-[0.04] blur-3xl sm:left-16 sm:h-[280px] sm:w-[280px] lg:bottom-40 lg:left-24 lg:h-[320px] lg:w-[320px]"></div>
 
       {/* Section label is rendered by Section via props */}
 
