@@ -13,6 +13,7 @@ interface ProjectCardProps {
   githubUrl?: string;
   subtitle?: string;
   order?: number;
+  previewImage?: string;
 }
 
 export const ProjectCard = memo(function ProjectCard({
@@ -25,7 +26,7 @@ export const ProjectCard = memo(function ProjectCard({
   subtitle,
   liveUrl,
   githubUrl,
-  
+  previewImage,
 }: ProjectCardProps) {
   const [isInView, setIsInView] = useState(false);
   const cardRef = useRef<HTMLElement>(null);
@@ -68,7 +69,14 @@ export const ProjectCard = memo(function ProjectCard({
   {/* Top corner decorative element */}
   <div className={`absolute top-0 right-0 w-32 h-32 bg-brand opacity-[0.02] rounded-full blur-3xl transform transition-transform duration-700 ${cornerClasses}`} />
 
-      <div className="relative p-8 md:p-12">
+      <div className="relative p-6 md:p-12">
+        {/* Responsive preview image: top on mobile, left on md+ */}
+        {previewImage ? (
+          <div className="mb-4 md:mb-0 md:mr-6 md:float-left md:w-48 md:h-48">
+            <img src={previewImage} alt={`${title} preview`} className="w-full h-40 md:h-48 object-cover rounded-md shadow-sm" />
+          </div>
+        ) : null}
+        
         {/* Numeric order badge */}
         
         {/* Header Section */}
