@@ -1,8 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@1,2,3,4,5,6,7,8,9&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap");
 
 /* Minimal stylesheet: design tokens + Tailwind directives.
-   Typography: Space Grotesk (Satoshi) for all text, Libre Barcode 39 for title branding only.
+   Typography: Satoshi for all text, Libre Barcode 39 for title branding only.
+   Satoshi weights: 1=Light(300), 2=LightItalic, 3=Regular(400), 4=Italic, 5=Medium(500), 6=MediumItalic, 7=Bold(700), 8=BoldItalic, 9=Black(900)
 */
 
 @tailwind base;
@@ -200,16 +201,16 @@ progress::-webkit-progress-value { background: transparent; }
 
 /* Base typography rules */
 body {
-  font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Satoshi', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: var(--font-size);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
 }
 
-/* All headings use Space Grotesk with appropriate weights */
+/* All headings use Satoshi with appropriate weights */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: 'Satoshi', system-ui, sans-serif;
   line-height: 1.25;
 }
 
@@ -219,9 +220,9 @@ h3 { font-weight: 600; }
 h4 { font-weight: 500; }
 h5, h6 { font-weight: 500; }
 
-/* Code and pre blocks also use Space Grotesk for consistency */
+/* Code and pre blocks also use Satoshi for consistency */
 code, pre, kbd {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: 'Satoshi', system-ui, sans-serif;
   font-weight: 500;
 }
 
@@ -230,8 +231,8 @@ code, pre, kbd {
   body {
     background: var(--bg-canvas);
     color: var(--text-primary);
-    /* Space Grotesk (Satoshi) as the universal font for professional consistency */
-    font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Satoshi as the universal font for professional consistency */
+    font-family: 'Satoshi', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -378,8 +379,8 @@ code, pre, kbd {
     text-decoration: none;
     text-transform: uppercase;
     color: var(--muted-foreground);
-    /* Use Space Grotesk for navigation labels to match heading tone */
-    font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
+    /* Use Satoshi for navigation labels to match heading tone */
+    font-family: 'Satoshi', sans-serif;
     font-weight: 500;
     font-size: .875rem;
     display: inline-block;

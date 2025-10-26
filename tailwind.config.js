@@ -22,7 +22,27 @@ module.exports = {
 				'body-sm': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0em' }], // 16.875px
 				'sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0em' }], // 15.75px
 				'xs': ['0.8125rem', { lineHeight: '1.5', letterSpacing: '0em' }], // 14.625px
-				'caption': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.025em' }], // 13.5px
+							'caption': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.025em' }], // 13.5px
+		},
+		fontFamily: {
+			// All variants map to Satoshi
+			'sans': ['Satoshi', 'system-ui', 'sans-serif'],
+			'satoshi': ['Satoshi', 'system-ui', 'sans-serif'],
+			'display': ['Satoshi', 'system-ui', 'sans-serif'],
+			'heading': ['Satoshi', 'system-ui', 'sans-serif'],
+			'body': ['Satoshi', 'system-ui', 'sans-serif'],
+			'ui': ['Satoshi', 'system-ui', 'sans-serif'],
+			'mono': ['Satoshi', 'system-ui', 'sans-serif'],
+			'code': ['Satoshi', 'system-ui', 'sans-serif'],
+			
+			// Legacy aliases for backward compatibility
+			'plex': ['Satoshi', 'system-ui', 'sans-serif'],
+			'jetbrains': ['Satoshi', 'system-ui', 'sans-serif'],
+			
+			// Barcode font only for branding
+			'barcode': ['Libre Barcode 39', 'monospace']
+		},
+		colors: {
 			},
 			fontFamily: {
 				// All variants map to Space Grotesk (Satoshi)
