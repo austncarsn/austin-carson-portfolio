@@ -81,7 +81,7 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
         className={`
           relative min-w-[280px] max-w-[400px]
           bg-paper border-2 border-structure
-          px-6 py-4 text-left
+          px-6 py-4 text-left rounded-md
           ${prefersReducedMotion ? '' : 'transition-transform duration-200 ease-in-out hover:shadow-sm active:translate-x-[2px] active:translate-y-[2px]'}
           hover:border-text-primary
           focus-visible:outline-none
