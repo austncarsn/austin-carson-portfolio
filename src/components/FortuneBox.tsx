@@ -2,10 +2,12 @@ import type { ReactElement } from 'react';
 import { memo, useState } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
+/* ------------------- Data ------------------- */
+
 const FORTUNES = [
   "You'll stumble on purpose and call it character development.",
   "A pigeon will look at you like it pays your rent. Challenge it.",
-  "Your snack will outshine your coping strategies.",
+    "Your snack will outshine your coping strategies.",
   "Someone nearby is working hard to look busy. Respect the craft.",
   "The Wi‑Fi will stall exactly when you need it most.",
   "Tomorrow, you'll be kinder to yourself.",
@@ -52,27 +54,48 @@ const FORTUNES = [
   "Someone will screenshot your message today; take it as a compliment."
 ];
 
-/**
- * Interactive fortune generator used as a playful CTA for visitors exploring the work section.
- */
+/* ------------------- Helpers ------------------- */
+
+function useRandomFortune() {
+  const pick = () => FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+  return { pick };
+}
+
+/* ------------------- Sub‑components ------------------- */
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="font-satoshi tracking-[0.15em] text-[11px] text-text-muted uppercase mb-3">
+    {children}
+  </div>
+);
+
+const Hint = ({ children }: { children: React.ReactNode }) => (
+  <div className="font-satoshi text-xs text-text-muted opacity-60">{children}</div>
+);
+
+const FortuneText = ({ text }: { text: string }) => (
+  <p
+    className="font-satoshi text-sm text-text-primary leading-relaxed mb-3 min-h-[60px] flex items-center"
+    aria-live="polite"
+  >
+    {text}
+  </p>
+);
+
+/* ------------------- Main component ------------------- */
+
 const FortuneBox = memo(function FortuneBox(): ReactElement {
-  const [currentFortune, setCurrentFortune] = useState('Click to Reveal');
+  const [fortune, setFortune] = useState('Click to Reveal');
   const [isAnimating, setIsAnimating] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { pick } = useRandomFortune();
 
-  const pickRandomFortune = (): string => {
-    const index = Math.floor(Math.random() * FORTUNES.length);
-    return FORTUNES[index];
-  };
-
-  const revealFortune = (): void => {
-    setCurrentFortune(pickRandomFortune());
+  const reveal = () => {
+    setFortune(pick());
     setIsAnimating(true);
   };
 
-  const handleAnimationEnd = (): void => {
-    setIsAnimating(false);
-  };
+  const onAnimationEnd = () => setIsAnimating(false);
 
   return (
     <div className="inline-block">
@@ -82,34 +105,26 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
           relative min-w-[280px] max-w-[400px]
           bg-paper border-2 border-structure
           px-6 py-4 text-left rounded-md
-          ${prefersReducedMotion ? '' : 'transition-transform duration-200 ease-in-out hover:shadow-sm active:translate-x-[2px] active:translate-y-[2px]'}
+          ${prefersReducedMotion
+            ? ''
+            : 'transition-transform duration-200 ease-in-out hover:shadow-sm active:translate-x-2 active:translate-y-2'}
           hover:border-text-primary
           focus-visible:outline-none
           focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand/50
           ${isAnimating && !prefersReducedMotion ? 'animate-[shake_0.5s_ease-in-out]' : ''}
         `}
         aria-label="Reveal a fortune message"
-        onClick={revealFortune}
-        onAnimationEnd={handleAnimationEnd}
+        onClick={reveal}
+        onAnimationEnd={onAnimationEnd}
       >
-  <div className="font-satoshi tracking-[0.15em] text-[11px] text-text-muted uppercase mb-3">
-          Fortune
-        </div>
-        <p
-          className="font-satoshi text-sm text-text-primary leading-relaxed mb-3 min-h-[60px] flex items-center"
-          aria-live="polite"
-        >
-          {currentFortune}
-        </p>
-  <div className="font-satoshi text-xs text-text-muted opacity-60">
-          Tap Again for Another.
-        </div>
-        <div className="pointer-events-none absolute bottom-4 right-6 h-[2px] w-8 rounded-[1px] bg-brand" />
+        <Label>Fortune</Label>
+        <FortuneText text={fortune} />
+                <Hint>Tap Again for Another.</Hint>
+        <div className="pointer-events-none absolute bottom-4 right-6 h-2 w-8 rounded-[1px] bg-brand" />
       </button>
     </div>
   );
 });
 
-FortuneBox.displayName = 'FortuneBox';
-
-export default FortuneBox;
+export { FortuneBox };
+   

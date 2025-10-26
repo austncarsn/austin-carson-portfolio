@@ -1,6 +1,6 @@
 import { ProjectCard } from './ProjectCard';
 import FadeInSection from './FadeInSection';
-import FortuneBox from './FortuneBox';
+import { FortuneBox } from './FortuneBox';
 import Section from './Section';
 import React from 'react';
 
