@@ -43,7 +43,7 @@ const baseClasses = [
 
 // Typography scales
 const typography = {
-  default: "font-satoshi text-[13px] md:text-[14px]",
+  default: "font-satoshi text-sm md:text-base",
   mobile: "font-satoshi text-sm"
 };
 

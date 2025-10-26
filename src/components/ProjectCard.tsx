@@ -92,26 +92,26 @@ export const ProjectCard = memo(function ProjectCard({
               </div>
             )}
 
-            <h3 className={`font-satoshi text-[20px] md:text-[28px] lg:text-[32px] leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
+            <h3 className={`font-satoshi text-h4 md:text-h3 lg:text-h2 leading-[1.2] tracking-[-0.01em] text-text-primary mb-4 transition-colors duration-500 ${titleClasses}`}>
               {title}
             </h3>
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-plex text-[14px] leading-[1.6] text-text-muted max-w-[680px] mb-2">
+              <p className="font-plex text-sm leading-[1.6] text-text-muted max-w-[680px] mb-2">
                 {subtitle}
               </p>
             )}
 
             {/* Description */}
-            <p className="font-plex text-[16px] leading-[1.7] text-text-muted max-w-[680px]">
+            <p className="font-plex text-base leading-[1.7] text-text-muted max-w-[680px]">
               {description}
             </p>
           </div>
 
           {/* Year Badge - Large */}
           <div className={`hidden md:flex items-center justify-center w-20 h-20 border border-structure bg-paper transition-all duration-500 ${yearBadgeClasses}`}>
-            <span className="font-satoshi text-[18px] font-medium text-text-primary tracking-tight">
+            <span className="font-satoshi text-base font-medium text-text-primary tracking-tight">
               '{year.slice(-2)}
             </span>
           </div>

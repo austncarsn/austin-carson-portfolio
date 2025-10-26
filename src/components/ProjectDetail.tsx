@@ -139,25 +139,25 @@ export default function ProjectDetail(): React.JSX.Element {
 
           {/* Title */}
           <div className="space-y-4 mb-12">
-            <h1 className="font-barcode text-[64px] leading-[1.1] text-text-primary tracking-[-0.02em]">
+            <h1 className="font-barcode text-h2 leading-[1.1] text-text-primary tracking-[-0.02em]">
               {project.title}
             </h1>
             <div className="w-24 h-[3px] bg-brand rounded-[1px]"></div>
           </div>
 
           {/* Description */}
-          <p className="font-plex text-[20px] leading-[1.7] text-text-muted max-w-[800px]">
+          <p className="font-plex text-lead leading-[1.7] text-text-muted max-w-[800px]">
             {project.description}
           </p>
 
           {/* Short case study summary */}
           {caseStudy && (
             <div className="mt-6 p-6 bg-surface border border-structure rounded-md max-w-[900px]">
-              <h3 className="font-satoshi text-[18px] text-text-primary mb-4">Case Study</h3>
+              <h3 className="font-satoshi text-base text-text-primary mb-4">Case Study</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <h4 className="font-satoshi text-[14px] text-text-primary mb-2">Problem</h4>
-                  <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
+                  <h4 className="font-satoshi text-sm text-text-primary mb-2">Problem</h4>
+                  <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
                     {caseStudy.problem.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
@@ -165,8 +165,8 @@ export default function ProjectDetail(): React.JSX.Element {
                 </div>
 
                 <div>
-                  <h4 className="font-satoshi text-[14px] text-text-primary mb-2">Approach</h4>
-                  <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
+                  <h4 className="font-satoshi text-sm text-text-primary mb-2">Approach</h4>
+                  <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
                     {caseStudy.approach.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
@@ -175,8 +175,8 @@ export default function ProjectDetail(): React.JSX.Element {
 
                 {caseStudy.impact && (
                   <div>
-                    <h4 className="font-satoshi text-[14px] text-text-primary mb-2">Impact</h4>
-                    <ul className="list-disc pl-5 font-plex text-[15px] text-text-muted leading-[1.6] space-y-2">
+                    <h4 className="font-satoshi text-sm text-text-primary mb-2">Impact</h4>
+                    <ul className="list-disc pl-5 font-plex text-sm text-text-muted leading-[1.6] space-y-2">
                       {caseStudy.impact.map((item, idx) => (
                         <li key={idx}>{item}</li>
                       ))}

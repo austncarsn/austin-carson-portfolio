@@ -12,13 +12,13 @@ export default function NotFound(): React.JSX.Element {
       <div className="text-center space-y-8 max-w-2xl">
         {/* Error Code */}
         <div className="space-y-4">
-          <div className="text-brand text-8xl md:text-9xl tracking-tighter opacity-20">
+          <div className="text-brand text-h2 md:text-h1 tracking-tighter opacity-20">
             404
           </div>
           
           {/* Title */}
           <div className="space-y-2">
-            <span className="font-satoshi text-[40px] md:text-[56px] leading-[1.1] tracking-[-0.02em] text-text-primary block">
+              <span className="font-satoshi text-h3 md:text-h2 leading-[1.1] tracking-[-0.02em] text-text-primary block">
               Page Not Found
             </span>
           </div>
@@ -26,7 +26,7 @@ export default function NotFound(): React.JSX.Element {
         </div>
 
         {/* Description */}
-        <p className="font-plex text-[18px] leading-[1.7] text-text-muted max-w-md mx-auto">
+        <p className="font-plex text-base leading-[1.7] text-text-muted max-w-md mx-auto">
           Sorry, the page you're looking for doesn't exist or has been moved.
         </p>
 
