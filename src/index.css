@@ -84,6 +84,7 @@ progress::-webkit-progress-value { background: transparent; }
   --slate-600: #475569;
   --slate-700: #334155;
   --slate-800: #1E293B;
+  --slate-850: #172033;
   --slate-900: #0F172A;
   --slate-950: #020617;
   
@@ -92,40 +93,40 @@ progress::-webkit-progress-value { background: transparent; }
      ═══════════════════════════════════════════════════════════ */
   
   /* Backgrounds */
-  --bg-canvas: var(--slate-50);
-  --bg-paper: #FFFFFF;
-  --bg-surface: var(--neutral-50);
-  --bg-elevated: #FFFFFF;
+  --bg-canvas: var(--slate-900);
+  --bg-paper: var(--slate-800);
+  --bg-surface: var(--slate-850);
+  --bg-elevated: var(--slate-800);
   --bg-overlay: rgba(15, 23, 42, 0.85);
-  --bg-dark: var(--slate-900);
-  --bg-darker: var(--slate-950);
+  --bg-dark: var(--slate-950);
+  --bg-darker: #000000;
   
   /* Text */
-  --text-primary: var(--slate-900);
-  --text-secondary: var(--slate-700);
-  --text-muted: var(--slate-500);
-  --text-subtle: var(--slate-400);
+  --text-primary: var(--slate-50);
+  --text-secondary: var(--slate-300);
+  --text-muted: var(--slate-400);
+  --text-subtle: var(--slate-500);
   --text-on-dark: var(--slate-50);
   --text-on-brand: #FFFFFF;
   --text-on-accent: #FFFFFF;
   
   /* Borders */
-  --border-subtle: var(--slate-200);
-  --border-muted: var(--slate-300);
-  --border-strong: var(--slate-400);
+  --border-subtle: var(--slate-700);
+  --border-muted: var(--slate-600);
+  --border-strong: var(--slate-500);
   --border-focus: var(--brand-500);
   
   /* Interactive states */
-  --interactive-hover: var(--slate-100);
-  --interactive-active: var(--slate-200);
-  --interactive-disabled: var(--slate-300);
+  --interactive-hover: var(--slate-800);
+  --interactive-active: var(--slate-700);
+  --interactive-disabled: var(--slate-700);
   
   /* Shadows & Elevation */
-  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.03);
-  --shadow-md: 0 4px 8px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 8px 16px rgba(15, 23, 42, 0.1), 0 4px 8px rgba(15, 23, 42, 0.05);
-  --shadow-xl: 0 16px 32px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.06);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.7), 0 8px 16px rgba(0, 0, 0, 0.5);
   
   /* Legacy mappings for backward compatibility */
   --ring: var(--border-focus);
