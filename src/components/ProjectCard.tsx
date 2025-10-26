@@ -160,8 +160,8 @@ export const ProjectCard = memo(function ProjectCard({
           </div>
 
           {/* Year Badge - Large */}
-          <div className="hidden md:flex items-center justify-center w-28 h-28 rounded-sm border-2 border-structure bg-surface transition-all duration-500 group-hover:border-brand group-hover:bg-white">
-            <span className="font-satoshi text-body-lg font-semibold text-text-primary tracking-tight">
+          <div className="hidden md:flex items-center justify-center w-28 h-28 rounded-sm border-2 border-structure bg-surface transition-all duration-500 group-hover:border-brand group-hover:bg-slate-800">
+            <span className="font-satoshi text-body-lg font-semibold text-text-primary tracking-tight group-hover:text-brand">
               '{year.slice(-2)}
             </span>
           </div>
@@ -217,7 +217,7 @@ export const ProjectCard = memo(function ProjectCard({
       </div>
 
       {/* Bottom accent line - expands on scroll */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand via-accent to-transparent rounded-full transition-all duration-700 origin-left" 
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-l from-brand via-accent to-transparent rounded-full transition-all duration-700 origin-right" 
         style={{
           transform: isInView ? 'scaleX(1)' : 'scaleX(0)',
         }}
