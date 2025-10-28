@@ -26,7 +26,7 @@ export default function ContactCTA(): ReactElement {
           <div className="flex min-h-0 flex-col self-start space-y-5">
             <a
               href="mailto:austncarsn@gmail.com"
-              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-dark text-text-on-dark rounded-md transition-all duration-base hover:bg-brand hover:shadow-lg hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-canvas text-text-primary border-2 border-structure rounded-md transition-all duration-base hover:bg-brand hover:shadow-lg hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
               aria-label="Email Austin"
             >
               <Mail className="w-5 h-5 transition-transform duration-base group-hover:scale-110" />
@@ -40,7 +40,7 @@ export default function ContactCTA(): ReactElement {
               href="https://www.linkedin.com/in/austncarsn"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-paper border-2 border-structure text-text-primary rounded-md transition-all duration-base hover:border-brand hover:bg-elevated hover:shadow-md hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-canvas border-2 border-structure text-text-primary rounded-md transition-all duration-base hover:border-brand hover:bg-elevated hover:shadow-md hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             >
               <Linkedin className="w-5 h-5 transition-all duration-base group-hover:text-brand group-hover:scale-110" />
               <div className="flex flex-col items-start">
@@ -53,7 +53,7 @@ export default function ContactCTA(): ReactElement {
               href="https://github.com/austncarsn"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-paper border-2 border-structure text-text-primary rounded-md transition-all duration-base hover:border-dark hover:bg-elevated hover:shadow-md hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              className="group inline-flex w-full items-center gap-4 px-8 py-6 bg-canvas border-2 border-structure text-text-primary rounded-md transition-all duration-base hover:border-dark hover:bg-elevated hover:shadow-md hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             >
               <Github className="w-5 h-5 transition-all duration-base group-hover:scale-110 group-hover:rotate-12" />
               <div className="flex flex-col items-start">
