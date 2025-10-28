@@ -64,18 +64,18 @@ function useRandomFortune() {
 /* ------------------- Sub‑components ------------------- */
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <div className="font-satoshi tracking-[0.15em] text-[11px] text-text-muted uppercase mb-3">
+  <div className="font-satoshi tracking-[0.15em] text-[11px] text-white/70 uppercase mb-3">
     {children}
   </div>
 );
 
 const Hint = ({ children }: { children: React.ReactNode }) => (
-  <div className="font-satoshi text-xs text-text-muted opacity-60">{children}</div>
+  <div className="font-satoshi text-xs text-white/60">{children}</div>
 );
 
 const FortuneText = ({ text }: { text: string }) => (
   <p
-    className="font-satoshi text-sm text-text-primary leading-relaxed mb-3 min-h-[60px] flex items-center"
+    className="font-satoshi text-sm text-white leading-relaxed mb-3 min-h-[60px] flex items-center"
     aria-live="polite"
   >
     {text}
@@ -103,14 +103,14 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
         type="button"
         className={`
           relative min-w-[280px] max-w-[400px]
-          bg-paper border-2 border-structure
+          bg-black border-2 border-white/10 text-white
           px-6 py-4 text-left rounded-md
           ${prefersReducedMotion
             ? ''
             : 'transition-transform duration-200 ease-in-out hover:shadow-sm active:translate-x-2 active:translate-y-2'}
-          hover:border-text-primary
+          hover:border-white/30
           focus-visible:outline-none
-          focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand/50
+          focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/30
           ${isAnimating && !prefersReducedMotion ? 'animate-[shake_0.5s_ease-in-out]' : ''}
         `}
         aria-label="Reveal a fortune message"
@@ -119,8 +119,8 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
       >
         <Label>Fortune</Label>
         <FortuneText text={fortune} />
-                <Hint>Tap Again for Another.</Hint>
-        <div className="pointer-events-none absolute bottom-4 right-6 h-2 w-8 rounded-[1px] bg-brand" />
+        <Hint>Tap Again for Another.</Hint>
+        <div className="pointer-events-none absolute bottom-4 right-6 h-2 w-8 rounded-[1px] bg-white/20" />
       </button>
     </div>
   );
