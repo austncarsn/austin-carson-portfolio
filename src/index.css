@@ -93,7 +93,7 @@ progress::-webkit-progress-value { background: transparent; }
      ═══════════════════════════════════════════════════════════ */
   
   /* Backgrounds */
-  --bg-canvas: var(--slate-900);
+  --bg-canvas: #fffaf0; /* updated to light cream per request */
   --bg-paper: var(--slate-800);
   --bg-surface: var(--slate-850);
   --bg-elevated: var(--slate-800);
@@ -102,13 +102,18 @@ progress::-webkit-progress-value { background: transparent; }
   --bg-darker: #000000;
   
   /* Text */
-  --text-primary: var(--slate-50);
-  --text-secondary: var(--slate-300);
-  --text-muted: var(--slate-400);
+  /* Text (darker for light canvas #fffaf0) */
+  --text-primary: var(--slate-900);
+  --text-secondary: var(--slate-700);
+  --text-muted: var(--slate-600);
   --text-subtle: var(--slate-500);
   --text-on-dark: var(--slate-50);
   --text-on-brand: #FFFFFF;
   --text-on-accent: #FFFFFF;
+
+  /* Gradient tokens (global white → black gradient for decorative effects) */
+  --gradient-from: #ffffff;
+  --gradient-to: #000000;
   
   /* Borders */
   --border-subtle: var(--slate-700);
@@ -357,6 +362,21 @@ code, pre, kbd {
       radial-gradient(1px 1px at 75% 62%, #00000008 50%, #0000 51%);
     background-size: 120px 120px;
   }
+
+  /* Override Tailwind gradient utilities to use the global white→black gradient
+     This makes decorative gradients cohesive with the requested monochrome effect.
+     We use !important to ensure our design intent overrides the generated utilities.
+  */
+  :root {
+    --gradient-from: var(--gradient-from);
+    --gradient-to: var(--gradient-to);
+  }
+
+  .bg-gradient-to-r { background-image: linear-gradient(to right, var(--gradient-from), var(--gradient-to)) !important; }
+  .bg-gradient-to-l { background-image: linear-gradient(to left, var(--gradient-from), var(--gradient-to)) !important; }
+  .bg-gradient-to-b { background-image: linear-gradient(to bottom, var(--gradient-from), var(--gradient-to)) !important; }
+  .bg-gradient-to-br { background-image: linear-gradient(135deg, var(--gradient-from), var(--gradient-to)) !important; }
+  .bg-gradient-to-bc { background-image: linear-gradient(180deg, var(--gradient-from), var(--gradient-to)) !important; }
 
   .nav-speckle { position: relative; overflow: hidden; }
   .nav-speckle:before {
