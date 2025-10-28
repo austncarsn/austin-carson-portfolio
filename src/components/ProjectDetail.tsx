@@ -15,7 +15,7 @@ function isExternal(url: string | undefined): boolean {
 
 function TechPill({ label }: { label: string }): React.JSX.Element {
   return (
-    <span className="font-satoshi text-sm text-text-primary bg-surface border border-structure rounded-md px-4 py-2 transition-colors duration-200 hover:border-brand">
+    <span className="font-satoshi text-sm font-medium text-white bg-brand border border-brand/20 rounded-md px-4 py-2 transition-colors duration-200 hover:bg-brand-hover">
       {label}
     </span>
   );
@@ -37,7 +37,7 @@ function CtaLink({
   const baseClasses = "inline-flex items-center gap-3 font-satoshi font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50";
   const variantClasses = variant === "primary"
     ? "bg-brand text-white hover:opacity-90"
-    : "bg-surface border border-structure text-text-primary hover:border-brand hover:text-brand";
+    : "bg-brand-700 text-white border border-brand-700 hover:bg-brand";
   
   return (
     <a
@@ -100,7 +100,7 @@ export default function ProjectDetail(): React.JSX.Element {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-paper flex items-center justify-center px-4">
+      <div className="min-h-screen bg-canvas flex items-center justify-center px-4">
         <div className="text-center space-y-6">
             <h1 className="font-satoshi text-4xl text-text-primary">Project Not Found</h1>
             <p className="font-satoshi text-text-muted">The project you're looking for doesn't exist.</p>
@@ -117,7 +117,7 @@ export default function ProjectDetail(): React.JSX.Element {
   }
 
   return (
-    <article className="min-h-screen w-full bg-paper">
+    <article className="min-h-screen w-full bg-canvas">
       {/* Hero Section */}
   <section className="w-full border-b border-structure px-6 pb-16 pt-28 sm:px-10 sm:pt-32 md:pt-36 lg:px-16 lg:pt-40 xl:px-20 xl:pt-[140px]">
         <div className="mx-auto max-w-[1280px]">

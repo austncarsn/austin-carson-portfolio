@@ -3,7 +3,6 @@ import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 import { memo, useRef, useState } from 'react';
 
 import { useInView } from '@/hooks/useInView';
-import { useMousePosition } from '@/hooks/useMousePosition';
 
 export interface ProjectCardProps {
   id?: string;
@@ -77,7 +76,7 @@ const ActionButton = ({
     secondary:
       `${base} border-2 border-neutral-300 text-text-primary hover:border-neutral-400 hover:text-text-primary hover:bg-transparent hover:shadow-md`,
     github:
-      `${base} border-2 border-neutral-300 text-text-primary hover:border-neutral-400 hover:text-text-primary hover:bg-transparent hover:shadow-md`,
+      `${base} bg-brand-700 text-white border border-brand-700 hover:bg-brand`,
   };
 
   return (
@@ -109,30 +108,22 @@ export const ProjectCard = memo(function ProjectCard({
 }: ProjectCardProps) {
   const cardRef = useRef<HTMLElement>(null);
   const isInView = useInView(cardRef, { threshold: 0.3, rootMargin: '-50px 0px' });
-  const { x, y } = useMousePosition(cardRef);
-  const [isHovered, setIsHovered] = useState(false);
+  // mouse-tracking glow removed for a cleaner hover
 
+  // Subtler parallax: smaller translate and no scale — smoother and less janky
   const parallaxTransform = isInView
-    ? 'translate3d(0, 0, 0) scale(1)'
-    : 'translate3d(0, 60px, 0) scale(0.95)';
+    ? 'translate3d(0, 0, 0)'
+    : 'translate3d(0, 24px, 0)';
 
-  const glowOpacity = isHovered ? 0.14 : 0;
-  // On the light canvas we use a subtle dark radial for the border glow
-  const borderGlow = `radial-gradient(600px circle at ${x}% ${y}%, rgba(0,0,0, ${glowOpacity}), transparent 40%)`;
+  // No dynamic border glow — keep decorations subtle and static
 
   return (
     <article
       ref={cardRef}
-      className="group relative bg-canvas text-text-primary border border-neutral-300 rounded-md overflow-hidden transition-all duration-700 hover:border-neutral-400"
+      className="group relative bg-canvas text-text-primary border border-neutral-300 rounded-md overflow-hidden transition-all duration-slower ease-smooth hover:border-neutral-400"
       style={{ willChange: 'transform, opacity', transform: parallaxTransform, opacity: isInView ? 1 : 0 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Mouse‑tracking border glow */}
-      <div
-        className="absolute inset-0 opacity-100 pointer-events-none rounded-md transition-opacity duration-300"
-        style={{ background: borderGlow, mixBlendMode: 'multiply' }}
-      />
+      {/* Flashlight/glow removed — keeping a subtle, static canvas */}
 
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />
