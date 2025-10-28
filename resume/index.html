@@ -18,12 +18,21 @@
       font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 11pt;
       line-height: 1.55;
-      color: #1a1a1a;
+      color: #ffffff;
+      background: #111111; /* near-black brand token */
+      padding: 0;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* Card wrapper so the resume content stays on a white sheet over the dark background */
+    .card {
       background: #ffffff;
+      color: #1a1a1a;
       padding: 0.75in;
       max-width: 8.5in;
-      margin: 0 auto;
-      font-weight: 500;
+      margin: 36px auto;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
     }
 
     @media print {
@@ -179,6 +188,8 @@
 </head>
 <body>
 
+  <div class="card">
+
   <!-- HEADER -->
   <div class="header">
     <div class="name">AUSTIN CARSON</div>
@@ -317,6 +328,8 @@
     <p>To save as PDF: Press <strong>Ctrl+P</strong> (or Cmd+P) → Choose "Save as PDF" → Click Save.</p>
     <button onclick="window.print()">Generate PDF</button>
   </div>
+
+  </div> <!-- /.card -->
 
 </body>
 </html>

@@ -127,19 +127,16 @@ import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 import { memo, useRef, useState } from 'react';
 
 import { useInView } from '@/hooks/useInView';
-import { useMousePosition } from '@/hooks/useMousePosition';
 
 /* ------------------- Styles that handle the border ------------------- */
 
 const cardBase = `
   group relative bg-paper border border-slate-700/50 rounded-md overflow-hidden
-  transition-all duration-700 hover:border-brand/40
+  transition-all duration-700 hover:border-[var(--brand-hover)]
 `;
 
-const glowLayer = `
-  absolute inset-0 opacity-100 pointer-events-none rounded-md transition-opacity duration-300
-  mix-blend-mode: screen;
-`;
+// glow layer intentionally disabled to remove mouse-tracking flashlight effect
+const glowLayer = `absolute inset-0 opacity-0 pointer-events-none rounded-md transition-opacity duration-300`;
 
 const leftAccent = `
   absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-brand to-accent
@@ -157,20 +154,13 @@ export const ProjectCard = memo(function ProjectCard(props: ProjectCardProps) {
   const { id, title, category, year, role, description, subtitle, liveUrl, githubUrl, previewImage } = props;
   const cardRef = useRef<HTMLElement>(null);
   const isInView = useInView(cardRef, { threshold: 0.3, rootMargin: '-50px 0px' });
-  const { x, y } = useMousePosition(cardRef);
   const [isHovered, setIsHovered] = useState(false);
-
-  // CSS variables that drive the glow
   const style = {
     willChange: 'transform, opacity',
     transform: isInView
       ? 'translate3d(0, 0, 0) scale(1)'
       : 'translate3d(0, 60px, 0) scale(0.95)',
     opacity: isInView ? 1 : 0,
-    // glow is controlled by --glow-opacity and --glow-x/y
-    '--glow-opacity': isHovered ? 0.15 : 0,
-    '--glow-x': `${x}%`,
-    '--glow-y': `${y}%`,
   } as React.CSSProperties;
 
   return (
@@ -181,19 +171,7 @@ export const ProjectCard = memo(function ProjectCard(props: ProjectCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Mouse‑tracking border glow – implemented with CSS */}
-      <div
-        className={glowLayer}
-        style={{
-          background: `
-            radial-gradient(
-              600px circle at var(--glow-x) var(--glow-y),
-              rgba(99, 102, 241, var(--glow-opacity)),
-              transparent 40%
-            )
-          `,
-        }}
-      />
+      {/* dynamic glow removed */}
 
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />

@@ -121,7 +121,7 @@ export default function Navigation(): ReactElement {
               <Link
                 to="/"
                 aria-current={isHomePage ? 'page' : undefined}
-                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-3xl text-brand uppercase leading-none"
+                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-3xl text-brand uppercase leading-none"
                 style={{ fontFamily: '"Libre Barcode 39", monospace' }}
                 aria-label="Return to homepage"
               >
@@ -134,7 +134,7 @@ export default function Navigation(): ReactElement {
               <Link
                 to="/"
                 aria-current={isHomePage ? 'page' : undefined}
-                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-2xl text-brand uppercase leading-none"
+                className="flex items-center justify-center p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] focus-visible:ring-offset-2 transition-all duration-200 hover:opacity-80 active:scale-95 min-h-[44px] min-w-[44px] text-2xl text-brand uppercase leading-none"
                 style={{ fontFamily: '"Libre Barcode 39", monospace' }}
                 aria-label="Return to homepage"
               >
@@ -176,7 +176,7 @@ export default function Navigation(): ReactElement {
             {/* Mobile Menu Button */}
             <button
               type="button"
-              className="md:hidden flex items-center justify-center p-2.5 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 min-h-[44px] min-w-[44px]"
+              className="md:hidden flex items-center justify-center p-2.5 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] min-h-[44px] min-w-[44px]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}

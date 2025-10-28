@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, Github } from 'lucide-react';
-import { memo, useRef, useState } from 'react';
+import { memo, useRef, useEffect } from 'react';
 
 import { useInView } from '@/hooks/useInView';
 
@@ -22,11 +22,18 @@ export interface ProjectCardProps {
 
 const ProjectImage = ({ previewImage, title }: { previewImage?: string; title: string }) => (
   previewImage ? (
-  <div className="mb-8 md:mb-0 md:mr-10 md:float-left md:w-60 md:h-60 overflow-hidden rounded-sm border border-neutral-300/20 bg-transparent">
+  <div className="mb-8 md:mb-0 md:-ml-12 md:w-60 md:h-60 overflow-hidden bg-transparent flex-shrink-0">
+      {/* Plain background image — no overlay, no transitions or hover effects.
+          Container has no border or different background so the preview blends
+          seamlessly with the project card surface. */}
       <img
+        aria-hidden
         src={previewImage}
         alt={`${title} preview`}
-        className="w-full h-48 md:h-60 object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+        decoding="async"
+        className="w-full h-48 md:h-60 object-cover object-center block rounded-l-md"
+        style={{ filter: 'saturate(0.98) contrast(1.03)' }}
       />
     </div>
   ) : null
@@ -50,13 +57,7 @@ const Title = ({ title }: { title: string }) => (
   </h3>
 );
 
-const YearBadge = ({ year }: { year: string }) => (
-  <div className="hidden md:flex items-center justify-center w-28 h-28 rounded-sm border-2 border-neutral-300 bg-transparent transition-all duration-500 group-hover:border-neutral-400">
-    <span className="font-satoshi text-body-lg font-semibold text-text-primary tracking-tight">
-      '{year.slice(-2)}
-    </span>
-  </div>
-);
+// YearBadge removed — render card content full-width so components fit properly
 
 const ActionButton = ({
   href,
@@ -72,11 +73,11 @@ const ActionButton = ({
 
   const styles = {
     primary:
-      `${base} bg-brand text-white hover:bg-brand/90 hover:gap-3 hover:shadow-lg`,
+      `${base} bg-brand text-white hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg`,
     secondary:
       `${base} border-2 border-neutral-300 text-text-primary hover:border-neutral-400 hover:text-text-primary hover:bg-transparent hover:shadow-md`,
     github:
-      `${base} bg-brand-700 text-white border border-brand-700 hover:bg-brand`,
+      `${base} bg-brand-700 text-white border border-brand-700 hover:bg-[var(--brand-hover)]`,
   };
 
   return (
@@ -110,31 +111,78 @@ export const ProjectCard = memo(function ProjectCard({
   const isInView = useInView(cardRef, { threshold: 0.3, rootMargin: '-50px 0px' });
   // mouse-tracking glow removed for a cleaner hover
 
-  // Subtler parallax: smaller translate and no scale — smoother and less janky
-  const parallaxTransform = isInView
-    ? 'translate3d(0, 0, 0)'
-    : 'translate3d(0, 24px, 0)';
+  // We'll compute a smooth per-card parallax using requestAnimationFrame and
+  // a passive scroll listener. We avoid React state for the transform so the
+  // update stays off the React render path for performance.
+  const rafRef = useRef<number | null>(null);
+  const runningRef = useRef(false);
+  const offsetRef = useRef(0);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+
+    const el = cardRef.current;
+    const maxOffset = 24; // px of maximum translate
+
+    function update() {
+      rafRef.current = null;
+      if (!el) return;
+
+      // If not in view, set a small offset and skip expensive geometry when hidden
+      if (!isInView) {
+        offsetRef.current = maxOffset;
+        el.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
+        return;
+      }
+
+      const rect = el.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const vpCenter = window.innerHeight / 2;
+      const distance = elCenter - vpCenter;
+      // Normalize distance to range [-1, 1] and scale by maxOffset
+      const normalized = Math.max(-1, Math.min(1, distance / (window.innerHeight / 1.2)));
+      const target = normalized * maxOffset;
+
+      // Lerp from previous offset toward target for smooth easing
+      const prev = offsetRef.current || 0;
+      const ease = 0.12; // lower => smoother/slower interpolation
+      const next = prev + (target - prev) * ease;
+      offsetRef.current = next;
+
+      // Apply transform directly to the element — inexpensive and avoids rerenders
+      el.style.transform = `translate3d(0, ${next}px, 0)`;
+    }
+
+    function onScroll() {
+      if (rafRef.current != null) return;
+      rafRef.current = requestAnimationFrame(update);
+    }
+
+    // Kick off initial position
+    onScroll();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [isInView]);
 
   // No dynamic border glow — keep decorations subtle and static
 
   return (
     <article
       ref={cardRef}
-      className="group relative bg-canvas text-text-primary border border-neutral-300 rounded-md overflow-hidden transition-all duration-slower ease-smooth hover:border-neutral-400"
-      style={{ willChange: 'transform, opacity', transform: parallaxTransform, opacity: isInView ? 1 : 0 }}
+      className="group relative bg-canvas text-text-primary border border-neutral-200/30 rounded-md overflow-hidden transition-all duration-slower ease-smooth hover:border-neutral-300/40 shadow-sm"
+      style={{ willChange: 'transform, opacity', opacity: isInView ? 1 : 0 }}
     >
-      {/* Flashlight/glow removed — keeping a subtle, static canvas */}
-
       {/* Subtle grid pattern background */}
       <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />
 
-      {/* Left accent border */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-700 origin-top"
-        style={{ background: isInView ? 'linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0))' : 'none', transform: isInView ? 'scaleY(1)' : 'scaleY(0)' }}
-      />
-
-      {/* Top corner decorative element */}
+      {/* Decorative top-right soft glow */}
       <div
         className="absolute top-0 right-0 w-40 h-40 opacity-[0.035] rounded-full blur-3xl transition-all duration-700"
         style={{
@@ -143,11 +191,58 @@ export const ProjectCard = memo(function ProjectCard({
         }}
       />
 
-      <div className="relative p-10 md:p-16">
-        <ProjectImage previewImage={previewImage} title={title} />
+      {/* Main content: image-led. On small screens image is full-bleed at top; on md+ we render an absolute side image that is flush with the card edge. */}
+      {/* Side image for md+ — positioned against the card edge */}
+      {previewImage && (
+        <div className="hidden md:block absolute inset-y-0 left-0 w-64 z-0">
+          {/* 1px canvas wrapper to create a subtle border that matches the card */}
+          <div className="h-full p-[2px] bg-canvas rounded-l-lg overflow-hidden">
+            {/* Inner image uses slightly smaller radius to show inner curvature */}
+            <img
+              src={previewImage}
+              alt={`${title} preview`}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover object-center block rounded-l-md"
+              style={{ filter: 'saturate(0.98) contrast(1.03)' }}
+            />
+          </div>
 
-        <div className="flex items-start justify-between gap-6 mb-10">
-          <div className="flex-1">
+          {/* On-image chips for md+ */}
+          <div className="absolute left-3 top-3 flex items-center gap-2">
+            <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-semibold uppercase tracking-wider px-2 py-1 rounded">{category}</span>
+            <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-medium px-2 py-1 rounded">{year}</span>
+          </div>
+        </div>
+      )}
+
+      <div className="relative p-6 md:p-12">
+        <div className="md:flex md:items-start md:gap-8">
+          {/* Mobile stacked image (keeps CLS low) — hidden on md+ */}
+          {previewImage && (
+            <div className="block md:hidden mb-6">
+              {/* mobile: thin border via 1px canvas wrapper, rounded to match card */}
+              <div className="w-full h-48 p-[2px] bg-canvas rounded-lg overflow-hidden">
+                {/* mobile inner curvature: inner img slightly less rounded */}
+                <img
+                  src={previewImage}
+                  alt={`${title} preview`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center block rounded-md"
+                  style={{ filter: 'saturate(0.98) contrast(1.03)' }}
+                />
+              </div>
+
+              <div className="mt-3 flex items-center gap-2">
+                <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-semibold uppercase tracking-wider px-2 py-1 rounded">{category}</span>
+                <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-medium px-2 py-1 rounded">{year}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Content column */}
+          <div className="flex-1 mb-6 md:pl-[calc(16rem+3rem)] relative z-10">
             <CategoryYear category={category} year={year} />
 
             {role && (
@@ -169,11 +264,11 @@ export const ProjectCard = memo(function ProjectCard({
             </p>
           </div>
 
-          <YearBadge year={year} />
+          {/* Year badge intentionally removed to allow content to use the full card width */}
         </div>
 
         {/* Divider Line */}
-        <div className="relative h-[2px] bg-neutral-300/12 my-10 rounded-full">
+          <div className="relative h-[2px] bg-neutral-300/12 my-6 rounded-full">
           <div
             className="absolute left-0 top-0 h-full rounded-full transition-all duration-700 origin-left"
             style={{
@@ -185,11 +280,40 @@ export const ProjectCard = memo(function ProjectCard({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-4">
+        {/* Mobile / small screens: keep buttons inline under content to preserve stacking */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-3 mt-4 z-10 md:hidden">
           {id && (
             <Link
               to={`/project/${id}`}
-              className="group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-7 py-4 bg-brand text-white rounded-md transition-all duration-base hover:bg-brand/90 hover:gap-3 hover:shadow-lg"
+              className="group/btn inline-flex w-full sm:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-7 py-4 bg-brand text-white rounded-md transition-all duration-base hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg"
+              style={{ WebkitFontSmoothing: 'antialiased' }}
+            >
+              VIEW DETAILS
+              <ArrowRight className="w-4 h-4 transition-transform duration-base group-hover/btn:translate-x-0.5" />
+            </Link>
+          )}
+
+          {liveUrl && liveUrl !== '#' && (
+            <ActionButton href={liveUrl} variant="secondary">
+              LIVE DEMO
+              <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
+            </ActionButton>
+          )}
+
+          {githubUrl && githubUrl !== '#' && (
+            <ActionButton href={githubUrl} variant="github">
+              <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
+              GITHUB
+            </ActionButton>
+          )}
+        </div>
+
+        {/* Desktop / md+: absolute bottom-right action row — same markup but horizontal and anchored to card bottom-right. */}
+        <div className="hidden md:flex flex-row items-center gap-3 z-20 absolute right-6 bottom-6">
+          {id && (
+            <Link
+              to={`/project/${id}`}
+              className="group/btn inline-flex w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-brand text-white rounded-md transition-all duration-base hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg"
               style={{ WebkitFontSmoothing: 'antialiased' }}
             >
               VIEW DETAILS
@@ -217,7 +341,7 @@ export const ProjectCard = memo(function ProjectCard({
       <div
         className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full transition-all duration-700 origin-right"
         style={{
-          background: 'linear-gradient(to left, rgba(0,0,0,0.75), rgba(0,0,0,0))',
+          background: 'linear-gradient(to left, rgba(0,0,0,0.06), rgba(0,0,0,0))',
           transform: isInView ? 'scaleX(1)' : 'scaleX(0)',
         }}
       />

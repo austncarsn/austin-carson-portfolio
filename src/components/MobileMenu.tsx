@@ -62,7 +62,7 @@ export function MobileMenu({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 min-h-[44px] min-w-[44px]"
+            className="p-2 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] min-h-[44px] min-w-[44px]"
             aria-label="Close menu"
           >
             <svg

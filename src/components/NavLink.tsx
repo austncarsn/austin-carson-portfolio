@@ -35,7 +35,7 @@ const MOTION = {
 const baseClasses = [
   'group/navlink relative inline-flex items-center justify-center',
   'font-semibold uppercase tracking-[0.12em]',
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2',
+  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] focus-visible:ring-offset-2',
   'transition-all duration-200 ease-out',
   'rounded-lg', // Consistent corner radius
   SPACING.minSize

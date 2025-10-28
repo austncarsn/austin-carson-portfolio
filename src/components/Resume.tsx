@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Resume(): React.JSX.Element {
   return (
-    <div className="min-h-screen bg-paper px-6 py-12 sm:px-10">
+  <div className="min-h-screen bg-[var(--brand-500)] px-6 py-12 sm:px-10">
       <div className="mx-auto max-w-[820px] bg-white p-8 shadow-sm">
         {/* Header */}
         <header className="text-center mb-6">

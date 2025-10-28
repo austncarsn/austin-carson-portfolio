@@ -15,7 +15,7 @@ function isExternal(url: string | undefined): boolean {
 
 function TechPill({ label }: { label: string }): React.JSX.Element {
   return (
-    <span className="font-satoshi text-sm font-medium text-white bg-brand border border-brand/20 rounded-md px-4 py-2 transition-colors duration-200 hover:bg-brand-hover">
+    <span className="font-satoshi text-sm font-medium text-white bg-brand border border-brand/20 rounded-md px-4 py-2 transition-colors duration-200 hover:bg-[var(--brand-hover)]">
       {label}
     </span>
   );
@@ -34,7 +34,7 @@ function CtaLink({
 }): React.JSX.Element | null {
   if (!isExternal(href)) return null;
   
-  const baseClasses = "inline-flex items-center gap-3 font-satoshi font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50";
+  const baseClasses = "inline-flex items-center gap-3 font-satoshi font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)]";
   const variantClasses = variant === "primary"
     ? "bg-brand text-white hover:opacity-90"
     : "bg-brand-700 text-white border border-brand-700 hover:bg-brand";
@@ -152,7 +152,7 @@ export default function ProjectDetail(): React.JSX.Element {
 
           {/* Short case study summary */}
           {caseStudy && (
-            <div className="mt-6 p-6 bg-surface border border-structure rounded-md max-w-[900px]">
+            <div className="mt-6 p-6 bg-canvas border border-neutral-200/20 rounded-md max-w-[900px]">
               <h3 className="font-satoshi text-base text-text-primary mb-4">Case Study</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>

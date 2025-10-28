@@ -44,7 +44,7 @@ export default function NotFound(): React.JSX.Element {
           {/* Secondary Action */}
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-structure text-text-primary font-satoshi font-medium text-[15px] hover:border-brand transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-structure text-text-primary font-satoshi font-medium text-[15px] hover:border-[var(--brand-hover)] transition-colors"
           >
             Get in Touch
             <Mail className="w-4 h-4" />

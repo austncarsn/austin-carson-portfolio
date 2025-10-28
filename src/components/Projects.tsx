@@ -3,6 +3,12 @@ import FadeInSection from './FadeInSection';
 import { FortuneBox } from './FortuneBox';
 import Section from './Section';
 import React from 'react';
+// Import project preview assets so Vite resolves their URLs correctly
+import greenProjectPreview from '@/assets/green_project_preview.png';
+import floralFiftyNine from '@/assets/floralfiftynine.png';
+import chromeCameoPreview from '@/assets/chrome_cameo_preview.png';
+import aiPromptPreview from '@/assets/ai_prompt.png';
+import samanthaPreview from '@/assets/samantha.png';
 
 // Project data with extended descriptions
 export type CaseStudy = {
@@ -20,6 +26,8 @@ export const PROJECTS = {
     year: '2025',
     role: 'Design & Front-end Development',
   description: 'A curated gallery showcasing graphic design work with elegant layouts, smooth animations, and responsive design.',
+  // previewImage should point to a public/static asset. Using the provided file in `/assets`.
+  previewImage: greenProjectPreview,
   subtitle: 'Elegant showcase for creative design portfolios',
   longDescription: 'Graphic Design Gallery is a sophisticated portfolio platform designed to showcase creative work in an engaging and professional manner. Features include responsive grid layouts, smooth hover animations, detailed project views, and optimized performance for fast loading across all devices.',
   technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
@@ -52,6 +60,7 @@ export const PROJECTS = {
     year: '2025',
     role: 'Web App Development & UI Design',
   description: 'Floral Design SVG — A minimalist web app for generating elegant, nature-inspired floral illustrations. Users can explore preset compositions, preview their designs, and download high-resolution PNG or SVG files for creative use across print and digital projects. Built with React and TypeScript, it blends accessibility with precision, offering a lightweight alternative to complex vector software.',
+  previewImage: floralFiftyNine,
   subtitle: 'Elegant floral illustrations for creative projects',
   longDescription: 'Floral Design SVG is a minimalist web application that generates elegant, nature-inspired floral illustrations. Users can explore preset compositions, preview their designs in real-time, and download high-resolution PNG or SVG files for use across print and digital projects. Built with React and TypeScript, it combines accessibility with precision, offering a lightweight alternative to complex vector software.',
   technologies: ['React', 'TypeScript', 'SVG', 'Canvas API', 'Vite'],
@@ -88,7 +97,7 @@ export const PROJECTS = {
   subtitle: 'Premium product presentation through restraint and clarity',
   longDescription: 'Cameo Store is a minimal e-commerce UI focused on product presentation and user experience. Generous spacing and a clear typographic hierarchy spotlight curated items, while purposeful micro-interactions guide browsing and checkout. The design system emphasizes restraint and clarity to elevate perceived product value and support scalable merchandising.',
   technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
-    
+    previewImage: chromeCameoPreview,
     liveUrl: 'https://cameo-web.vercel.app',
   githubUrl: 'https://github.com/austncarsn/cameo-web.git',
   caseStudy: {
@@ -120,6 +129,7 @@ export const PROJECTS = {
   longDescription: 'The American Heritage Icon Library is a precision icon system focused on clarity and consistency. Icons are crafted on a 24px grid and follow strict rules for stroke weight and spacing. The library includes accessible markup and ARIA support, and ships as React components for straightforward integration.',
   technologies: ['React', 'SVG', 'TypeScript', 'Figma', 'Design System'],
     
+    previewImage: samanthaPreview,
     liveUrl: 'https://icon-library-delta.vercel.app',
     githubUrl: 'https://github.com/austncarsn/icon-library.git',
   caseStudy: {
@@ -152,6 +162,7 @@ export const PROJECTS = {
   technologies: ['Tailwind CSS', 'Alpine.js', 'HTML', 'LocalStorage', 'JavaScript', 'Accessibility-ready UI'],
     liveUrl: 'https://ai-prompt-studio-vehicles.vercel.app',
     githubUrl: 'https://github.com/austncarsn/ai-prompt-studio-vehicles.git',
+  previewImage: aiPromptPreview,
     caseStudy: {
       problem: [
         'Iterating on AI prompts for vehicle imagery is time-consuming and hard to reproduce.',
