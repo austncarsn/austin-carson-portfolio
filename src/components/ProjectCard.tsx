@@ -123,7 +123,7 @@ export const ProjectCard = memo(function ProjectCard({
   return (
     <article
       ref={cardRef}
-      className="group relative bg-black text-white border border-white/10 rounded-md overflow-hidden transition-all duration-700 hover:border-white/30"
+      className="group relative bg-brand text-white border border-white/10 rounded-md overflow-hidden transition-all duration-700 hover:border-white/30"
       style={{ willChange: 'transform, opacity', transform: parallaxTransform, opacity: isInView ? 1 : 0 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

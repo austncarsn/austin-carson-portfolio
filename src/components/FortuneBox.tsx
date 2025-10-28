@@ -103,7 +103,7 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
         type="button"
         className={`
           relative min-w-[280px] max-w-[400px]
-          bg-black border-2 border-white/10 text-white
+          bg-brand border-2 border-white/10 text-white
           px-6 py-4 text-left rounded-md
           ${prefersReducedMotion
             ? ''
