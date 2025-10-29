@@ -56,12 +56,9 @@ export function MobileMenu({
         aria-modal="true"
         aria-label="Mobile navigation menu"
       >
-        {/* Dimmed overlay (visual) */}
-        <div className="absolute inset-0 bg-paper/98 backdrop-blur-sm" aria-hidden="true" />
-
         {/* Panel container: full width on small, right-docked panel on large */}
         <div className="absolute inset-0 flex justify-end">
-          <div className="h-full w-full lg:w-[420px] bg-paper border-l border-structure/50 flex flex-col">
+          <div className="h-full w-full lg:w-[420px] bg-canvas border-l border-structure/50 flex flex-col">
 
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-structure/50">
@@ -69,7 +66,7 @@ export function MobileMenu({
               <button
                 type="button"
                 onClick={onClose}
-                className="p-3 rounded-lg text-text-primary hover:text-brand hover:bg-surface transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] min-h-[48px] min-w-[48px]"
+                className="p-3 rounded-full text-text-primary bg-transparent hover:text-brand hover:bg-[var(--interactive-hover)]/12 hover:scale-105 transition duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
                 aria-label="Close menu"
               >
                 <svg
