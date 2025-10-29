@@ -119,7 +119,7 @@ export default function ProjectDetail(): React.JSX.Element {
   return (
     <article className="min-h-screen w-full bg-canvas">
       {/* Hero Section */}
-  <section className="w-full border-b border-structure px-6 pb-16 pt-28 sm:px-10 sm:pt-32 md:pt-36 lg:px-16 lg:pt-40 xl:px-20 xl:pt-[140px]">
+      <section className="w-full border-b border-structure px-6 pb-16 pt-16 sm:px-10 sm:pt-20 md:pt-28 lg:px-16 lg:pt-32 xl:px-20 xl:pt-[120px]">
         <div className="mx-auto max-w-[1280px]">
           {/* Back Link */}
           <div className="mb-12">

@@ -176,7 +176,7 @@ export default function Navigation(): ReactElement {
             {/* Mobile Menu Button */}
             <button
               type="button"
-              className="md:hidden flex items-center justify-center p-2.5 rounded-lg text-text-muted hover:text-brand hover:bg-surface/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] min-h-[44px] min-w-[44px]"
+              className="md:hidden flex items-center justify-center p-3 rounded-lg text-text-primary hover:text-brand hover:bg-surface transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] min-h-[48px] min-w-[48px]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
