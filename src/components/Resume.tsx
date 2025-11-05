@@ -2,11 +2,11 @@ import React from 'react';
 
 export default function Resume(): React.JSX.Element {
   return (
-  <div className="min-h-screen bg-[var(--brand-500)] px-6 py-12 sm:px-10">
-      <div className="mx-auto max-w-[820px] bg-white p-8 shadow-sm">
+  <div className="min-h-screen bg-canvas px-6 py-12 sm:px-10">
+    <div className="mx-auto max-w-[820px] bg-white p-8 rounded-xl border border-structure/10 shadow-lg">
         {/* Header */}
         <header className="text-center mb-6">
-          <div className="text-4xl font-extrabold tracking-tight">AUSTIN CARSON</div>
+          <div className="text-4xl font-extrabold tracking-tight text-text-primary">AUSTIN CARSON</div>
           <div className="font-satoshi text-lg text-text-muted mt-1">Creative Technologist &amp; AI Trainer</div>
           <div className="font-satoshi text-sm text-text-muted mt-2">
             Missoula, MT • <a href="https://austincarson.dev" className="underline">austincarson.dev</a> • <a href="https://linkedin.com/in/austin-carson-4b059731a" className="underline">linkedin.com/in/austin-carson</a>
@@ -14,7 +14,7 @@ export default function Resume(): React.JSX.Element {
           </div>
         </header>
 
-        <hr className="my-6 border-structure" />
+          <hr className="my-6 border-structure/30" />
 
         {/* Summary */}
         <section className="mb-6">
