@@ -5,10 +5,10 @@ import Section from './Section';
 import FadeInSection from './FadeInSection';
 
 interface ImageGalleryProps {
-  images: Array<{
-    src: string;
-    alt: string;
-    caption?: string;
+  images: ReadonlyArray<{
+    readonly src: string;
+    readonly alt: string;
+    readonly caption?: string;
   }>;
 }
 
@@ -100,12 +100,12 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
       className="relative"
     >
       <FadeInSection delay={100} direction="up">
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="font-satoshi font-bold text-h3 md:text-h2 text-text-primary mb-4">
-            Visual Exploration
+            Visual Wall
           </h2>
           <p className="font-satoshi text-body-lg text-text-muted max-w-2xl">
-            A curated collection showcasing design work, UI experiments, and creative projects.
+            Explore the full gallery wall by scrolling horizontally.
           </p>
         </div>
       </FadeInSection>
@@ -150,39 +150,27 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
             isDragging ? 'cursor-grabbing' : 'cursor-grab'
           }`}
           style={{
-            scrollSnapType: prefersReducedMotion ? 'none' : 'x mandatory',
+            scrollSnapType: 'none',
             WebkitOverflowScrolling: 'touch',
           }}
         >
-          <div className="flex gap-6 pb-4">
+          <div className="flex gap-0">
             {images.map((image, index) => (
-              <FadeInSection key={index} delay={200 + index * 50} direction="up">
-                <div
-                  className="flex-shrink-0 group"
-                  style={{
-                    scrollSnapAlign: 'start',
-                    scrollSnapStop: 'always',
-                  }}
-                >
-                  <div className="relative overflow-hidden rounded-lg border border-structure/20 bg-white shadow-md transition-all duration-300 hover:shadow-xl hover:border-structure/40">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      loading="lazy"
-                      draggable="false"
-                      className="w-[320px] h-[400px] md:w-[380px] md:h-[480px] lg:w-[420px] lg:h-[520px] object-cover select-none transition-transform duration-500 group-hover:scale-105"
-                      style={{ userSelect: 'none' }}
-                    />
-                    {image.caption && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                        <p className="font-satoshi text-sm text-white font-medium">
-                          {image.caption}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+              <div
+                key={index}
+                className="flex-shrink-0"
+              >
+                <div className="relative overflow-hidden bg-white">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    loading="lazy"
+                    draggable="false"
+                    className="h-[400px] md:h-[500px] lg:h-[600px] w-auto object-contain select-none block"
+                    style={{ userSelect: 'none' }}
+                  />
                 </div>
-              </FadeInSection>
+              </div>
             ))}
           </div>
         </div>
@@ -190,7 +178,7 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
         {/* Scroll hint */}
         <div className="mt-6 text-center">
           <p className="font-satoshi text-xs text-text-muted uppercase tracking-wider">
-            Drag or use arrows to explore
+            Drag to explore the full wall
           </p>
         </div>
       </div>

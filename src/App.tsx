@@ -7,6 +7,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { lazy, Suspense, memo } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop';
+import { GALLERY_IMAGES } from './data/galleryImages';
 
 // ─── LAZY LOADED COMPONENTS ─────────────────────────────────────────────────
 const Navigation = lazy(() => import('./components/Navigation'));
@@ -67,7 +68,7 @@ export default function App(): ReactElement {
                 element={
                   <RouteTransition>
                     <Hero />
-                    <ImageGallery images={[]} />
+                    <ImageGallery images={GALLERY_IMAGES} />
                     <Projects />
                     <ContactCTA />
                   </RouteTransition>
