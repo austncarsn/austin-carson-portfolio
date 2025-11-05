@@ -399,6 +399,15 @@ code, pre, kbd {
     text-decoration: none;
     transition: color var(--dur-2) var(--ease-snap);
   }
+
+  /* Scrollbar hide utility for horizontal galleries */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
   .nav-logo:hover { color: var(--brand-ice); }
 
   .nav-link {

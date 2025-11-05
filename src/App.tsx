@@ -11,6 +11,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 // ─── LAZY LOADED COMPONENTS ─────────────────────────────────────────────────
 const Navigation = lazy(() => import('./components/Navigation'));
 const Hero = lazy(() => import('./components/Hero'));
+const ImageGallery = lazy(() => import('./components/ImageGallery'));
 const Projects = lazy(() => import('./components/Projects'));
 const ContactCTA = lazy(() => import('./components/ContactCTA'));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
@@ -66,6 +67,7 @@ export default function App(): ReactElement {
                 element={
                   <RouteTransition>
                     <Hero />
+                    <ImageGallery images={[]} />
                     <Projects />
                     <ContactCTA />
                   </RouteTransition>
