@@ -4,11 +4,16 @@ import wallRight from '@/assets/wall_right.png';
 import left2 from '@/assets/left_2.png';
 import right2 from '@/assets/right_2.png';
 import farRight from '@/assets/far_right.png';
+import pizzaMan from '@/assets/pizza_man.png';
 
 export const GALLERY_IMAGES = [
   {
     src: farRight,
     alt: 'Gallery image - far right',
+  },
+  {
+    src: pizzaMan,
+    alt: 'Pizza man',
   },
   {
     src: wallLeft,

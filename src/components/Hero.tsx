@@ -38,6 +38,7 @@ function HeroBase(): React.JSX.Element {
         labelNumber="01"
         labelTitle="HERO"
         labelDelay={0}
+        ptClass="pt-20 sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32 2xl:pb-36"
       >
         <GradientBlob />
 

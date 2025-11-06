@@ -849,6 +849,76 @@ code, pre, kbd {
     inset 0 -2px 6px rgba(255, 255, 255, 0.12); /* lower rim light */
 }
 
+/* ===== Mobile & Touch Optimization ================================ */
+@layer mobile {
+  /* Improve tap targets on mobile */
+  @media (max-width: 768px) {
+    button, a {
+      min-height: var(--touch-target-min);
+      min-width: var(--touch-target-min);
+    }
+    
+    /* Prevent text size adjustment on orientation change */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    
+    /* Improve touch scrolling */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    
+    /* Optimize font rendering on mobile */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    
+    /* Prevent zoom on input focus (iOS) */
+    input, textarea, select {
+      font-size: 16px;
+    }
+  }
+  
+  /* Safe area insets for notched devices */
+  @supports (padding: env(safe-area-inset-left)) {
+    body {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  }
+  
+  /* Responsive spacing adjustments */
+  @media (max-width: 640px) {
+    :root {
+      --content-padding-sm: 1rem;
+      --content-padding-md: 1.5rem;
+      --section-spacing-sm: 3rem;
+      --section-spacing-md: 4rem;
+    }
+  }
+  
+  /* Landscape mobile optimizations */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+      min-height: auto;
+    }
+  }
+  
+  /* Performance: GPU acceleration for smooth animations */
+  @media (max-width: 768px) {
+    .animate-in, .animate-out, 
+    [data-state="open"], [data-state="closed"],
+    .nav-link, .button, .project-card {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+  }
+}
+
 /* ===== Barcode Mobile Adjustments ==================================== */
 @media (max-width: 640px) {
   :root {
