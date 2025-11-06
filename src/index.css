@@ -198,6 +198,25 @@ progress::-webkit-progress-value { background: transparent; }
   --component-gap-xs: 0.5rem; /* 8px */
   --component-gap-sm: 1rem; /* 16px */
   --component-gap-md: 1.5rem; /* 24px */
+  
+  /* ───────────────────────────────────────────────────────────
+     Barcode Navigation Tokens
+     ─────────────────────────────────────────────────────────── */
+  --bar-surface: #FBF7ED;   /* warm paper */
+  --bar-ink: rgba(14, 18, 22, 0.92);   /* dense black bars */
+  --bar-link: #344454;   /* subdued link text */
+  --bar-hover: rgba(255, 255, 255, 0.4);
+  --bar-focus: rgba(0, 0, 0, 0.2);
+  --bar-accent: #0C0F12;   /* connector black */
+  
+  /* Barcode nav dimensions */
+  --nav-h: 84px;         /* barcode band height */
+  --btn-r: 14px;         /* capsule radius */
+  --btn-py: 10px;        /* vertical padding */
+  --btn-px: 18px;        /* horizontal padding */
+
+
+
   --component-gap-lg: 2rem; /* 32px */
   --component-gap-xl: 3rem; /* 48px */
   
@@ -408,6 +427,73 @@ code, pre, kbd {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+/* === LED Warm-Up Effect — Subtle / Refined ======================= */
+:root {
+  --led-text: #0c1420;
+  --led-glow: rgba(255, 246, 220, 0.25);  /* much softer glow */
+  --led-glow-strong: rgba(255, 233, 160, 0.35);
+  --led-specular: rgba(255,255,255,0.18);
+  --led-bg: transparent;
+}
+
+.led-letter {
+  position: relative;
+  color: var(--led-text);
+  text-shadow: 0 0 0 var(--led-glow);
+  opacity: 0.4; /* start more visible */
+  display: inline-block;
+  /* shorter, smoother transition */
+  animation: led-flicker 1.2s cubic-bezier(.2,.8,.3,1) both, led-glow 2s ease-out 0.5s both;
+  will-change: opacity, text-shadow;
+}
+
+.led-letter::after {
+  content: "";
+  position: absolute;
+  left: -2%; right: -2%; top: -10%; bottom: -10%;
+  pointer-events: none;
+  /* very subtle specular sheen */
+  background: linear-gradient(180deg, rgba(255,255,255,0.0) 0%, var(--led-specular) 35%, rgba(255,255,255,0.0) 65%);
+  opacity: 0;
+  filter: blur(1.5px);
+  transform: translateY(-12%);
+  animation: led-scan 1.2s ease-out 0.4s both;
+}
+
+@keyframes led-flicker {
+  0%   { opacity: 0.4; }
+  25%  { opacity: 0.7; }
+  50%  { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+@keyframes led-glow {
+  0% {
+    text-shadow: 0 0 0 var(--led-glow);
+  }
+  50% {
+    text-shadow: 0 0 0.4px var(--led-glow), 0 0 4px var(--led-glow), 0 0 8px var(--led-glow-strong);
+  }
+  100% {
+    text-shadow: 0 0 0.3px var(--led-glow), 0 0 2px var(--led-glow);
+  }
+}
+
+@keyframes led-scan {
+  0%   { opacity: 0; transform: translateY(-10%); }
+  50%  { opacity: 0.2; transform: translateY(5%); }
+  100% { opacity: 0; transform: translateY(12%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led-letter,
+  .led-letter::after {
+    animation: none !important;
+    opacity: 1;
+    text-shadow: 0 0 0.2px var(--led-glow);
+  }
+}
   .nav-logo:hover { color: var(--brand-ice); }
 
   .nav-link {
@@ -569,6 +655,30 @@ code, pre, kbd {
   @keyframes scale-in { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
   @keyframes shimmer { 0% { background-position: -200%; } 100% { background-position: 200%; } }
   @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+  @keyframes poke { 
+    0% { transform: scale(1); } 
+    15% { transform: scale(0.95); } 
+    30% { transform: scale(1.08); } 
+    45% { transform: scale(0.98); } 
+    60% { transform: scale(1.03); } 
+    75% { transform: scale(0.99); } 
+    100% { transform: scale(1); } 
+  }
+  @keyframes gentle-settle { 
+    0% { transform: scale(1); } 
+    25% { transform: scale(0.98); } 
+    50% { transform: scale(1.01); } 
+    75% { transform: scale(0.995); } 
+    100% { transform: scale(1); } 
+  }
+  @keyframes star-twinkle { 
+    0%, 100% { opacity: 0.4; } 
+    50% { opacity: 1; } 
+  }
+  @keyframes nebula-drift { 
+    0%, 100% { transform: translateX(0) scale(1); } 
+    50% { transform: translateX(20px) scale(1.05); } 
+  }
 
   /* Optional helper classes if you use them directly */
   .animate-fade-in { animation: fade-in .3s ease-out forwards; }
@@ -645,5 +755,103 @@ code, pre, kbd {
     background-image:
       radial-gradient(1px 1px at 25% 32%, #ffffff0a 50%, #0000 51%),
       radial-gradient(1px 1px at 75% 62%, #ffffff08 50%, #0000 51%);
+  }
+}
+
+/* ===== Blob Button Animations ======================================== */
+@keyframes blobMorph {
+  0%, 100% {
+    border-radius: 50% / 30%;
+    transform: scale(1);
+  }
+  25% {
+    border-radius: 40% / 50%;
+    transform: scale(1.02) translateY(-1px);
+  }
+  50% {
+    border-radius: 55% / 35%;
+    transform: scale(0.98);
+  }
+  75% {
+    border-radius: 45% / 45%;
+    transform: scale(1.01) translateY(1px);
+  }
+}
+
+@keyframes blobPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+}
+
+.blob-button {
+  border-radius: 50% / 30%;
+  animation: blobMorph 4s ease-in-out infinite;
+}
+
+.blob-pulse {
+  border-radius: 50% / 30%;
+  animation: blobPulse 4s ease-in-out infinite;
+}
+
+/* ===== Piano Key Motion Respect ==================================== */
+@media (prefers-reduced-motion: reduce) {
+  .piano-key {
+    transform: none !important;
+  }
+  
+  /* Barcode nav: disable color transitions for reduced motion */
+  .transition-\[background-color\] {
+    transition: none !important;
+  }
+  
+  .barcode-tint {
+    transition: none !important;
+  }
+}
+
+/* ===== Raised Button Capsules: Occlusion Lip + Inner Shadow ======= */
+
+/* Crisp occlusion lip: hides bars where they meet the capsule */
+.key::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  /* Same paper color so bars appear to go behind */
+  background: linear-gradient(
+    to bottom,
+    var(--bar-surface) 0%,
+    var(--bar-surface) 72%,
+    rgba(0, 0, 0, 0.06) 73%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Subtle inner top shadow for punch, no haze */
+.key::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 8px 14px rgba(0, 0, 0, 0.14), /* top occlusion */
+    inset 0 -2px 6px rgba(255, 255, 255, 0.12); /* lower rim light */
+}
+
+/* ===== Barcode Mobile Adjustments ==================================== */
+@media (max-width: 640px) {
+  :root {
+    --bar-ink: rgba(15, 19, 23, 0.88); /* Slightly lighter on small screens */
   }
 }

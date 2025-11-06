@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { AccentRow } from './AccentRow';
 import Section from './Section';
 import FadeInSection from './FadeInSection';
 
@@ -9,6 +10,7 @@ interface ImageGalleryProps {
     readonly src: string;
     readonly alt: string;
     readonly caption?: string;
+    readonly frameClass?: string;
   }>;
 }
 
@@ -92,7 +94,6 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
   return (
     <Section
       id="gallery"
-      border="bottom"
       bgClass="bg-canvas"
       labelNumber="03"
       labelTitle="GALLERY"
@@ -100,13 +101,19 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
       className="relative"
     >
       <FadeInSection delay={100} direction="up">
-        <div className="mb-8">
+        <div className="mb-12 sm:mb-14 md:mb-16">
           <h2 className="font-satoshi font-bold text-h3 md:text-h2 text-text-primary mb-4">
             Visual Wall
           </h2>
-          <p className="font-satoshi text-body-lg text-text-muted max-w-2xl">
+          <p className="font-satoshi text-body-lg text-text-muted max-w-2xl mb-10 sm:mb-12">
             Explore the full gallery wall by scrolling horizontally.
           </p>
+          {/* Decorative perforated section below gallery description - perfectly centered and responsive */}
+          <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+            <div className="flex items-center justify-center py-4 sm:py-5 md:py-6">
+              <AccentRow tone="graphite" gap={44} studSize={24} showFade={true} />
+            </div>
+          </div>
         </div>
       </FadeInSection>
 
@@ -139,28 +146,41 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
           <ChevronRight className="w-6 h-6 text-text-primary" />
         </button>
 
-        {/* Scrollable Container */}
+        {/* Scrollable Container - Inset Recessed Treatment */}
         <div
-          ref={scrollContainerRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          className={`overflow-x-auto overflow-y-hidden scrollbar-hide ${
-            isDragging ? 'cursor-grabbing' : 'cursor-grab'
-          }`}
+          className="relative"
           style={{
-            scrollSnapType: 'none',
-            WebkitOverflowScrolling: 'touch',
+            backgroundColor: 'hsl(30, 20%, 93.5%)',
+            borderRadius: '16px',
+            padding: '8px',
+            boxShadow: `
+              inset 0 2px 12px rgba(0, 0, 0, 0.13),
+              inset 0 -1px 8px rgba(255, 255, 255, 0.10)
+            `,
           }}
         >
-          <div className="flex gap-0">
+          <div
+            ref={scrollContainerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            className={`overflow-x-auto overflow-y-hidden scrollbar-hide relative ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
+            style={{
+              scrollSnapType: 'none',
+              WebkitOverflowScrolling: 'touch',
+              borderRadius: '12px',
+            }}
+          >
+            <div className="flex gap-0">
             {images.map((image, index) => (
               <div
                 key={index}
                 className="flex-shrink-0"
               >
-                <div className="relative overflow-hidden bg-white">
+                <div className={`relative overflow-hidden bg-canvas ${image.frameClass ?? ''}`}>
                   <img
                     src={image.src}
                     alt={image.alt}
@@ -173,6 +193,7 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
               </div>
             ))}
           </div>
+        </div>
         </div>
 
         {/* Scroll hint */}

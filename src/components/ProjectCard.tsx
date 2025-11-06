@@ -1,8 +1,127 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, Github } from 'lucide-react';
-import { memo, useRef, useEffect } from 'react';
-
+import React, { memo, useRef, useEffect, useState, KeyboardEvent } from 'react';
 import { useInView } from '@/hooks/useInView';
+
+// --- Consolidated Components ---
+
+// Originally from ProjectCardImage.tsx
+function ProjectCardImage({ previewImage, title }: {
+  previewImage?: string;
+  title: string;
+}) {
+  if (!previewImage) return null;
+
+  return (
+    <div className="absolute inset-0 z-0">
+      <img
+        aria-hidden
+        src={previewImage}
+        alt={`${title} preview`}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-cover object-center"
+        style={{ filter: 'saturate(1.1) contrast(1.08)' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40" />
+    </div>
+  );
+}
+
+// Originally from ProjectCardMeta.tsx
+function ProjectCardMeta({ category, year, role, title, subtitle, description }: {
+  category: string;
+  year: string;
+  role?: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+}) {
+  return (
+    <div className="flex-1 relative z-10">
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+        <span className="font-satoshi font-semibold text-[10px] sm:text-[11px] tracking-widest uppercase text-[#C9CED6]">
+          {category}
+        </span>
+        <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
+        <span className="font-satoshi font-medium text-[10px] sm:text-[11px] tracking-wide uppercase text-white/60">
+          {year}
+        </span>
+      </div>
+
+      {role && (
+        <div className="mb-3">
+          <span className="font-satoshi font-medium text-xs sm:text-sm text-[#C9CED6] bg-white/5 px-2.5 py-1 rounded">{role}</span>
+        </div>
+      )}
+
+      <h3 className="font-satoshi font-bold text-lg sm:text-xl md:text-2xl leading-tight tracking-tight mb-3 sm:mb-4 text-[#E9EEF3]">
+        {title}
+      </h3>
+
+      {subtitle && (
+        <p className="font-satoshi font-medium text-xs sm:text-sm leading-relaxed mb-3 text-white/80">
+          {subtitle}
+        </p>
+      )}
+
+      <p className="font-satoshi font-normal text-xs sm:text-sm leading-relaxed text-white/70">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+// Originally from ProjectCardActions.tsx
+function ProjectCardActions({ id, liveUrl, githubUrl }: {
+  id?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+}) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 z-10">
+      {id && (
+        <Link
+          to={`/project/${id}`}
+          onClick={(e) => e.stopPropagation()}
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-white text-[#0B0D0F] rounded-lg transition-all duration-base hover:bg-[#E9EEF3] hover:shadow-lg active:bg-white/90 md:hover:gap-2.5 touch-manipulation whitespace-nowrap"
+          style={{ WebkitFontSmoothing: 'antialiased' }}
+        >
+          VIEW DETAILS
+          <ArrowRight className="w-4 h-4 transition-transform duration-base md:group-hover/btn:translate-x-0.5" />
+        </Link>
+      )}
+      {liveUrl && liveUrl !== '#' && (
+        <a
+          href={liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 border-2 border-white/20 text-white bg-transparent rounded-lg transition-all duration-base hover:border-white/40 hover:bg-white/5 hover:shadow-md active:bg-white/10 touch-manipulation whitespace-nowrap"
+          style={{ WebkitFontSmoothing: 'antialiased' }}
+        >
+          LIVE DEMO
+          <ExternalLink className="w-4 h-4 transition-transform duration-base md:group-hover/btn:-translate-y-0.5 md:group-hover/btn:translate-x-0.5" />
+        </a>
+      )}
+      {githubUrl && githubUrl !== '#' && (
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-white/10 text-white border border-white/10 rounded-lg transition-all duration-base hover:bg-white/15 hover:border-white/20 hover:shadow-md active:bg-white/20 touch-manipulation whitespace-nowrap"
+          style={{ WebkitFontSmoothing: 'antialiased' }}
+        >
+          <Github className="w-4 h-4 transition-transform duration-base md:group-hover/btn:rotate-12" />
+          GITHUB
+        </a>
+      )}
+    </div>
+  );
+}
+
+// --- Main ProjectCard Component ---
 
 export interface ProjectCardProps {
   id?: string;
@@ -18,83 +137,6 @@ export interface ProjectCardProps {
   previewImage?: string;
 }
 
-/* ------------------- Sub‑components ------------------- */
-
-const ProjectImage = ({ previewImage, title }: { previewImage?: string; title: string }) => (
-  previewImage ? (
-  <div className="mb-8 md:mb-0 md:-ml-12 md:w-60 md:h-60 overflow-hidden bg-transparent flex-shrink-0">
-      {/* Plain background image — no overlay, no transitions or hover effects.
-          Container has no border or different background so the preview blends
-          seamlessly with the project card surface. */}
-      <img
-        aria-hidden
-        src={previewImage}
-        alt={`${title} preview`}
-        loading="lazy"
-        decoding="async"
-        className="w-full h-48 md:h-60 object-cover object-center block rounded-l-md"
-        style={{ filter: 'saturate(0.98) contrast(1.03)' }}
-      />
-    </div>
-  ) : null
-);
-
-const CategoryYear = ({ category, year }: { category: string; year: string }) => (
-  <div className="flex items-center gap-3 mb-6">
-    <span className="font-satoshi font-semibold text-xs tracking-wider uppercase text-text-muted">
-      {category}
-    </span>
-    <div className="w-[3px] h-[3px] bg-neutral-500 rounded-full" />
-    <span className="font-satoshi font-medium text-xs tracking-wide uppercase text-text-subtle">
-      {year}
-    </span>
-  </div>
-);
-
-const Title = ({ title }: { title: string }) => (
-  <h3 className="font-satoshi font-bold text-h4 md:text-h3 lg:text-h2 leading-tight tracking-tight text-text-primary mb-6 transition-colors duration-500">
-    {title}
-  </h3>
-);
-
-// YearBadge removed — render card content full-width so components fit properly
-
-const ActionButton = ({
-  href,
-  children,
-  variant = 'primary',
-}: {
-  href: string;
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'github';
-}) => {
-  const base =
-    'group/btn inline-flex w-full md:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-7 py-4 rounded-md transition-all duration-base';
-
-  const styles = {
-    primary:
-      `${base} bg-brand text-white hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg`,
-    secondary:
-      `${base} border-2 border-neutral-300 text-text-primary hover:border-neutral-400 hover:text-text-primary hover:bg-transparent hover:shadow-md`,
-    github:
-      `${base} bg-brand-700 text-white border border-brand-700 hover:bg-[var(--brand-hover)]`,
-  };
-
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles[variant]}
-      style={{ WebkitFontSmoothing: 'antialiased' }}
-    >
-      {children}
-    </a>
-  );
-};
-
-/* ------------------- Main component ------------------- */
-
 export const ProjectCard = memo(function ProjectCard({
   id,
   title,
@@ -108,29 +150,53 @@ export const ProjectCard = memo(function ProjectCard({
   previewImage,
 }: ProjectCardProps) {
   const cardRef = useRef<HTMLElement>(null);
+  const flipButtonRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { threshold: 0.3, rootMargin: '-50px 0px' });
-  // mouse-tracking glow removed for a cleaner hover
 
-  // We'll compute a smooth per-card parallax using requestAnimationFrame and
-  // a passive scroll listener. We avoid React state for the transform so the
-  // update stays off the React render path for performance.
   const rafRef = useRef<number | null>(null);
-  const runningRef = useRef(false);
   const offsetRef = useRef(0);
+  const [flipped, setFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [buttonTransform, setButtonTransform] = useState({ x: 0, y: 0 });
+
+  // Detect mobile for touch optimizations
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  function handleKeyToggle(e: KeyboardEvent<HTMLElement>) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setFlipped(v => !v);
+    } else if (e.key === 'Escape' && flipped) {
+      e.preventDefault();
+      setFlipped(false);
+    }
+  }
+
+  function handleFlip(e: React.MouseEvent) {
+    if (!flipped) {
+      e.stopPropagation();
+      setFlipped(true);
+    }
+  }
 
   useEffect(() => {
     if (!cardRef.current) return;
-
     const el = cardRef.current;
-    const maxOffset = 24; // px of maximum translate
+    const maxOffset = isMobile ? 8 : 18; // Reduced parallax on mobile for performance
 
     function update() {
       rafRef.current = null;
       if (!el) return;
 
-      // If not in view, set a small offset and skip expensive geometry when hidden
       if (!isInView) {
-        offsetRef.current = maxOffset;
+        offsetRef.current = 0; // Reset to neutral position when out of view
         el.style.transform = `translate3d(0, ${offsetRef.current}px, 0)`;
         return;
       }
@@ -139,17 +205,12 @@ export const ProjectCard = memo(function ProjectCard({
       const elCenter = rect.top + rect.height / 2;
       const vpCenter = window.innerHeight / 2;
       const distance = elCenter - vpCenter;
-      // Normalize distance to range [-1, 1] and scale by maxOffset
       const normalized = Math.max(-1, Math.min(1, distance / (window.innerHeight / 1.2)));
       const target = normalized * maxOffset;
-
-      // Lerp from previous offset toward target for smooth easing
       const prev = offsetRef.current || 0;
-      const ease = 0.12; // lower => smoother/slower interpolation
+      const ease = 0.12;
       const next = prev + (target - prev) * ease;
       offsetRef.current = next;
-
-      // Apply transform directly to the element — inexpensive and avoids rerenders
       el.style.transform = `translate3d(0, ${next}px, 0)`;
     }
 
@@ -158,9 +219,7 @@ export const ProjectCard = memo(function ProjectCard({
       rafRef.current = requestAnimationFrame(update);
     }
 
-    // Kick off initial position
     onScroll();
-
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
 
@@ -169,182 +228,286 @@ export const ProjectCard = memo(function ProjectCard({
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [isInView]);
+  }, [isInView, isMobile]);
 
-  // No dynamic border glow — keep decorations subtle and static
+  // Magnetic button effect - reaches towards cursor
+  useEffect(() => {
+    if (!cardRef.current || !flipButtonRef.current || flipped || isMobile) return;
+
+    const card = cardRef.current;
+    const button = flipButtonRef.current;
+
+    function handleMouseMove(e: MouseEvent) {
+      if (!button) return;
+
+      const buttonRect = button.getBoundingClientRect();
+      const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+      const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+
+      const distanceX = e.clientX - buttonCenterX;
+      const distanceY = e.clientY - buttonCenterY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      // Magnetic effect radius (pixels)
+      const magneticRadius = 150;
+
+      if (distance < magneticRadius) {
+        // Calculate magnetic pull strength (stronger when closer)
+        const strength = Math.max(0, 1 - distance / magneticRadius);
+        const maxPull = 12; // Maximum pixels to pull
+        
+        const pullX = (distanceX / distance) * strength * maxPull;
+        const pullY = (distanceY / distance) * strength * maxPull;
+
+        setButtonTransform({ x: pullX, y: pullY });
+      } else {
+        setButtonTransform({ x: 0, y: 0 });
+      }
+    }
+
+    function handleMouseLeave() {
+      setButtonTransform({ x: 0, y: 0 });
+    }
+
+    card.addEventListener('mousemove', handleMouseMove);
+    card.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      card.removeEventListener('mousemove', handleMouseMove);
+      card.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [flipped, isMobile]);
 
   return (
     <article
       ref={cardRef}
-      className="group relative bg-canvas text-text-primary border border-neutral-200/30 rounded-md overflow-hidden transition-all duration-slower ease-smooth hover:border-neutral-300/40 shadow-sm"
-      style={{ willChange: 'transform, opacity', opacity: isInView ? 1 : 0 }}
+      tabIndex={0}
+      role={!flipped ? "button" : undefined}
+      aria-expanded={flipped}
+      aria-label={!flipped ? `Flip to view ${title} details` : undefined}
+      onKeyDown={handleKeyToggle}
+      onClick={handleFlip}
+      className={`group relative overflow-hidden bg-[#1A1D21] text-white transition-all duration-slower ease-smooth focus:outline-none focus-visible:ring-2 focus-visible:ring-white/20 ${!flipped ? 'cursor-pointer' : ''}`}
+      style={{ 
+        willChange: 'transform, opacity', 
+        opacity: isInView ? 1 : 0, 
+        perspective: isMobile ? 1000 : 1200,
+        touchAction: 'manipulation',
+        borderRadius: isMobile ? '12px' : '20px',
+        boxShadow: 'inset 0 10px 24px rgba(0,0,0,0.18), inset 0 -4px 12px rgba(255,255,255,0.10), 0 12px 28px rgba(0,0,0,0.16)',
+        border: '1px solid rgba(255,255,255,0.06)',
+        transform: isInView ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
+      }}
+      onMouseEnter={(e) => {
+        if (!isMobile && e.currentTarget instanceof HTMLElement) {
+          e.currentTarget.style.transform = 'translateY(-2px) scale(1.01)';
+          e.currentTarget.style.boxShadow = 'inset 0 10px 24px rgba(0,0,0,0.18), inset 0 -4px 12px rgba(255,255,255,0.10), 0 12px 28px rgba(0,0,0,0.14)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isMobile && e.currentTarget instanceof HTMLElement) {
+          e.currentTarget.style.transform = 'translateY(0) scale(1)';
+          e.currentTarget.style.boxShadow = 'inset 0 10px 24px rgba(0,0,0,0.18), inset 0 -4px 12px rgba(255,255,255,0.10), 0 12px 28px rgba(0,0,0,0.16)';
+        }
+      }}
     >
-      {/* Subtle grid pattern background */}
-      <div className="absolute inset-0 opacity-[0.012] pointer-events-none project-card-grid" />
-
-      {/* Decorative top-right soft glow */}
+      {/* 3D inner wrapper */}
       <div
-        className="absolute top-0 right-0 w-40 h-40 opacity-[0.035] rounded-full blur-3xl transition-all duration-700"
-        style={{
-          background: isInView ? 'radial-gradient(circle at 20% 20%, rgba(0,0,0,0.12), rgba(0,0,0,0) 60%)' : 'radial-gradient(circle at 20% 20%, rgba(0,0,0,0.06), rgba(0,0,0,0) 60%)',
-          transform: isInView ? 'translate(2rem, -2rem)' : 'translate(4rem, -4rem)',
+        className="relative w-full h-full"
+        style={{ 
+          transformStyle: 'preserve-3d', 
+          transition: isMobile ? 'transform 600ms ease-out' : 'transform 700ms cubic-bezier(.2,.9,.3,1)', 
+          transform: flipped ? 'rotateY(180deg)' : 'none' 
         }}
-      />
+      >
+        {/* Front: preview */}
+        <div
+          className="card-face front relative w-full bg-[#1A1D21] overflow-hidden cursor-pointer"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            minHeight: isMobile ? '280px' : '400px',
+            aspectRatio: isMobile ? '4 / 3' : '16 / 10',
+            borderRadius: isMobile ? '12px' : '20px',
+          }}
+        >
+          <ProjectCardImage previewImage={previewImage} title={title} />
 
-      {/* Main content: image-led. On small screens image is full-bleed at top; on md+ we render an absolute side image that is flush with the card edge. */}
-      {/* Side image for md+ — positioned against the card edge */}
-      {previewImage && (
-        <div className="hidden md:block absolute inset-y-0 left-0 w-64 z-0">
-          {/* 1px canvas wrapper to create a subtle border that matches the card */}
-          <div className="h-full p-[2px] bg-canvas rounded-l-lg overflow-hidden">
-            {/* Inner image uses slightly smaller radius to show inner curvature */}
-            <img
-              src={previewImage}
-              alt={`${title} preview`}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover object-center block rounded-l-md"
-              style={{ filter: 'saturate(0.98) contrast(1.03)' }}
-            />
-          </div>
-
-          {/* On-image chips for md+ */}
-          <div className="absolute left-3 top-3 flex items-center gap-2">
-            <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-semibold uppercase tracking-wider px-2 py-1 rounded">{category}</span>
-            <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-medium px-2 py-1 rounded">{year}</span>
-          </div>
-        </div>
-      )}
-
-      <div className="relative p-6 md:p-12">
-        <div className="md:flex md:items-start md:gap-8">
-          {/* Mobile stacked image (keeps CLS low) — hidden on md+ */}
-          {previewImage && (
-            <div className="block md:hidden mb-6">
-              {/* mobile: thin border via 1px canvas wrapper, rounded to match card */}
-              <div className="w-full h-48 p-[2px] bg-canvas rounded-lg overflow-hidden">
-                {/* mobile inner curvature: inner img slightly less rounded */}
-                <img
-                  src={previewImage}
-                  alt={`${title} preview`}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover object-center block rounded-md"
-                  style={{ filter: 'saturate(0.98) contrast(1.03)' }}
-                />
-              </div>
-
-              <div className="mt-3 flex items-center gap-2">
-                <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-semibold uppercase tracking-wider px-2 py-1 rounded">{category}</span>
-                <span className="bg-white/80 text-text-primary text-[11px] font-satoshi font-medium px-2 py-1 rounded">{year}</span>
-              </div>
+          {/* Project title overlay on front */}
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 md:p-8 bg-gradient-to-t from-black/95 via-black/75 to-transparent z-10">
+            <h3 className="font-satoshi font-bold text-xl sm:text-2xl md:text-3xl text-[#E9EEF3] mb-2 leading-tight tracking-tight">
+              {title}
+            </h3>
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="text-[#C9CED6] text-xs sm:text-sm font-satoshi font-medium uppercase tracking-wide">{category}</span>
+              <span className="text-white/30 text-sm">•</span>
+              <span className="text-white/60 text-xs sm:text-sm font-satoshi font-normal">{year}</span>
             </div>
-          )}
-
-          {/* Content column */}
-          <div className="flex-1 mb-6 md:pl-[calc(16rem+3rem)] relative z-10">
-            <CategoryYear category={category} year={year} />
-
-            {role && (
-              <div className="mb-4">
-                <span className="font-satoshi font-normal text-sm text-text-muted">{role}</span>
-              </div>
-            )}
-
-            <Title title={title} />
-
-            {subtitle && (
-              <p className="font-satoshi font-normal text-body-sm leading-relaxed text-text-secondary max-w-[680px] mb-4">
-                {subtitle}
-              </p>
-            )}
-
-            <p className="font-satoshi font-normal text-base leading-relaxed text-text-muted max-w-[680px]">
-              {description}
-            </p>
           </div>
 
-          {/* Year badge intentionally removed to allow content to use the full card width */}
+          {/* Flip hint - Modern squircle button in bottom-right with magnetic effect */}
+          <div 
+            ref={flipButtonRef}
+            className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 pointer-events-none z-20"
+            style={{
+              transform: `translate(${buttonTransform.x}px, ${buttonTransform.y}px)`,
+              transition: 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
+            }}
+          >
+            <button
+              className="group/btn relative h-14 w-14 sm:h-16 sm:w-16 bg-white/20 backdrop-blur-xl transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 pointer-events-auto active:scale-95 overflow-hidden"
+              style={{
+                borderRadius: '18px',
+                clipPath: 'polygon(20% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%, 0% 20%)',
+                boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+              }}
+              onMouseEnter={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(255,255,255,0.6), inset 0 -1px 2px rgba(0,0,0,0.15), 0 12px 32px rgba(0,0,0,0.20), 0 0 0 1px rgba(255,255,255,0.3)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                  e.currentTarget.style.transform = 'scale(1.05) rotate(-2deg)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                  e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                }
+              }}
+              aria-label="View project details"
+              onClick={(e) => {
+                e.stopPropagation();
+                setFlipped(true);
+              }}
+            >
+              {/* Inner glass shine */}
+              <span 
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 via-white/10 to-transparent opacity-90 group-hover/btn:opacity-100 transition-opacity"
+              ></span>
+              
+              {/* Bottom edge highlight */}
+              <span 
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white/20 to-transparent"
+              ></span>
+              
+              {/* Sparkle/Star icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg 
+                  width={isMobile ? "20" : "24"} 
+                  height={isMobile ? "20" : "24"} 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  className="text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-all duration-200 group-hover/btn:scale-110 group-hover/btn:rotate-12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2v20M2 12h20M6 6l12 12M6 18L18 6" />
+                </svg>
+              </div>
+            </button>
+          </div>
         </div>
 
-        {/* Divider Line */}
-          <div className="relative h-[2px] bg-neutral-300/12 my-6 rounded-full">
-          <div
-            className="absolute left-0 top-0 h-full rounded-full transition-all duration-700 origin-left"
+        {/* Back: meta + actions */}
+        <div
+          className="card-face back absolute inset-0 bg-[#1A1D21] overflow-hidden"
+          style={{ 
+            transform: 'rotateY(180deg)', 
+            backfaceVisibility: 'hidden',
+            minHeight: isMobile ? '280px' : '400px',
+            aspectRatio: isMobile ? '4 / 3' : '16 / 10',
+            pointerEvents: flipped ? 'auto' : 'none',
+            zIndex: flipped ? 10 : 1,
+            borderRadius: isMobile ? '12px' : '20px',
+            boxShadow: 'inset 0 10px 24px rgba(0,0,0,0.18), inset 0 -4px 12px rgba(255,255,255,0.10)',
+            border: '1px solid rgba(255,255,255,0.06)',
+          }}
+          aria-hidden={!flipped}
+        >
+          {/* Subtle grain texture */}
+          <div 
+            className="absolute inset-0 opacity-[0.06] mix-blend-soft-light pointer-events-none" 
             style={{
-              width: '140px',
-              background: 'linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0))',
-              transform: isInView ? 'scaleX(1)' : 'scaleX(0)',
+              backgroundImage: 'radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 60%, #fff, transparent)',
+              backgroundSize: '100px 100px',
             }}
           />
-        </div>
+          
+          <div className="relative h-full flex flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto touch-pan-y scroll-smooth px-6 sm:px-8 md:px-10 pt-6 sm:pt-8 md:pt-10 pr-12 sm:pr-16">
+              <ProjectCardMeta
+                category={category}
+                year={year}
+                role={role}
+                title={title}
+                subtitle={subtitle}
+                description={description}
+              />
+            </div>
 
-        {/* Action Buttons */}
-        {/* Mobile / small screens: keep buttons inline under content to preserve stacking */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:flex-wrap gap-3 mt-4 z-10 md:hidden">
-          {id && (
-            <Link
-              to={`/project/${id}`}
-              className="group/btn inline-flex w-full sm:w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-7 py-4 bg-brand text-white rounded-md transition-all duration-base hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg"
-              style={{ WebkitFontSmoothing: 'antialiased' }}
+            <div className="flex-shrink-0 px-6 sm:px-8 md:px-10 pb-6 sm:pb-8 md:pb-10 pt-6 bg-gradient-to-t from-[#1A1D21] via-[#1A1D21]/95 to-transparent backdrop-blur-sm">
+              <ProjectCardActions id={id} liveUrl={liveUrl} githubUrl={githubUrl} />
+            </div>
+
+            {/* Back to front button - modern shape in same position */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setFlipped(false);
+              }}
+              className="group/back absolute bottom-4 right-4 sm:bottom-5 sm:right-5 md:bottom-6 md:right-6 z-50 h-14 w-14 sm:h-16 sm:w-16 bg-white/20 backdrop-blur-xl transition-all duration-300 hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 active:scale-95 overflow-hidden"
+              style={{
+                borderRadius: '18px',
+                clipPath: 'polygon(20% 0%, 100% 0%, 100% 80%, 80% 100%, 0% 100%, 0% 20%)',
+                boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.5), inset 0 -1px 2px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+              }}
+              aria-label="Back to preview"
             >
-              VIEW DETAILS
-              <ArrowRight className="w-4 h-4 transition-transform duration-base group-hover/btn:translate-x-0.5" />
-            </Link>
-          )}
-
-          {liveUrl && liveUrl !== '#' && (
-            <ActionButton href={liveUrl} variant="secondary">
-              LIVE DEMO
-              <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-            </ActionButton>
-          )}
-
-          {githubUrl && githubUrl !== '#' && (
-            <ActionButton href={githubUrl} variant="github">
-              <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
-              GITHUB
-            </ActionButton>
-          )}
-        </div>
-
-        {/* Desktop / md+: absolute bottom-right action row — same markup but horizontal and anchored to card bottom-right. */}
-        <div className="hidden md:flex flex-row items-center gap-3 z-20 absolute right-6 bottom-6">
-          {id && (
-            <Link
-              to={`/project/${id}`}
-              className="group/btn inline-flex w-auto justify-center items-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-brand text-white rounded-md transition-all duration-base hover:bg-[var(--brand-hover)] hover:gap-3 hover:shadow-lg"
-              style={{ WebkitFontSmoothing: 'antialiased' }}
-            >
-              VIEW DETAILS
-              <ArrowRight className="w-4 h-4 transition-transform duration-base group-hover/btn:translate-x-0.5" />
-            </Link>
-          )}
-
-          {liveUrl && liveUrl !== '#' && (
-            <ActionButton href={liveUrl} variant="secondary">
-              LIVE DEMO
-              <ExternalLink className="w-3.5 h-3.5 transition-transform duration-base group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-            </ActionButton>
-          )}
-
-          {githubUrl && githubUrl !== '#' && (
-            <ActionButton href={githubUrl} variant="github">
-              <Github className="w-4 h-4 transition-transform duration-base group-hover/btn:rotate-12" />
-              GITHUB
-            </ActionButton>
-          )}
+              {/* Inner glass shine */}
+              <span 
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 via-white/10 to-transparent opacity-90 group-hover/back:opacity-100 transition-opacity"
+              ></span>
+              
+              {/* Bottom edge highlight */}
+              <span 
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white/20 to-transparent"
+              ></span>
+              
+              {/* Rotating arrow icon */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width={isMobile ? "22" : "26"} 
+                  height={isMobile ? "22" : "26"} 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  className="text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)] transition-all group-hover/back:scale-110 group-hover/back:-rotate-180"
+                >
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                  <path d="M3 21v-5h5" />
+                </svg>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Bottom accent line */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full transition-all duration-700 origin-right"
-        style={{
-          background: 'linear-gradient(to left, rgba(0,0,0,0.06), rgba(0,0,0,0))',
-          transform: isInView ? 'scaleX(1)' : 'scaleX(0)',
-        }}
-      />
     </article>
   );
 });
+
+export default ProjectCard;

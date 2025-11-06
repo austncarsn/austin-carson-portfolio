@@ -5,7 +5,6 @@ import FadeInSection from './FadeInSection';
 interface SectionProps {
   id?: string;
   bgClass?: string;
-  border?: 'none' | 'bottom' | 'top';
   className?: string;
   children?: ReactNode;
   noContainer?: boolean;
@@ -24,7 +23,6 @@ interface SectionProps {
 export default function Section({
   id,
   bgClass = 'bg-paper',
-  border = 'bottom',
   className = '',
   children,
   noContainer = false,
@@ -34,36 +32,30 @@ export default function Section({
   labelDelay = 0,
   labelClassName = '',
 }: SectionProps): React.JSX.Element {
-  const borderClasses =
-    border === 'bottom'
-      ? 'border-b border-structure'
-        : border === 'top'
-        ? 'border-t border-text-muted'
-      : '';
-
   // Centralized spacing rhythm — professional vertical rhythm with generous breathing room
-  // Responsive padding scales: mobile → tablet → desktop → wide
-  const baseSpacing = 'px-6 py-20 sm:px-10 sm:py-24 md:py-28 lg:px-16 lg:py-32 xl:px-20 xl:py-36';
+  // Responsive padding scales: mobile → tablet → desktop → wide screens
+  // Ensures perfect layout at all viewport sizes
+  const baseSpacing = 'px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-16 lg:py-28 xl:px-20 xl:py-32 2xl:px-24 2xl:py-36';
 
   return (
-  <section id={id} className={`relative w-full overflow-hidden ${borderClasses} ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`} style={{ scrollMarginTop: '4rem' }}>
+  <section id={id} className={`relative w-full overflow-hidden ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`} style={{ scrollMarginTop: '4rem' }}>
       {noContainer ? (
         children
       ) : (
-        <div className="relative z-10 mx-auto max-w-[1280px]">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] 2xl:max-w-[1600px]">
           {/* Optional section label rendered here when props provided */}
           {labelNumber && labelTitle ? (
             <FadeInSection delay={labelDelay}>
-              <div className="mb-16">
-                <div className={`flex items-center gap-3 ${labelClassName}`}>
-                  <span className="font-satoshi text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
-                    SECTION {labelNumber}
+              <div className="mb-12 sm:mb-14 md:mb-16">
+                <div className={`flex items-center gap-3 sm:gap-4 ${labelClassName}`}>
+                  <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-neutral-400" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                    {labelNumber}
                   </span>
-                  <span className="text-structure">—</span>
-                  <span className="font-satoshi text-[11px] uppercase tracking-[0.15em] text-text-muted opacity-60">
+                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
+                  <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.15em] uppercase text-text-secondary">
                     {labelTitle}
                   </span>
-                  <div className="flex-1 h-[1px] bg-brand ml-3" style={{ width: '24px', flexGrow: 0 }} />
+                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
                 </div>
               </div>
             </FadeInSection>

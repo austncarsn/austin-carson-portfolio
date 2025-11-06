@@ -7,7 +7,7 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 const FORTUNES = [
   "You'll stumble on purpose and call it character development.",
   "A pigeon will look at you like it pays your rent. Challenge it.",
-    "Your snack will outshine your coping strategies.",
+  "Your snack will outshine your coping strategies.",
   "Someone nearby is working hard to look busy. Respect the craft.",
   "The Wi‑Fi will stall exactly when you need it most.",
   "Tomorrow, you'll be kinder to yourself.",
@@ -51,13 +51,46 @@ const FORTUNES = [
   "Your horoscope and this message were both chaotic and delightful.",
   "Your main character moment will have an audience of one. It's still yours.",
   "You will find $1.37. Celebrate the small wins.",
-  "Someone will screenshot your message today; take it as a compliment."
+  "Someone will screenshot your message today; take it as a compliment.",
+  "Your potential is greater than any obstacle in your path.",
+  "Every small step forward is building something remarkable.",
+  "You have the strength to turn challenges into opportunities.",
+  "Your unique perspective is exactly what the world needs.",
+  "Progress isn't always visible, but it's always happening.",
+  "You're capable of more than you give yourself credit for.",
+  "The work you do today will matter more than you realize.",
+  "Your creativity and resilience will open unexpected doors.",
+  "Growth happens in moments when you choose not to give up.",
+  "You're exactly where you need to be on your journey.",
+  "Your ideas have value. Share them boldly.",
+  "The courage to start is already within you.",
+  "Your persistence will pay off in ways you can't yet imagine.",
+  "You bring light to spaces that need it most.",
+  "Tomorrow holds possibilities today hasn't revealed yet.",
+  "Your efforts are planting seeds for future success.",
+  "You have everything you need to take the next step.",
+  "The path forward becomes clearer with each brave decision.",
+  "Your growth inspires others more than you know.",
+  "You're building a life worth being proud of."
 ];
 
 /* ------------------- Helpers ------------------- */
 
 function useRandomFortune() {
-  const pick = () => FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+  const [lastIndex, setLastIndex] = useState<number | null>(null);
+  
+  const pick = () => {
+    let newIndex: number;
+    
+    // Ensure we don't repeat the same fortune twice in a row
+    do {
+      newIndex = Math.floor(Math.random() * FORTUNES.length);
+    } while (newIndex === lastIndex && FORTUNES.length > 1);
+    
+    setLastIndex(newIndex);
+    return FORTUNES[newIndex];
+  };
+  
   return { pick };
 }
 
@@ -87,40 +120,65 @@ const FortuneText = ({ text }: { text: string }) => (
 const FortuneBox = memo(function FortuneBox(): ReactElement {
   const [fortune, setFortune] = useState('Click to Reveal');
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isBlurred, setIsBlurred] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { pick } = useRandomFortune();
 
   const reveal = () => {
-    setFortune(pick());
-    setIsAnimating(true);
+    if (prefersReducedMotion) {
+      setFortune(pick());
+      setIsAnimating(true);
+    } else {
+      // Blur out
+      setIsBlurred(true);
+      setTimeout(() => {
+        setFortune(pick());
+        setIsBlurred(false);
+        setIsAnimating(true);
+      }, 400);
+    }
   };
 
   const onAnimationEnd = () => setIsAnimating(false);
 
   return (
-    <div className="inline-block">
+    <div className="inline-block mx-auto w-[640px] max-w-[92vw]">
       <button
         type="button"
         className={`
-          relative min-w-[280px] max-w-[400px]
-          bg-brand border-2 border-white/10 text-white
-          px-6 py-4 text-left rounded-md
-          ${prefersReducedMotion
-            ? ''
-            : 'transition-transform duration-200 ease-in-out hover:shadow-sm active:translate-x-2 active:translate-y-2'}
-          hover:border-white/30
-          focus-visible:outline-none
-          focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/30
-          ${isAnimating && !prefersReducedMotion ? 'animate-[shake_0.5s_ease-in-out]' : ''}
+          w-full rounded-xl ring-1 ring-white/8 backdrop-blur-sm
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-[#18A56C]/40
+          ${!prefersReducedMotion ? 'hover:ring-white/12' : ''}
+          ${isAnimating && !prefersReducedMotion ? 'animate-[gentle-settle_0.8s_ease-out]' : ''}
         `}
+        style={{
+          background: 'rgba(18,19,20,0.72)',
+          boxShadow: '0 0 0 1px rgba(255,255,255,0.03), 0 6px 24px rgba(0,0,0,0.45)',
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         aria-label="Reveal a fortune message"
         onClick={reveal}
         onAnimationEnd={onAnimationEnd}
       >
-        <Label>Fortune</Label>
-        <FortuneText text={fortune} />
-        <Hint>Tap Again for Another.</Hint>
-        <div className="pointer-events-none absolute bottom-4 right-6 h-2 w-8 rounded-[1px] bg-white/20" />
+        <div className="px-8 py-7 text-left">
+          <div className="text-[11px] tracking-[0.18em] text-white/55 uppercase">Fortune</div>
+          
+          <div 
+            className={`
+              mt-3 text-[24px] leading-tight font-medium 
+              transition-all duration-500
+              ${isBlurred ? 'blur-md opacity-70' : 'blur-0 opacity-100'}
+            `}
+            style={{ color: isHovered ? '#18A56C' : '#1FB97A' }}
+          >
+            <span className="flex items-center min-h-[60px]">{fortune}</span>
+          </div>
+          
+          <p className="mt-6 text-white/55 text-sm">Tap Again for Another.</p>
+        </div>
       </button>
     </div>
   );

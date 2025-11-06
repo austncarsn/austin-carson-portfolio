@@ -32,6 +32,7 @@
         "eslint-plugin-react": "^7.35.0",
         "eslint-plugin-react-hooks": "^5.1.0",
         "globals": "^15.11.0",
+        "playwright": "^1.56.1",
         "postcss": "^8.4.24",
         "prettier": "^3.4.0",
         "sharp": "^0.34.4",
