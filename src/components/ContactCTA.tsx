@@ -245,13 +245,13 @@ export default function ContactCTA(): ReactElement {
               </div>
 
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">EMAIL</p>
-                <p className="mt-1 text-[18px] leading-tight text-[#0F1720] font-medium truncate">austncarsn@gmail.com</p>
+                <p className="text-overline font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">EMAIL</p>
+                <p className="mt-1 text-body-lg leading-tight text-[#0F1720] font-medium truncate">austncarsn@gmail.com</p>
               </div>
 
               <div className="justify-self-end">
                 <span 
-                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-[11px] font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
+                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-overline font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
                   style={{
                     boxShadow: 'inset 0 -1px 2px rgba(255,255,255,0.6), inset 0 6px 14px rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.10)',
                   }}
@@ -293,13 +293,13 @@ export default function ContactCTA(): ReactElement {
               </div>
 
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">LINKEDIN</p>
-                <p className="mt-1 text-[18px] leading-tight text-[#0F1720] font-medium">View professional profile</p>
+                <p className="text-overline font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">LINKEDIN</p>
+                <p className="mt-1 text-body-lg leading-tight text-[#0F1720] font-medium">View professional profile</p>
               </div>
 
               <div className="justify-self-end">
                 <span 
-                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-[11px] font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
+                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-overline font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
                   style={{
                     boxShadow: 'inset 0 -1px 2px rgba(255,255,255,0.6), inset 0 6px 14px rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.10)',
                   }}
@@ -340,13 +340,13 @@ export default function ContactCTA(): ReactElement {
               </div>
 
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">GITHUB</p>
-                <p className="mt-1 text-[18px] leading-tight text-[#0F1720] font-medium">Browse code repositories</p>
+                <p className="text-overline font-semibold tracking-[0.16em] uppercase text-[#0F1720]/70">GITHUB</p>
+                <p className="mt-1 text-body-lg leading-tight text-[#0F1720] font-medium">Browse code repositories</p>
               </div>
 
               <div className="justify-self-end">
                 <span 
-                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-[11px] font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
+                  className="inline-flex h-9 items-center rounded-full bg-white/90 px-3 text-overline font-semibold tracking-[0.14em] text-[#0B0D0F]/70"
                   style={{
                     boxShadow: 'inset 0 -1px 2px rgba(255,255,255,0.6), inset 0 6px 14px rgba(0,0,0,0.12), 0 6px 12px rgba(0,0,0,0.10)',
                   }}

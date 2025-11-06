@@ -40,32 +40,32 @@ function ProjectCardMeta({ category, year, role, title, subtitle, description }:
   return (
     <div className="flex-1 relative z-10">
       <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-        <span className="font-satoshi font-semibold text-[10px] sm:text-[11px] tracking-widest uppercase text-[#C9CED6]">
+        <span className="font-satoshi font-semibold text-overline tracking-widest uppercase text-[#C9CED6]">
           {category}
         </span>
         <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
-        <span className="font-satoshi font-medium text-[10px] sm:text-[11px] tracking-wide uppercase text-white/60">
+        <span className="font-satoshi font-medium text-overline tracking-wide uppercase text-white/60">
           {year}
         </span>
       </div>
 
       {role && (
         <div className="mb-3">
-          <span className="font-satoshi font-medium text-xs sm:text-sm text-[#C9CED6] bg-white/5 px-2.5 py-1 rounded">{role}</span>
+          <span className="font-satoshi font-medium text-caption text-[#C9CED6] bg-white/5 px-2.5 py-1 rounded">{role}</span>
         </div>
       )}
 
-      <h3 className="font-satoshi font-bold text-lg sm:text-xl md:text-2xl leading-tight tracking-tight mb-3 sm:mb-4 text-[#E9EEF3]">
+      <h3 className="font-satoshi font-bold text-h3 leading-tight tracking-tight mb-3 sm:mb-4 text-[#E9EEF3]">
         {title}
       </h3>
 
       {subtitle && (
-        <p className="font-satoshi font-medium text-xs sm:text-sm leading-relaxed mb-3 text-white/80">
+        <p className="font-satoshi font-medium text-body-sm leading-relaxed mb-3 text-white/80">
           {subtitle}
         </p>
       )}
 
-      <p className="font-satoshi font-normal text-xs sm:text-sm leading-relaxed text-white/70">
+      <p className="font-satoshi font-normal text-body-sm leading-relaxed text-white/70">
         {description}
       </p>
     </div>
@@ -84,7 +84,7 @@ function ProjectCardActions({ id, liveUrl, githubUrl }: {
         <Link
           to={`/project/${id}`}
           onClick={(e) => e.stopPropagation()}
-          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-white text-[#0B0D0F] rounded-lg transition-all duration-base hover:bg-[#E9EEF3] hover:shadow-lg active:bg-white/90 md:hover:gap-2.5 touch-manipulation whitespace-nowrap"
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-body-sm tracking-wide px-6 py-3 bg-white text-[#0B0D0F] rounded-lg transition-all duration-base hover:bg-[#E9EEF3] hover:shadow-lg active:bg-white/90 md:hover:gap-2.5 touch-manipulation whitespace-nowrap"
           style={{ WebkitFontSmoothing: 'antialiased' }}
         >
           VIEW DETAILS
@@ -97,7 +97,7 @@ function ProjectCardActions({ id, liveUrl, githubUrl }: {
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 border-2 border-white/20 text-white bg-transparent rounded-lg transition-all duration-base hover:border-white/40 hover:bg-white/5 hover:shadow-md active:bg-white/10 touch-manipulation whitespace-nowrap"
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-body-sm tracking-wide px-6 py-3 border-2 border-white/20 text-white bg-transparent rounded-lg transition-all duration-base hover:border-white/40 hover:bg-white/5 hover:shadow-md active:bg-white/10 touch-manipulation whitespace-nowrap"
           style={{ WebkitFontSmoothing: 'antialiased' }}
         >
           LIVE DEMO
@@ -110,7 +110,7 @@ function ProjectCardActions({ id, liveUrl, githubUrl }: {
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-sm tracking-wide px-6 py-3 bg-white/10 text-white border border-white/10 rounded-lg transition-all duration-base hover:bg-white/15 hover:border-white/20 hover:shadow-md active:bg-white/20 touch-manipulation whitespace-nowrap"
+          className="group/btn inline-flex items-center justify-center gap-2 font-satoshi font-semibold text-body-sm tracking-wide px-6 py-3 bg-white/10 text-white border border-white/10 rounded-lg transition-all duration-base hover:bg-white/15 hover:border-white/20 hover:shadow-md active:bg-white/20 touch-manipulation whitespace-nowrap"
           style={{ WebkitFontSmoothing: 'antialiased' }}
         >
           <Github className="w-4 h-4 transition-transform duration-base md:group-hover/btn:rotate-12" />
@@ -334,13 +334,13 @@ export const ProjectCard = memo(function ProjectCard({
 
           {/* Project title overlay on front */}
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 md:p-8 bg-gradient-to-t from-black/95 via-black/75 to-transparent z-10">
-            <h3 className="font-satoshi font-bold text-xl sm:text-2xl md:text-3xl text-[#E9EEF3] mb-2 leading-tight tracking-tight">
+            <h3 className="font-satoshi font-bold text-h2 md:text-h1 text-[#E9EEF3] mb-2 leading-tight tracking-tight">
               {title}
             </h3>
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <span className="text-[#C9CED6] text-xs sm:text-sm font-satoshi font-medium uppercase tracking-wide">{category}</span>
-              <span className="text-white/30 text-sm">•</span>
-              <span className="text-white/60 text-xs sm:text-sm font-satoshi font-normal">{year}</span>
+              <span className="text-[#C9CED6] text-caption font-satoshi font-medium uppercase tracking-wide">{category}</span>
+              <span className="text-white/30 text-body-sm">•</span>
+              <span className="text-white/60 text-caption font-satoshi font-normal">{year}</span>
             </div>
           </div>
 
