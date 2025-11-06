@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type RefObject } from 'react';
 
 interface MousePosition {
   x: number;
   y: number;
 }
 
-export function useMousePosition(ref: React.RefObject<HTMLElement>): MousePosition {
+export function useMousePosition(ref: RefObject<HTMLElement>): MousePosition {
   const [position, setPosition] = useState<MousePosition>({ x: 0, y: 0 });
 
   useEffect(() => {

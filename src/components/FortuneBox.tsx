@@ -95,14 +95,14 @@ function useRandomFortune() {
 }
 
 /* ------------------- Sub‑components ------------------- */
-
-const Label = ({ children }: { children: React.ReactNode }) => (
+/* Commented out unused components - can be re-enabled if needed
+const Label = ({ children }: { children: ReactNode }) => (
   <div className="font-satoshi tracking-[0.15em] text-[11px] text-white/70 uppercase mb-3">
     {children}
   </div>
 );
 
-const Hint = ({ children }: { children: React.ReactNode }) => (
+const Hint = ({ children }: { children: ReactNode }) => (
   <div className="font-satoshi text-xs text-white/60">{children}</div>
 );
 

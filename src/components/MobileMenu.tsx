@@ -1,6 +1,12 @@
 import React, { type ReactElement } from 'react';
 import { NavLink } from './NavLink';
-import type { NavItem } from './Navigation';
+
+// Navigation item type
+type NavItem = { 
+  label: string; 
+  href: string; 
+  external?: boolean;
+};
 
 interface MobileMenuProps {
   isOpen: boolean;

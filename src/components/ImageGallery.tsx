@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, memo } from 'react';
+import { useRef, useState, useEffect, memo, type MouseEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { AccentRow } from './AccentRow';
@@ -56,14 +56,14 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
   }, []);
 
   // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: MouseEvent) => {
     if (!scrollContainerRef.current) return;
     setIsDragging(true);
     setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
     setScrollLeft(scrollContainerRef.current.scrollLeft);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging || !scrollContainerRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollContainerRef.current.offsetLeft;

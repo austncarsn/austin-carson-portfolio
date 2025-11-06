@@ -1,6 +1,9 @@
 @import url("https://api.fontshare.com/v2/css?f[]=satoshi@1,2,3,4,5,6,7,8,9&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap");
 
+/* Design Token System - Import first to make tokens available */
+@import "./styles/tokens.css";
+
 /* Minimal stylesheet: design tokens + Tailwind directives.
    Typography: Satoshi for all text, Libre Barcode 39 for title branding only.
    Satoshi weights: 1=Light(300), 2=LightItalic, 3=Regular(400), 4=Italic, 5=Medium(500), 6=MediumItalic, 7=Bold(700), 8=BoldItalic, 9=Black(900)

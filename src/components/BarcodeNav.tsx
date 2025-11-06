@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
@@ -46,27 +46,19 @@ export default function BarcodeNav() {
 
   // Track which item is active (hover/focus). -1 = idle
   const [active, setActive] = useState<number>(-1);
-  const [yDown, setYDown] = useState<number>(84);
+  // yDown state removed - connector animation simplified
 
-  // refs for each button to compute centers
+  // refs for each button
   const buttonsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-  const centers = useMemo(() => {
-    if (!headerRect) return [];
-    return buttonsRef.current.map((el) => {
-      if (!el) return 0;
-      const r = el.getBoundingClientRect();
-      return r.left - headerRect.left + r.width / 2;
-    });
-  }, [headerRect, buttonsRef.current, active]);
 
   useEffect(() => {
-    // Connector stops at button midline
+    // Connector stops at button midline - yDown removed for simplification
     if (!buttonsRef.current[active] || !headerRef.current) return;
-    const btnRect = buttonsRef.current[active]!.getBoundingClientRect();
-    const headerTop = headerRef.current.getBoundingClientRect().top;
-    const toY = btnRect.top - headerTop + btnRect.height / 2;
-    setYDown(Math.max(84, toY));
-  }, [active, headerRect]);
+    // const btnRect = buttonsRef.current[active]!.getBoundingClientRect();
+    // const headerTop = headerRef.current.getBoundingClientRect().top;
+    // const toY = btnRect.top - headerTop + btnRect.height / 2;
+    // Connector positioning simplified
+  }, [active]);
 
   const scrollToSection = (sectionId: string): void => {
     const element = document.getElementById(sectionId);
