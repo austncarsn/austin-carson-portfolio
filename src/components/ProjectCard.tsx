@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 import React, { memo, useRef, useEffect, useState, KeyboardEvent } from 'react';
 import { useInView } from '@/hooks/useInView';
+import { Aspect } from './Aspect';
 
 // --- Consolidated Components ---
 
@@ -13,9 +14,8 @@ function ProjectCardImage({ previewImage, title }: {
   if (!previewImage) return null;
 
   return (
-    <div className="absolute inset-0 z-0">
+    <Aspect ratio="4:3" objectFit="cover" className="absolute inset-0 z-0" rounded="none">
       <img
-        aria-hidden
         src={previewImage}
         alt={`${title} preview`}
         loading="lazy"
@@ -24,7 +24,7 @@ function ProjectCardImage({ previewImage, title }: {
         style={{ filter: 'saturate(1.1) contrast(1.08)' }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40" />
-    </div>
+    </Aspect>
   );
 }
 
