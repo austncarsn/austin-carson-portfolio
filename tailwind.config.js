@@ -40,6 +40,13 @@ module.exports = {
           1000: 'var(--color-neutral-1000)',
         },
         
+        // Refined palette
+        cream: 'var(--color-cream-bg)',
+        ink: 'var(--color-ink)',
+        muted: 'var(--color-muted)',
+        'accent-mint': 'var(--color-accent-mint)',
+        shadow: 'var(--color-shadow)',
+        
         // Brand colors
         brand: {
           50: 'var(--color-brand-50)',
@@ -77,11 +84,15 @@ module.exports = {
           elevated: 'var(--color-bg-elevated)',
           overlay: 'var(--color-bg-overlay)',
           muted: 'var(--color-bg-muted)',
+          glass: 'var(--color-bg-glass)',
+          panel: 'var(--color-bg-panel)',
         },
         
         // Semantic text colors
         text: {
           primary: 'var(--color-text-primary)',
+          'primary-80': 'var(--color-text-primary-80)',
+          'primary-88': 'var(--color-text-primary-88)',
           secondary: 'var(--color-text-secondary)',
           muted: 'var(--color-text-muted)',
           subtle: 'var(--color-text-subtle)',
@@ -154,7 +165,9 @@ module.exports = {
         8: 'var(--space-8)',
         10: 'var(--space-10)',
         12: 'var(--space-12)',
+        14: 'var(--space-14)',
         16: 'var(--space-16)',
+        18: 'var(--space-18)',
         20: 'var(--space-20)',
         24: 'var(--space-24)',
         32: 'var(--space-32)',
@@ -219,8 +232,10 @@ module.exports = {
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         xl: 'var(--radius-xl)',
+        soft: 'var(--radius-soft)',
         '2xl': 'var(--radius-2xl)',
         '3xl': 'var(--radius-3xl)',
+        pill: 'var(--radius-pill)',
         full: 'var(--radius-full)',
       },
 
@@ -233,6 +248,8 @@ module.exports = {
         lg: 'var(--shadow-lg)',
         xl: 'var(--shadow-xl)',
         '2xl': 'var(--shadow-2xl)',
+        low: 'var(--shadow-low)',
+        elev: 'var(--shadow-elev)',
         none: 'none',
       },
 
@@ -262,11 +279,16 @@ module.exports = {
         content: 'var(--content-max-width)',
         'content-narrow': 'var(--content-max-width-narrow)',
         'content-wide': 'var(--content-max-width-wide)',
+        'line': 'var(--content-max-line-length)',
       },
 
       height: {
         nav: 'var(--nav-height)',
         'nav-mobile': 'var(--nav-height-mobile)',
+      },
+      
+      backdropBlur: {
+        '16': '16px',
       },
 
       // === ASPECT RATIOS ===
