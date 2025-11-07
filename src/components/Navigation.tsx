@@ -30,7 +30,10 @@ export default function Navigation() {
       ].join(" ")}
       style={{ borderColor: "var(--color-border-subtle)" }}
     >
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4" aria-label="Main">
+      <nav
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4"
+        aria-label="Main navigation"
+      >
         <div className="flex items-center justify-between gap-6">
           {/* Brand left */}
           <Link
@@ -42,8 +45,10 @@ export default function Navigation() {
             <div
               className="relative w-12 h-12 rounded-xl grid place-items-center"
               style={{
-                background: "linear-gradient(145deg,#FFFFFF 0%, var(--color-bg-surface) 100%)",
-                boxShadow: "8px 8px 18px var(--neu-shadow-dark), -8px -8px 18px var(--neu-shadow-light)",
+                background:
+                  "linear-gradient(145deg,#FFFFFF 0%, var(--color-bg-surface) 100%)",
+                boxShadow:
+                  "8px 8px 18px var(--neu-shadow-dark), -8px -8px 18px var(--neu-shadow-light)",
                 color: "var(--color-text-primary)",
                 fontWeight: 750,
                 fontSize: "1.1rem",
@@ -54,7 +59,7 @@ export default function Navigation() {
             </div>
           </Link>
 
-          {/* Pill nav: right on desktop, centered on mobile */}
+          {/* Neumorphic pill nav: right on desktop, centered on mobile */}
           <div className="hidden md:block">
             <NeumorphicPillNav />
           </div>

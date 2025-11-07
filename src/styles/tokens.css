@@ -359,3 +359,32 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================================
+   NEUMORPHIC NAVIGATION COMPONENT TOKENS
+   Component-specific aliases mapped to semantic tokens
+   ============================================================================ */
+
+:root {
+  /* Neumorphic component aliases mapped to semantic tokens */
+  --neu-bg: var(--color-bg-elevated);
+  --neu-text-active: var(--color-text-primary);
+  --neu-text-inactive: var(--color-text-secondary);
+  --neu-ring: var(--color-interactive-focus);
+
+  /* Shadow system tuned for light "paper" */
+  --neu-shadow-dark: rgba(14, 21, 32, 0.18);
+  --neu-shadow-light: #ffffff;
+  --neu-press-inset-dark: rgba(14, 21, 32, 0.24);
+  --neu-press-inset-light: rgba(255, 255, 255, 0.92);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Slightly different field of light/dark for dark mode */
+    --neu-shadow-dark: rgba(0, 0, 0, 0.55);
+    --neu-shadow-light: rgba(255, 255, 255, 0.06);
+    --neu-press-inset-dark: rgba(0, 0, 0, 0.65);
+    --neu-press-inset-light: rgba(255, 255, 255, 0.08);
+  }
+}

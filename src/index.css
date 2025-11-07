@@ -19,36 +19,6 @@ progress { appearance: none; display: none !important; }
 progress::-webkit-progress-bar,
 progress::-webkit-progress-value { background: transparent; }
 
-/* Neumorphic Navigation Tokens - Aliased to Semantic System */
-:root {
-  /* Alias neumorph tokens to semantic design system */
-  --neu-bg: var(--color-bg-elevated);
-  --neu-accent: var(--color-text-primary);
-  --neu-muted: var(--color-text-secondary);
-  --neu-ring: var(--color-interactive-focus);
-
-  /* Component-local shadow defaults tuned for light "paper" */
-  --neu-shadow-dark: rgba(14, 21, 32, 0.18);
-  --neu-shadow-light: #ffffff;
-  --neu-press-inset-dark: rgba(14, 21, 32, 0.24);
-  --neu-press-inset-light: rgba(255, 255, 255, 0.90);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --neu-shadow-dark: rgba(0, 0, 0, 0.6);
-    --neu-shadow-light: rgba(255, 255, 255, 0.05);
-    --neu-press-inset-dark: rgba(0, 0, 0, 0.7);
-    --neu-press-inset-light: rgba(255, 255, 255, 0.08);
-  }
-}
-
-/* Utility class for focus rings */
-.neu-ring {
-  outline: 2px solid var(--neu-ring);
-  outline-offset: 2px;
-}
-
 /* Design Tokens — State-of-the-Art Color System */
 :root {
   /* ═══════════════════════════════════════════════════════════

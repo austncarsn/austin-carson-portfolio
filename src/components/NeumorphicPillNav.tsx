@@ -5,7 +5,7 @@ import { Home, Briefcase as Work, Image as Gallery, Mail } from "lucide-react";
 
 type Item = { id: string; label: string; to: string; icon: React.ComponentType<any> };
 
-const ITEMS: Item[] = [
+const DEFAULT_ITEMS: Item[] = [
   { id: "home", label: "Home", to: "/", icon: Home },
   { id: "work", label: "Work", to: "/#work", icon: Work },
   { id: "gallery", label: "Gallery", to: "/#gallery", icon: Gallery },
@@ -13,12 +13,13 @@ const ITEMS: Item[] = [
 ];
 
 export const NeumorphicPillNav = memo(function NeumorphicPillNav({
-  items = ITEMS,
+  items = DEFAULT_ITEMS,
   className = "",
 }: { items?: Item[]; className?: string }) {
   const { pathname, hash } = useLocation();
-  const reduceMotion = typeof window !== "undefined"
-    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
   return (
     <nav
@@ -27,14 +28,16 @@ export const NeumorphicPillNav = memo(function NeumorphicPillNav({
       className={`relative inline-flex rounded-full px-1.5 py-1.5 gap-2 ${className}`}
       style={{
         background: "var(--neu-bg)",
-        boxShadow: "8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light)",
+        boxShadow:
+          "8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light)",
       }}
     >
       {items.map((item) => {
         const Icon = item.icon;
-        const isActive = item.to === "/" 
-          ? pathname === "/" && !hash
-          : item.to.includes("#") 
+        const isActive =
+          item.to === "/"
+            ? pathname === "/" && !hash
+            : item.to.includes("#")
             ? pathname === "/" && hash === item.to.slice(1)
             : pathname.startsWith(item.to);
 
@@ -48,17 +51,18 @@ export const NeumorphicPillNav = memo(function NeumorphicPillNav({
             className="relative rounded-full outline-none focus-visible:ring-2 transition-colors duration-300"
             style={{
               padding: "12px 24px",
-              color: isActive ? "var(--neu-accent)" : "var(--neu-muted)",
+              color: isActive ? "var(--neu-text-active)" : "var(--neu-text-inactive)",
               boxShadow: isActive
                 ? "inset 4px 4px 8px var(--neu-press-inset-dark), inset -4px -4px 8px var(--neu-press-inset-light)"
                 : "8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light)",
+              // Tailwind focus ring bridge
               // @ts-ignore
               "--tw-ring-color": "var(--neu-ring)",
             } as React.CSSProperties}
           >
             {isActive && (
               <motion.div
-                layoutId="neu-active"
+                layoutId="neu-active-pill"
                 className="absolute inset-0 rounded-full pointer-events-none"
                 animate={reduceMotion ? false : { scale: [1, 1.04, 1] }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
