@@ -656,7 +656,11 @@ code, pre, kbd {
   @keyframes slide-in-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes slide-in-left { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
   @keyframes scale-in { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
-  @keyframes shimmer { 0% { background-position: -200%; } 100% { background-position: 200%; } }
+  @keyframes shimmer { 
+    0% { background-position: 0% 50%; } 
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
   @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
   @keyframes poke { 
     0% { transform: scale(1); } 
@@ -674,6 +678,10 @@ code, pre, kbd {
     75% { transform: scale(0.995); } 
     100% { transform: scale(1); } 
   }
+  @keyframes gentle-rise {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
   @keyframes star-twinkle { 
     0%, 100% { opacity: 0.4; } 
     50% { opacity: 1; } 
@@ -681,6 +689,10 @@ code, pre, kbd {
   @keyframes nebula-drift { 
     0%, 100% { transform: translateX(0) scale(1); } 
     50% { transform: translateX(20px) scale(1.05); } 
+  }
+  @keyframes float-particles {
+    0% { background-position: 0 0, 40px 40px, 80px 0, 20px 60px; }
+    100% { background-position: 0 80px, 40px 120px, 80px 80px, 20px 140px; }
   }
 
   /* Optional helper classes if you use them directly */

@@ -121,7 +121,7 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
   const [fortune, setFortune] = useState('Click to Reveal');
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isBlurred, setIsBlurred] = useState(false);
+  const [isFading, setIsFading] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const { pick } = useRandomFortune();
 
@@ -130,13 +130,13 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
       setFortune(pick());
       setIsAnimating(true);
     } else {
-      // Blur out
-      setIsBlurred(true);
+      // Fade out with scale
+      setIsFading(true);
       setTimeout(() => {
         setFortune(pick());
-        setIsBlurred(false);
+        setIsFading(false);
         setIsAnimating(true);
-      }, 400);
+      }, 300);
     }
   };
 
@@ -146,38 +146,111 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
     <div className="inline-block mx-auto w-[640px] max-w-[92vw]">
       <button
         type="button"
-        className={`
-          w-full rounded-xl ring-1 ring-white/8 backdrop-blur-sm
-          transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-[#18A56C]/40
-          ${!prefersReducedMotion ? 'hover:ring-white/12' : ''}
-          ${isAnimating && !prefersReducedMotion ? 'animate-[gentle-settle_0.8s_ease-out]' : ''}
-        `}
-        style={{
-          background: 'rgba(18,19,20,0.72)',
-          boxShadow: '0 0 0 1px rgba(255,255,255,0.03), 0 6px 24px rgba(0,0,0,0.45)',
-        }}
+        className="group relative w-full rounded-2xl overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900/50 ring-offset-[var(--canvas,oklch(91%_0.01_68))]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         aria-label="Reveal a fortune message"
         onClick={reveal}
         onAnimationEnd={onAnimationEnd}
+        style={{
+          transform: isHovered && !prefersReducedMotion ? 'scale(1.01)' : 'scale(1)',
+        }}
       >
-        <div className="px-8 py-7 text-left">
-          <div className="text-[11px] tracking-[0.18em] text-white/55 uppercase">Fortune</div>
+        {/* Holographic shimmer background */}
+        <div 
+          className="absolute inset-0 opacity-60"
+          style={{
+            background: `
+              linear-gradient(135deg, 
+                rgba(139, 92, 246, 0.15) 0%, 
+                rgba(236, 72, 153, 0.12) 25%,
+                rgba(59, 130, 246, 0.15) 50%,
+                rgba(236, 72, 153, 0.12) 75%,
+                rgba(139, 92, 246, 0.15) 100%)
+            `,
+            backgroundSize: '400% 400%',
+            animation: !prefersReducedMotion ? 'shimmer 8s ease-in-out infinite' : 'none',
+          }}
+        />
+
+        {/* Floating particles overlay */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.4) 1px, transparent 1px),
+              radial-gradient(circle at 60% 70%, rgba(236, 72, 153, 0.4) 1px, transparent 1px),
+              radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.4) 1px, transparent 1px),
+              radial-gradient(circle at 40% 80%, rgba(167, 139, 250, 0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px, 100px 100px, 60px 60px, 90px 90px',
+            backgroundPosition: '0 0, 40px 40px, 80px 0, 20px 60px',
+            animation: !prefersReducedMotion ? 'float-particles 20s linear infinite' : 'none',
+          }}
+        />
+
+        {/* Glass frosted layer */}
+        <div 
+          className="absolute inset-0 backdrop-blur-xl"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%)',
+            boxShadow: `
+              inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+            `,
+          }}
+        />
+
+        {/* Border glow */}
+        <div 
+          className="absolute inset-0 rounded-2xl transition-opacity duration-300"
+          style={{
+            boxShadow: `
+              0 0 0 1px rgba(255, 255, 255, 0.15),
+              0 8px 32px rgba(139, 92, 246, ${isHovered ? '0.25' : '0.15'}),
+              0 0 80px rgba(236, 72, 153, ${isHovered ? '0.2' : '0.1'})
+            `,
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative px-8 py-7 text-left">
+          <div 
+            className="text-[11px] tracking-[0.2em] uppercase font-semibold transition-colors duration-300"
+            style={{
+              color: isHovered ? 'rgba(167, 139, 250, 0.9)' : 'rgba(139, 92, 246, 0.7)',
+              textShadow: isHovered ? '0 0 8px rgba(167, 139, 250, 0.5)' : 'none',
+            }}
+          >
+            ✦ Fortune
+          </div>
           
           <div 
             className={`
-              mt-3 text-[24px] leading-tight font-medium 
-              transition-all duration-500
-              ${isBlurred ? 'blur-md opacity-70' : 'blur-0 opacity-100'}
+              mt-3 text-[24px] leading-tight font-semibold
+              transition-all duration-300
+              ${isFading ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-0'}
+              ${isAnimating && !prefersReducedMotion ? 'animate-[gentle-rise_0.6s_ease-out]' : ''}
             `}
-            style={{ color: isHovered ? '#18A56C' : '#1FB97A' }}
+            style={{
+              background: 'linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: isHovered ? 'brightness(1.15)' : 'brightness(1)',
+            }}
           >
             <span className="flex items-center min-h-[60px]">{fortune}</span>
           </div>
           
-          <p className="mt-6 text-white/55 text-sm">Tap Again for Another.</p>
+          <p 
+            className="mt-6 text-sm transition-colors duration-300"
+            style={{
+              color: isHovered ? 'rgba(236, 72, 153, 0.8)' : 'rgba(167, 139, 250, 0.6)',
+            }}
+          >
+            Tap for Another ✨
+          </p>
         </div>
       </button>
     </div>
