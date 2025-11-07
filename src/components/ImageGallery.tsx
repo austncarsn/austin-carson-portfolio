@@ -15,13 +15,14 @@ interface ImageGalleryProps {
 }
 
 /**
- * ImageGallery — Horizontal scrolling gallery with drag interaction
+ * ImageGallery — Horizontal scrolling gallery with mat borders
  * 
  * Features:
- * - Smooth horizontal scroll with snap points
- * - Mouse drag to scroll
- * - Navigation arrows
- * - Responsive image sizing
+ * - Refined thumb heights (SM: 280px, MD: 340px, LG: 420px)
+ * - Mat border styling (1px at 10% black, rounded-soft)
+ * - Inner highlight (40% white on top edge)
+ * - Native horizontal scroll with snap-x snap-mandatory
+ * - Caption visibility on :focus-within only
  * - Respects reduced motion preferences
  */
 function ImageGalleryBase({ images }: ImageGalleryProps) {
@@ -142,54 +143,67 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
           <ChevronRight className="w-6 h-6 text-text-primary" />
         </button>
 
-        {/* Scrollable Container - Inset Recessed Treatment */}
+        {/* Horizontal Gallery Rail */}
         <div
-          className="relative"
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          className={`overflow-x-auto overflow-y-hidden scrollbar-hide relative ${
+            isDragging ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
           style={{
-            backgroundColor: 'hsl(30, 20%, 93.5%)',
-            borderRadius: '16px',
-            padding: '8px',
-            boxShadow: `
-              inset 0 2px 12px rgba(0, 0, 0, 0.13),
-              inset 0 -1px 8px rgba(255, 255, 255, 0.10)
-            `,
+            scrollSnapType: prefersReducedMotion ? 'none' : 'x mandatory',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
-          <div
-            ref={scrollContainerRef}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
-            className={`overflow-x-auto overflow-y-hidden scrollbar-hide relative ${
-              isDragging ? 'cursor-grabbing' : 'cursor-grab'
-            }`}
-            style={{
-              scrollSnapType: 'none',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '12px',
-            }}
-          >
-            <div className="flex gap-0">
+          <div className="flex gap-6 px-1 py-1">
             {images.map((image, index) => (
               <div
                 key={index}
-                className="flex-shrink-0"
+                className="flex-shrink-0 scroll-snap-start group"
+                tabIndex={0}
+                role="img"
+                aria-label={image.alt}
               >
-                <div className={`relative overflow-hidden bg-canvas ${image.frameClass ?? ''}`}>
+                {/* Mat border frame */}
+                <div 
+                  className="relative overflow-hidden rounded-soft"
+                  style={{
+                    border: '1px solid color-mix(in oklch, black 10%, transparent)',
+                    boxShadow: 'inset 0 1px 0 color-mix(in oklch, white 40%, transparent), 0 2px 8px color-mix(in oklch, black 8%, transparent)',
+                  }}
+                >
                   <img
                     src={image.src}
                     alt={image.alt}
                     loading="lazy"
                     draggable="false"
-                    className="h-[400px] md:h-[500px] lg:h-[600px] w-auto object-contain select-none block"
-                    style={{ userSelect: 'none' }}
+                    className="h-[280px] sm:h-[340px] lg:h-[420px] w-auto object-contain select-none block"
+                    style={{ 
+                      userSelect: 'none',
+                      background: 'var(--color-cream-bg)',
+                    }}
                   />
+                  
+                  {/* Caption overlay - visible on focus-within only */}
+                  {image.caption && (
+                    <div 
+                      className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-focus-within:opacity-100 transition-opacity duration-200"
+                      style={{
+                        background: 'linear-gradient(to top, color-mix(in oklch, black 80%, transparent), transparent)',
+                      }}
+                    >
+                      <p className="text-sm font-medium text-white">
+                        {image.caption}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        </div>
         </div>
 
         {/* Scroll hint */}
