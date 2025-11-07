@@ -13,11 +13,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base resets */
-html, body { overflow-x: hidden; }
-progress { appearance: none; display: none !important; }
+/* ============================================================================
+   RESPONSIVE & ACCESSIBILITY FOUNDATION
+   ============================================================================ */
+
+/* Base resets + scroll behavior */
+html {
+  overflow-x: hidden;
+  /* Smooth scrolling for anchor links (respects prefers-reduced-motion) */
+  scroll-behavior: smooth;
+  /* Scroll padding for sticky nav (56-64px header height) */
+  scroll-padding-top: 4rem; /* 64px - accounts for sticky navigation */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  overflow-x: hidden;
+  /* Ensure minimum font size for iOS zoom prevention */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Hide progress indicators */
+progress {
+  appearance: none;
+  display: none !important;
+}
+
 progress::-webkit-progress-bar,
-progress::-webkit-progress-value { background: transparent; }
+progress::-webkit-progress-value {
+  background: transparent;
+}
 
 /* Design Tokens — State-of-the-Art Color System */
 :root {

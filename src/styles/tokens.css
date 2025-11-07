@@ -104,18 +104,24 @@
   --space-64: 16rem;    /* 256px - legacy support */
 
   /* === TYPOGRAPHY PRIMITIVES === */
-  /* Refined type scale: base 16px */
-  --font-size-xs: 0.75rem;      /* 12px */
-  --font-size-sm: 0.875rem;     /* 14px */
-  --font-size-base: 1rem;       /* 16px */
-  --font-size-md: 1rem;         /* 16px */
-  --font-size-lg: 1.125rem;     /* 18px */
-  --font-size-xl: 1.5rem;       /* 24px */
-  --font-size-2xl: 2rem;        /* 32px */
-  --font-size-3xl: 2.75rem;     /* 44px */
-  --font-size-4xl: 3.5rem;      /* 56px */
-  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);    /* 48-60px fluid */
-  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);   /* 60-72px fluid */
+  /* Refined type scale: base 16px - WCAG 2.2 AA Compliant */
+  --font-size-caption: 0.8125rem;   /* 13px - captions, helper text */
+  --font-size-small: 0.875rem;      /* 14px - small text */
+  --font-size-base: 1rem;           /* 16px - body text, REQUIRED for inputs */
+  --font-size-lg: 1.125rem;         /* 18px - emphasized body */
+  
+  /* 2025 Spec-Compliant Fluid Typography */
+  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem);      /* 22-32px - Main headlines */
+  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem);      /* 20-28px - Section headings */
+  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem);    /* 18-24px - Subsection headings */
+  
+  /* Legacy fluid sizes (for decorative/hero elements only) */
+  --font-size-xl: 1.5rem;       /* 24px - static large text */
+  --font-size-2xl: 2rem;        /* 32px - static XL text */
+  --font-size-3xl: 2.75rem;     /* 44px - decorative */
+  --font-size-4xl: 3.5rem;      /* 56px - decorative */
+  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);    /* 48-60px - hero decorative */
+  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);   /* 60-72px - hero decorative */
 
   /* Font weights */
   --font-weight-light: 300;

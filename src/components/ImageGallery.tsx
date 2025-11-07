@@ -73,10 +73,10 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
     >
       <FadeInSection delay={100} direction="up">
         <div className="mb-12 sm:mb-14 md:mb-16">
-          <h2 className="font-satoshi font-bold text-h3 md:text-h2 text-text-primary mb-4">
+          <h2 className="font-satoshi font-bold text-h2 text-text-primary mb-4">
             Visual Wall
           </h2>
-          <p className="font-satoshi text-body-lg text-text-muted max-w-2xl mb-10 sm:mb-12">
+          <p className="font-satoshi text-base text-text-muted max-w-[65ch] mb-8 sm:mb-12">
             Drag to explore the full gallery wall in any direction.
           </p>
           {/* Perforation divider */}
@@ -85,7 +85,7 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
       </FadeInSection>
 
       <div className="relative">
-        {/* 2D Scrollable Gallery Plane */}
+        {/* 2D Scrollable Gallery Plane - Dynamic Viewport Height */}
         <div
           ref={scrollContainerRef}
           onMouseDown={handleMouseDown}
@@ -96,11 +96,11 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
             isDragging ? 'cursor-grabbing' : 'cursor-grab'
           }`}
           style={{
-            height: '70vh',
+            height: '70dvh', // Dynamic viewport unit (accounts for mobile browser UI)
             maxHeight: '800px',
             minHeight: '500px',
             WebkitOverflowScrolling: 'touch',
-            // Subtle inset shadow for depth
+            // Subtle inset shadow for depth (2dp Material Design)
             boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.06), inset 0 2px 8px rgba(0,0,0,0.04)',
           }}
         >
@@ -120,8 +120,8 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
                   key={index}
                   className="group"
                   style={{
-                    // Stagger positioning for visual interest
-                    marginTop: index % 3 === 0 ? '0' : index % 3 === 1 ? '80px' : '40px',
+                    // Stagger positioning for visual interest (4-based: 0, 32px, 64px)
+                    marginTop: index % 3 === 0 ? '0' : index % 3 === 1 ? '2rem' : '4rem',
                   }}
                   tabIndex={0}
                   role="img"
@@ -144,6 +144,7 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
                       style={{ 
                         userSelect: 'none',
                         background: 'var(--color-cream-bg)',
+                        aspectRatio: 'auto', // Preserve natural aspect ratio
                       }}
                     />
                     
@@ -155,7 +156,7 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
                           background: 'linear-gradient(to top, color-mix(in oklch, black 80%, transparent), transparent)',
                         }}
                       >
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-small font-medium text-white">
                           {image.caption}
                         </p>
                       </div>
@@ -167,9 +168,9 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
           </div>
         </div>
 
-        {/* Scroll hint */}
+        {/* Scroll hint - 4-based spacing */}
         <div className="mt-6 text-center">
-          <p className="font-satoshi text-xs text-text-muted uppercase tracking-wider">
+          <p className="font-satoshi text-caption text-text-muted uppercase tracking-wider">
             Drag to explore the full wall ← → ↑ ↓
           </p>
         </div>
