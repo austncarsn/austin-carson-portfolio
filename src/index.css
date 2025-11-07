@@ -945,7 +945,7 @@ code, pre, kbd {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 * { -webkit-overflow-scrolling: touch; }
-:root { --gallery-surface: #FFFCEB; }
+:root { --gallery-surface: #FFFCEB; --paper: #FFFCEB; }
 
 /* Hard-disable scrollbars inside the gallery to avoid stray thumbs */
 .gallery-fade .no-scrollbar::-webkit-scrollbar { display: none !important; }

@@ -1,17 +1,12 @@
 import React, { memo } from 'react';
-import { ArrowRight } from 'lucide-react';
-import FadeInSection from './FadeInSection';
-import TypewriterText from './TypewriterText';
 import Section from './Section';
 
 /**
  * Elevated Hero Component
- * Two-column grid layout with refined typography hierarchy
- * Left: Name, subtitle, body with vertical rhythm
- * Right: Vertical accent rule + quips with optical alignment
+ * Clean card design with prominent CTAs and principles sidebar
  */
 
-const QUIPS = [
+const PRINCIPLES = [
   'Tabs over spaces. Always.',
   'Commit messages are poetry.',
   'Dark mode is a lifestyle choice.',
@@ -28,128 +23,57 @@ function HeroBase(): React.JSX.Element {
       labelDelay={0}
       ptClass="pt-18 px-4 sm:px-6 lg:px-16 xl:px-20 pb-16 sm:pb-20 lg:pb-24"
     >
-      {/* Two-column grid at LG+ breakpoint */}
-      <div className="mx-auto max-w-content">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-6">
-          {/* Left column - Main content */}
-          <div className="lg:col-span-7 space-y-6">
-            <FadeInSection delay={100} direction="up">
-              {/* Background panel card */}
-              <div 
-                className="rounded-soft p-8 sm:p-10 lg:p-12"
-                style={{
-                  background: 'var(--color-bg-panel)',
-                  border: '1px solid rgba(0, 0, 0, 0.06)',
-                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--shadow-low)',
-                }}
-              >
-                {/* Name - 5xl/6xl with gradient effect, weight 700 */}
-                <h1 
-                  className="text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-6"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-ink) 0%, color-mix(in oklch, var(--color-ink) 85%, var(--color-accent-mint)) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
+      <div className="relative mx-auto max-w-[1200px]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,720px)_1fr]">
+          {/* Card */}
+          <div className="rounded-2xl border border-black/10 bg-[var(--paper,#FFFCEB)] shadow-[0_1px_0_rgba(0,0,0,.06),0_24px_60px_-24px_rgba(0,0,0,.28)]">
+            <div className="rounded-2xl p-7 md:p-10 [box-shadow:inset_0_0_0_1px_rgba(255,255,255,.6)]">
+              <h1 className="text-[clamp(40px,7vw,84px)] font-extrabold tracking-[-0.02em] leading-[.95] text-neutral-900">
+                Austin Carson
+              </h1>
+
+              <p className="mt-4 text-xl md:text-2xl font-semibold text-neutral-700">
+                Web Implementation & Interface Systems
+              </p>
+
+              <div className="mt-5 max-w-[60ch] space-y-4 text-[17px] leading-[1.7] text-neutral-800/90">
+                <p>
+                  I build fast, accessible websites with production-grade components and design tokens.
+                </p>
+                <p>
+                  From Figma to deployed, I ship pixel-accurate pages, reusable UI, and clean performance baselines so teams can iterate without rework.
+                </p>
+              </div>
+
+              {/* CTAs */}
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href="#work"
+                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[15px] font-semibold text-white bg-[#7C8F82] hover:opacity-95 active:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/20 ring-offset-[var(--paper,#FFFCEB)]"
                 >
-                  Austin Carson
-                </h1>
-
-                {/* Subtitle - lg/1.35, weight 600, color muted */}
-                <h2 className="text-lg lg:text-xl font-semibold leading-snug text-muted mb-6">
-                  Web Implementation & Interface Systems
-                </h2>
-
-                {/* Body - md/1.5, max 75ch, color ink at 80% */}
-                <div className="space-y-4 max-w-line">
-                  <p className="text-base leading-relaxed text-primary-80">
-                    I build fast, accessible websites with production-grade components and design tokens.
-                  </p>
-                  <p className="text-base leading-relaxed text-primary-80">
-                    From Figma to deployed, I ship pixel-accurate pages, reusable UI, and clean performance baselines so teams can iterate without rework.
-                  </p>
-                </div>
-
-                {/* CTA Button with arrow and hover animation */}
-                <div className="mt-8">
-                  <a
-                    href="/#work"
-                    className="group inline-flex items-center gap-3 px-6 py-3 rounded-pill font-medium text-base transition-all duration-200"
-                    style={{
-                      background: 'var(--color-accent-mint)',
-                      color: 'var(--color-ink)',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-                    }}
-                  >
-                    View Work
-                    <ArrowRight 
-                      className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" 
-                      strokeWidth={2.5}
-                    />
-                  </a>
-                </div>
+                  View Work
+                  <span aria-hidden="true">→</span>
+                </a>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[15px] font-semibold text-neutral-900/80 bg-transparent border border-neutral-900/15 hover:bg-neutral-900/[0.04]"
+                >
+                  Contact
+                </a>
               </div>
-            </FadeInSection>
+            </div>
           </div>
 
-          {/* Right column - Accent rule + quips */}
-          <div className="hidden lg:block lg:col-span-5 relative">
-            <FadeInSection delay={200} direction="up">
-              <div className="flex gap-6 h-full pt-12">
-                {/* Animated vertical accent rule - grows from bottom */}
-                <div 
-                  className="w-[2px] rounded-full animate-grow-height"
-                  style={{
-                    background: 'var(--color-accent-mint)',
-                    height: '72%',
-                    alignSelf: 'flex-start',
-                    transformOrigin: 'bottom',
-                    animation: 'growHeight 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.4s backwards',
-                  }}
-                  aria-hidden="true"
-                />
-
-                {/* Quips stack - md, 60% opacity, spacing 16, optical center */}
-                <div className="flex-1 space-y-4 pt-8">
-                  <TypewriterText
-                    lines={QUIPS as unknown as string[]}
-                    className="space-y-4 font-satoshi text-base leading-normal opacity-60"
-                    typingSpeed={20}
-                    lineDelay={180}
-                  />
-                </div>
-              </div>
-            </FadeInSection>
-          </div>
-
-          {/* Mobile version of quips (below main content on small screens) */}
-          <div className="lg:hidden">
-            <FadeInSection delay={200} direction="up">
-              <div 
-                className="rounded-soft p-6 border-l-2"
-                style={{
-                  borderLeftColor: 'var(--color-accent-mint)',
-                  background: 'rgba(255, 255, 255, 0.4)',
-                }}
-              >
-                <TypewriterText
-                  lines={QUIPS as unknown as string[]}
-                  className="space-y-3 font-satoshi text-sm leading-normal opacity-60"
-                  typingSpeed={20}
-                  lineDelay={180}
-                />
-              </div>
-            </FadeInSection>
-          </div>
+          {/* Principles */}
+          <aside className="pt-2 text-[15px] text-neutral-700">
+            <ul className="divide-y divide-neutral-900/10 rounded-xl border border-neutral-900/10 bg-white/40 backdrop-blur-[2px]">
+              {PRINCIPLES.map((principle) => (
+                <li key={principle} className="px-5 py-4">
+                  {principle}
+                </li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </div>
     </Section>
