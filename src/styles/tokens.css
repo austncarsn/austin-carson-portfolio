@@ -34,7 +34,7 @@
   /* Refined palette - OKLCH perceptual colors */
   --color-cream-bg: oklch(97% 0.02 95);      /* Warm cream background */
   --color-ink: oklch(25% 0.03 250);          /* Deep ink text */
-  --color-muted: oklch(62% 0.02 95);         /* Muted secondary text */
+  --color-muted: oklch(54% 0.02 95);         /* Muted secondary text (4.64:1 WCAG AA) */
   --color-accent-mint: oklch(80% 0.08 150);  /* Subtle mint accent */
   --color-shadow: rgba(0, 0, 0, 0.18);       /* Standard shadow */
 
