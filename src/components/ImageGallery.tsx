@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, memo, type MouseEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { RhythmBar } from './RhythmBar';
 import Section from './Section';
 import FadeInSection from './FadeInSection';
 
@@ -109,8 +108,8 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
           <p className="font-satoshi text-body-lg text-text-muted max-w-2xl mb-10 sm:mb-12">
             Explore the full gallery wall by scrolling horizontally.
           </p>
-          {/* Rhythm bar divider */}
-          <RhythmBar label="GALLERY" />
+          {/* Perforation divider */}
+          <div className="perforation mx-auto w-full rounded-full" aria-hidden="true" />
         </div>
       </FadeInSection>
 
