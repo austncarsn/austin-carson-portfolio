@@ -25,12 +25,7 @@ export const NeumorphicPillNav = memo(function NeumorphicPillNav({
     <nav
       aria-label="Primary"
       role="tablist"
-      className={`relative inline-flex rounded-full px-1.5 py-1.5 gap-2 ${className}`}
-      style={{
-        background: "var(--neu-bg)",
-        boxShadow:
-          "8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light)",
-      }}
+      className={`relative inline-flex rounded-pill px-1.5 py-1.5 gap-2 bg-glass backdrop-blur-[16px] shadow-elev ${className}`}
     >
       {items.map((item) => {
         const Icon = item.icon;
@@ -48,29 +43,53 @@ export const NeumorphicPillNav = memo(function NeumorphicPillNav({
             role="tab"
             aria-selected={isActive}
             aria-current={isActive ? "page" : undefined}
-            className="relative rounded-full outline-none focus-visible:ring-2 transition-colors duration-300"
+            className={[
+              "relative rounded-pill outline-none",
+              "focus-visible:ring-2 focus-visible:ring-accent-mint focus-visible:ring-offset-4 focus-visible:ring-offset-cream",
+              "transition-all",
+              reduceMotion ? "duration-0" : "duration-[120ms] ease-out",
+            ].join(" ")}
             style={{
               padding: "12px 24px",
-              color: isActive ? "var(--neu-text-active)" : "var(--neu-text-inactive)",
-              boxShadow: isActive
-                ? "inset 4px 4px 8px var(--neu-press-inset-dark), inset -4px -4px 8px var(--neu-press-inset-light)"
-                : "8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light)",
-              // Tailwind focus ring bridge
-              // @ts-ignore
-              "--tw-ring-color": "var(--neu-ring)",
+              color: isActive
+                ? "var(--color-ink)"
+                : "color-mix(in oklch, var(--color-ink) 88%, transparent)",
+              background: isActive
+                ? "color-mix(in oklch, white 92%, transparent)"
+                : "transparent",
+              ...(isActive && {
+                boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
+              }),
             } as React.CSSProperties}
+            onMouseEnter={(e) => {
+              if (isActive || reduceMotion) return;
+              (e.currentTarget as HTMLElement).style.background =
+                "color-mix(in oklch, black 6%, transparent)";
+            }}
+            onMouseLeave={(e) => {
+              if (isActive) return;
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+            }}
           >
-            {isActive && (
+            {isActive && !reduceMotion && (
               <motion.div
-                layoutId="neu-active-pill"
-                className="absolute inset-0 rounded-full pointer-events-none"
-                animate={reduceMotion ? false : { scale: [1, 1.04, 1] }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+                layoutId="glass-active-pill"
+                className="absolute inset-0 rounded-pill pointer-events-none"
+                style={{
+                  background: "color-mix(in oklch, white 92%, transparent)",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 380,
+                  damping: 30,
+                  mass: 0.8,
+                }}
               />
             )}
             <span className="relative z-10 flex items-center gap-2.5">
               <Icon className="w-4 h-4" strokeWidth={isActive ? 2.5 : 2} />
-              <span className="tracking-wide">{item.label}</span>
+              <span className="tracking-wide font-medium">{item.label}</span>
             </span>
           </Link>
         );
