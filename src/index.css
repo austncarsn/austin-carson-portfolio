@@ -954,3 +954,15 @@ code, pre, kbd {
 /* If you had themed scrollbars elsewhere, scope them away from gallery: */
 .gallery-fade *::-webkit-scrollbar-thumb,
 .gallery-fade *::-webkit-scrollbar-track { background: transparent !important; border: 0 !important; }
+
+/* ===== Hero Animations ==================================== */
+@keyframes growHeight {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}

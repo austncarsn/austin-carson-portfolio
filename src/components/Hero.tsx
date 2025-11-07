@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { ArrowRight } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import TypewriterText from './TypewriterText';
 import Section from './Section';
@@ -42,8 +43,16 @@ function HeroBase(): React.JSX.Element {
                   boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--shadow-low)',
                 }}
               >
-                {/* Name - 3xl/1.1, weight 700, color ink */}
-                <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-ink mb-6">
+                {/* Name - 5xl/6xl with gradient effect, weight 700 */}
+                <h1 
+                  className="text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-6"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--color-ink) 0%, color-mix(in oklch, var(--color-ink) 85%, var(--color-accent-mint)) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
                   Austin Carson
                 </h1>
 
@@ -61,6 +70,33 @@ function HeroBase(): React.JSX.Element {
                     From Figma to deployed, I ship pixel-accurate pages, reusable UI, and clean performance baselines so teams can iterate without rework.
                   </p>
                 </div>
+
+                {/* CTA Button with arrow and hover animation */}
+                <div className="mt-8">
+                  <a
+                    href="/#work"
+                    className="group inline-flex items-center gap-3 px-6 py-3 rounded-pill font-medium text-base transition-all duration-200"
+                    style={{
+                      background: 'var(--color-accent-mint)',
+                      color: 'var(--color-ink)',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.15)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                    }}
+                  >
+                    View Work
+                    <ArrowRight 
+                      className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" 
+                      strokeWidth={2.5}
+                    />
+                  </a>
+                </div>
               </div>
             </FadeInSection>
           </div>
@@ -69,13 +105,15 @@ function HeroBase(): React.JSX.Element {
           <div className="hidden lg:block lg:col-span-5 relative">
             <FadeInSection delay={200} direction="up">
               <div className="flex gap-6 h-full pt-12">
-                {/* Vertical accent rule - 2px, accent-mint, ~72% height */}
+                {/* Animated vertical accent rule - grows from bottom */}
                 <div 
-                  className="w-[2px] rounded-full"
+                  className="w-[2px] rounded-full animate-grow-height"
                   style={{
                     background: 'var(--color-accent-mint)',
                     height: '72%',
                     alignSelf: 'flex-start',
+                    transformOrigin: 'bottom',
+                    animation: 'growHeight 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.4s backwards',
                   }}
                   aria-hidden="true"
                 />
