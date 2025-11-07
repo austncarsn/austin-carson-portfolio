@@ -1,95 +1,120 @@
 import React, { memo } from 'react';
 import FadeInSection from './FadeInSection';
 import TypewriterText from './TypewriterText';
-import LedText from './LedText';
 import Section from './Section';
 
 /**
- * Notes
- * - Funny, geeky manifesto lines added.
- * - Preserved layout and accessibility updates.
+ * Elevated Hero Component
+ * Two-column grid layout with refined typography hierarchy
+ * Left: Name, subtitle, body with vertical rhythm
+ * Right: Vertical accent rule + quips with optical alignment
  */
 
-const MANIFESTO_LINES = [
+const QUIPS = [
   'Tabs over spaces. Always.',
   'Commit messages are poetry.',
   'Dark mode is a lifestyle choice.',
-  '',
-  'I refactor in my sleep.',
   'Console.log is my therapist.',
-  '',
-  'One day I’ll delete node_modules.',
-  'But not today.',
 ] as const;
-
-const GradientBlob = () => (
-  <div
-    aria-hidden
-    className="pointer-events-none absolute right-4 top-16 h-[200px] w-[200px] rounded-full bg-gradient-to-br from-brand-400 to-accent-400 opacity-[0.04] blur-3xl sm:right-8 sm:top-20 sm:h-[280px] sm:w-[280px] md:right-12 md:h-[320px] md:w-[320px] lg:right-16 lg:top-24 lg:h-[400px] lg:w-[400px] xl:right-20 xl:h-[450px] xl:w-[450px]"
-  />
-);
 
 function HeroBase(): React.JSX.Element {
   return (
-    <>
-      <Section
-        id="hero"
-        bgClass="bg-canvas"
-        labelNumber="01"
-        labelTitle="HERO"
-        labelDelay={0}
-        ptClass="pt-20 sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32 2xl:pb-36"
-      >
-        <GradientBlob />
-
-        <div className="grid grid-cols-1 items-start gap-12 sm:gap-14 md:gap-16 lg:grid-cols-2 lg:gap-20 xl:gap-24 2xl:gap-32">
-          <header className="space-y-10 sm:space-y-12">
+    <Section
+      id="hero"
+      bgClass="bg-canvas"
+      labelNumber="01"
+      labelTitle="HERO"
+      labelDelay={0}
+      ptClass="pt-18 px-4 sm:px-6 lg:px-16 xl:px-20 pb-16 sm:pb-20 lg:pb-24"
+    >
+      {/* Two-column grid at LG+ breakpoint */}
+      <div className="mx-auto max-w-content">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-6">
+          {/* Left column - Main content */}
+          <div className="lg:col-span-7 space-y-6">
             <FadeInSection delay={100} direction="up">
-              <div>
-                <LedText
-                  text="AUSTIN CARSON"
-                  as="h1"
-                  delayStep={20}
-                  className="mb-8 sm:mb-10 font-satoshi font-bold leading-none tracking-tighter text-text-primary transition-all duration-700 text-h2 sm:text-display-lg md:text-display-xl lg:text-display-2xl"
-                />
+              {/* Background panel card */}
+              <div 
+                className="rounded-soft p-8 sm:p-10 lg:p-12"
+                style={{
+                  background: 'var(--color-bg-panel)',
+                  border: '1px solid rgba(0, 0, 0, 0.06)',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.4), var(--shadow-low)',
+                }}
+              >
+                {/* Name - 3xl/1.1, weight 700, color ink */}
+                <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-ink mb-6">
+                  Austin Carson
+                </h1>
 
-                <div className="h-[3px] w-16 sm:w-20 rounded-full bg-gradient-to-r from-brand to-accent" />
+                {/* Subtitle - lg/1.35, weight 600, color muted */}
+                <h2 className="text-lg lg:text-xl font-semibold leading-snug text-muted mb-6">
+                  Web Implementation & Interface Systems
+                </h2>
+
+                {/* Body - md/1.5, max 75ch, color ink at 80% */}
+                <div className="space-y-4 max-w-line">
+                  <p className="text-base leading-relaxed text-primary-80">
+                    I build fast, accessible websites with production-grade components and design tokens.
+                  </p>
+                  <p className="text-base leading-relaxed text-primary-80">
+                    From Figma to deployed, I ship pixel-accurate pages, reusable UI, and clean performance baselines so teams can iterate without rework.
+                  </p>
+                </div>
               </div>
             </FadeInSection>
+          </div>
 
+          {/* Right column - Accent rule + quips */}
+          <div className="hidden lg:block lg:col-span-5 relative">
             <FadeInSection delay={200} direction="up">
-              <h2 className="max-w-xl font-satoshi font-semibold leading-snug tracking-tight text-text-secondary text-h4 sm:text-h3 md:text-h2 lg:text-h1">
-                Web Implementation & Interface Systems
-              </h2>
-            </FadeInSection>
+              <div className="flex gap-6 h-full pt-12">
+                {/* Vertical accent rule - 2px, accent-mint, ~72% height */}
+                <div 
+                  className="w-[2px] rounded-full"
+                  style={{
+                    background: 'var(--color-accent-mint)',
+                    height: '72%',
+                    alignSelf: 'flex-start',
+                  }}
+                  aria-hidden="true"
+                />
 
-            <FadeInSection delay={300} direction="up">
-              <div className="max-w-lg space-y-5 sm:space-y-6">
-                <p className="font-satoshi text-base sm:text-body-lg font-normal leading-relaxed text-text-secondary">
-                  I build fast, accessible websites with production-grade components and tokens.
-                </p>
-                <p className="font-satoshi text-sm sm:text-base font-normal leading-relaxed text-text-muted">
-                  From Figma to deployed, I ship pixel-accurate pages, reusable UI, and clean performance baselines so teams can iterate without rework.
-                </p>
+                {/* Quips stack - md, 60% opacity, spacing 16, optical center */}
+                <div className="flex-1 space-y-4 pt-8">
+                  <TypewriterText
+                    lines={QUIPS as unknown as string[]}
+                    className="space-y-4 font-satoshi text-base leading-normal opacity-60"
+                    typingSpeed={20}
+                    lineDelay={180}
+                  />
+                </div>
               </div>
             </FadeInSection>
-          </header>
+          </div>
 
-          <FadeInSection delay={400} direction="up">
-            <aside className="lg:pt-20 xl:pt-24">
-              <div className="relative bg-gradient-to-br from-brand-subtle/30 to-transparent pl-6 sm:pl-8 md:pl-10 py-5 sm:py-6 [border-left-width:3px] border-brand">
+          {/* Mobile version of quips (below main content on small screens) */}
+          <div className="lg:hidden">
+            <FadeInSection delay={200} direction="up">
+              <div 
+                className="rounded-soft p-6 border-l-2"
+                style={{
+                  borderLeftColor: 'var(--color-accent-mint)',
+                  background: 'rgba(255, 255, 255, 0.4)',
+                }}
+              >
                 <TypewriterText
-                  lines={MANIFESTO_LINES as unknown as string[]}
-                  className="space-y-2 font-satoshi text-sm sm:text-base font-normal leading-relaxed text-text-secondary"
+                  lines={QUIPS as unknown as string[]}
+                  className="space-y-3 font-satoshi text-sm leading-normal opacity-60"
                   typingSpeed={20}
-                  lineDelay={150}
+                  lineDelay={180}
                 />
               </div>
-            </aside>
-          </FadeInSection>
+            </FadeInSection>
+          </div>
         </div>
-      </Section>
-    </>
+      </div>
+    </Section>
   );
 }
 
