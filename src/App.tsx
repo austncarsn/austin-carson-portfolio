@@ -7,12 +7,12 @@ import type { ReactElement, ReactNode } from 'react';
 import { lazy, Suspense, memo } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop';
-import { GalleryWall } from './components/GalleryWall';
 import { GALLERY_IMAGES } from './data/galleryImages';
 
 // ─── LAZY LOADED COMPONENTS ─────────────────────────────────────────────────
 const Navigation = lazy(() => import('./components/Navigation'));
 const Hero = lazy(() => import('./components/Hero'));
+const ImageGallery = lazy(() => import('./components/ImageGallery'));
 const Projects = lazy(() => import('./components/Projects'));
 const ContactCTA = lazy(() => import('./components/ContactCTA'));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
@@ -68,11 +68,7 @@ export default function App(): ReactElement {
                 element={
                   <RouteTransition>
                     <Hero />
-                    <GalleryWall items={GALLERY_IMAGES.map((img, i) => ({
-                      id: `gallery-${i}`,
-                      src: img.src,
-                      alt: img.alt
-                    }))} />
+                    <ImageGallery images={GALLERY_IMAGES} />
                     <Projects />
                     <ContactCTA />
                   </RouteTransition>
