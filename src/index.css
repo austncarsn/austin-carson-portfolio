@@ -928,3 +928,21 @@ code, pre, kbd {
     --bar-ink: rgba(15, 19, 23, 0.88); /* Slightly lighter on small screens */
   }
 }
+
+/* ===== Gallery Wall Utilities ==================================== */
+.perforation {
+  --dot: rgba(0,0,0,0.72);
+  --gap: 40px;
+  --size: 6px;
+  height: 56px;
+  background:
+    radial-gradient(circle at center, var(--dot) 0 calc(var(--size)/2), transparent calc(var(--size)/2) 100%)
+      0 0 / var(--gap) var(--gap) repeat;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 48px, black calc(100% - 48px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, black 48px, black calc(100% - 48px), transparent 100%);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+* { -webkit-overflow-scrolling: touch; }
+:root { --gallery-surface: #FFFCEB; }
