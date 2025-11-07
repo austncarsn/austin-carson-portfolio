@@ -19,30 +19,27 @@ progress { appearance: none; display: none !important; }
 progress::-webkit-progress-bar,
 progress::-webkit-progress-value { background: transparent; }
 
-/* Neumorphic Navigation Tokens - Cream + Navy Palette */
+/* Neumorphic Navigation Tokens - Aliased to Semantic System */
 :root {
-  --neu-bg: #F8F4EB;
-  --neu-ink: #0E1520;
-  --neu-muted: #3A4652;
-  --neu-accent: #152434;
+  /* Alias neumorph tokens to semantic design system */
+  --neu-bg: var(--color-bg-elevated);
+  --neu-accent: var(--color-text-primary);
+  --neu-muted: var(--color-text-secondary);
+  --neu-ring: var(--color-interactive-focus);
+
+  /* Component-local shadow defaults tuned for light "paper" */
   --neu-shadow-dark: rgba(14, 21, 32, 0.18);
-  --neu-shadow-light: #FFFFFF;
+  --neu-shadow-light: #ffffff;
   --neu-press-inset-dark: rgba(14, 21, 32, 0.24);
-  --neu-press-inset-light: rgba(255, 255, 255, 0.9);
-  --neu-ring: rgba(21, 36, 52, 0.36);
+  --neu-press-inset-light: rgba(255, 255, 255, 0.90);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --neu-bg: #0B0F14;
-    --neu-ink: #E8EEF6;
-    --neu-muted: #A7B3C2;
-    --neu-accent: #C6D1E0;
     --neu-shadow-dark: rgba(0, 0, 0, 0.6);
-    --neu-shadow-light: rgba(255, 255, 255, 0.04);
+    --neu-shadow-light: rgba(255, 255, 255, 0.05);
     --neu-press-inset-dark: rgba(0, 0, 0, 0.7);
     --neu-press-inset-light: rgba(255, 255, 255, 0.08);
-    --neu-ring: rgba(120, 170, 255, 0.35);
   }
 }
 
