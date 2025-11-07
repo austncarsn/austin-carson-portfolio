@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, memo, type MouseEvent } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { AccentRow } from './AccentRow';
+import { RhythmBar } from './RhythmBar';
 import Section from './Section';
 import FadeInSection from './FadeInSection';
 
@@ -108,12 +108,8 @@ function ImageGalleryBase({ images }: ImageGalleryProps) {
           <p className="font-satoshi text-body-lg text-text-muted max-w-2xl mb-10 sm:mb-12">
             Explore the full gallery wall by scrolling horizontally.
           </p>
-          {/* Decorative perforated section below gallery description - perfectly centered and responsive */}
-          <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
-            <div className="flex items-center justify-center py-4 sm:py-5 md:py-6">
-              <AccentRow tone="graphite" gap={44} studSize={24} showFade={true} />
-            </div>
-          </div>
+          {/* Rhythm bar divider */}
+          <RhythmBar label="GALLERY" />
         </div>
       </FadeInSection>
 
