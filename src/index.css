@@ -946,3 +946,11 @@ code, pre, kbd {
 .no-scrollbar { scrollbar-width: none; }
 * { -webkit-overflow-scrolling: touch; }
 :root { --gallery-surface: #FFFCEB; }
+
+/* Hard-disable scrollbars inside the gallery to avoid stray thumbs */
+.gallery-fade .no-scrollbar::-webkit-scrollbar { display: none !important; }
+.gallery-fade .no-scrollbar { scrollbar-width: none !important; }
+
+/* If you had themed scrollbars elsewhere, scope them away from gallery: */
+.gallery-fade *::-webkit-scrollbar-thumb,
+.gallery-fade *::-webkit-scrollbar-track { background: transparent !important; border: 0 !important; }
