@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useScrollDir } from "@/hooks/useScrollDir";
 import { useCompactHeader } from "@/hooks/useCompactHeader";
+import { Search, Moon, Sun } from "lucide-react";
 
 type NavItem = {
   label: string;
@@ -30,6 +31,11 @@ type Props = {
   className?: string;
   variant?: "default" | "noir";
   LinkComponent?: React.ComponentType<any>;
+  showSearch?: boolean;
+  showThemeToggle?: boolean;
+  onSearchClick?: () => void;
+  onThemeToggle?: () => void;
+  isDark?: boolean;
 };
 
 export function SiteHeader({
@@ -44,6 +50,11 @@ export function SiteHeader({
   className = "",
   variant = "default",
   LinkComponent,
+  showSearch = false,
+  showThemeToggle = false,
+  onSearchClick,
+  onThemeToggle,
+  isDark = false,
 }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const reduce = useReducedMotion();
@@ -226,7 +237,7 @@ export function SiteHeader({
                             style={{ color: tokens.light, opacity: isActive ? 1 : 0.35 }}
                             aria-hidden="true"
                           >
-                            [{String(index + 1).padStart(2, "0")}]
+                            —
                           </span>
                           <span
                             className={`nav-label ${compact ? "text-2xl" : "text-3xl"} md:text-5xl tracking-tight md:tracking-tighter transition-all duration-300`}
@@ -249,7 +260,7 @@ export function SiteHeader({
               </div>
             </nav>
 
-            {/* Status + CTA */}
+            {/* Status + CTA + Actions */}
             <div className="col-span-12 md:col-span-3 flex flex-col gap-5 md:items-end">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -272,20 +283,57 @@ export function SiteHeader({
                 />
               </motion.div>
 
-              <NavWrapper
-                href={cta.href}
-                onClick={cta.onClick}
-                external={cta.external}
-                className={`text-[10px] md:text-xs tracking-[0.3em] uppercase px-5 md:px-6 py-2.5 md:py-3 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
-                style={{ borderColor: tokens.accent }}
-              >
-                <span
-                  style={{ color: tokens.lightest }}
-                  className="pointer-events-none"
+              <div className="flex items-center gap-3 flex-wrap">
+                {/* Search Button */}
+                {showSearch && (
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    onClick={onSearchClick}
+                    className="p-2.5 border hover:bg-opacity-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{ borderColor: tokens.border }}
+                    aria-label="Search"
+                  >
+                    <Search className="w-4 h-4" style={{ color: tokens.lightest }} />
+                  </motion.button>
+                )}
+
+                {/* Theme Toggle */}
+                {showThemeToggle && (
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.55 }}
+                    onClick={onThemeToggle}
+                    className="p-2.5 border hover:bg-opacity-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                    style={{ borderColor: tokens.border }}
+                    aria-label="Toggle theme"
+                  >
+                    {isDark ? (
+                      <Sun className="w-4 h-4" style={{ color: tokens.lightest }} />
+                    ) : (
+                      <Moon className="w-4 h-4" style={{ color: tokens.lightest }} />
+                    )}
+                  </motion.button>
+                )}
+
+                {/* CTA Button */}
+                <NavWrapper
+                  href={cta.href}
+                  onClick={cta.onClick}
+                  external={cta.external}
+                  className={`text-[10px] md:text-xs tracking-[0.3em] uppercase px-5 md:px-6 py-2.5 md:py-3 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-opacity-5 transition-colors`}
+                  style={{ borderColor: tokens.accent }}
                 >
-                  {cta.label}
-                </span>
-              </NavWrapper>
+                  <span
+                    style={{ color: tokens.lightest }}
+                    className="pointer-events-none"
+                  >
+                    {cta.label}
+                  </span>
+                </NavWrapper>
+              </div>
             </div>
           </div>
         </div>
