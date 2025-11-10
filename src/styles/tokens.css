@@ -1,84 +1,83 @@
 /**
- * Design Tokens - Foundational System
+ * Design Tokens - Coquelicot Noir
  * 
- * Token Layers:
- * 1. Primitive: Base values with no semantic meaning
- * 2. Semantic: Context-aware tokens mapped from primitives
- * 3. Component: Specific tokens for component styling
- * 
- * Modes: light (default), dark, high-contrast
+ * Palette: Bone neutrals + Coquelicot accent
+ * Modes: light (default), dark
  */
 
 /* ============================================================================
-   PRIMITIVE TOKENS
-   Base values that form the foundation of the design system
+   PRIMITIVE TOKENS - COQUELICOT NOIR PALETTE
    ============================================================================ */
 
 :root {
-  /* === COLOR PRIMITIVES === */
-  /* OKLCH color space for perceptual uniformity */
+  /* === PRIMITIVES === */
+  --bone: #e3dac9;
+  --almond: #efdecd;
+  --china: #e2e5de;
+  --pearl: #eae0c8;
+  --ink: #100c08;
+  --gray: #808080;
+  --silver: #d8d8d8;
+  --coquelicot: #ff3800;
+  
+  /* === NAVY SYSTEM === */
+  --navy-ink: #0e1823;      /* hero/nav background */
+  --navy-panel: #121f2c;    /* projects/contact surface */
+  --navy-veil: #0b2235;     /* deeper accent for gradients */
+  --mint-accent: #9af7c0;   /* green highlight */
+
+  /* === ROLES === */
+  --bg: var(--bone);
+  --surface: var(--pearl);
+  --surface-2: var(--china);
+  --text: var(--ink);
+  --muted: var(--gray);
+  --line: var(--silver);
+  --accent: var(--mint-accent);  /* Use mint as global accent */
+
+  /* === HELPERS === */
+  --accent-600: color-mix(in oklab, var(--accent) 88%, black);
+  --accent-300: color-mix(in oklab, var(--accent) 60%, white);
+  --focus: var(--accent);
+  --shadow-1: 0 10px 30px color-mix(in oklab, black 22%, transparent);
+  
+  /* === ELEVATION === */
+  --elev-1: var(--shadow-1);
+
+  /* === BRIDGES (legacy compatibility) === */
+  --primary: var(--text);
+  --bg-muted: var(--surface);
+  
+  /* Legacy bridges so nothing breaks */
+  --warm-lightest: var(--bg);
+  --warm-medium: var(--surface);
+  --warm-stone: var(--muted);
+  --warm-tan: var(--accent);
+  
+  /* Legacy color mappings for gradual migration */
   --color-neutral-0: #ffffff;
-  --color-neutral-50: #fafafa;
-  --color-neutral-100: #f5f5f5;
-  --color-neutral-200: #e5e5e5;
-  --color-neutral-300: #d4d4d4;
-  --color-neutral-400: #a3a3a3;
-  --color-neutral-500: #737373;
+  --color-neutral-50: var(--surface);
+  --color-neutral-100: var(--surface-2);
+  --color-neutral-200: var(--line);
+  --color-neutral-300: var(--muted);
+  --color-neutral-400: var(--muted);
+  --color-neutral-500: var(--muted);
   --color-neutral-600: #525252;
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
-  --color-neutral-900: #171717;
-  --color-neutral-950: #0a0a0a;
+  --color-neutral-900: var(--ink);
+  --color-neutral-950: var(--ink);
   --color-neutral-1000: #000000;
 
-  /* Refined palette - OKLCH perceptual colors */
-  --color-cream-bg: oklch(97% 0.02 95);      /* Warm cream background */
-  --color-ink: oklch(25% 0.03 250);          /* Deep ink text */
-  --color-muted: oklch(54% 0.02 95);         /* Muted secondary text (4.64:1 WCAG AA) */
-  --color-accent-mint: oklch(80% 0.08 150);  /* Subtle mint accent */
-  --color-shadow: rgba(0, 0, 0, 0.18);       /* Standard shadow */
+  --color-cream-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent-mint: var(--accent-300);
+  --color-shadow: color-mix(in oklch, black 18%, transparent);
 
-  /* Brand colors (emerald/green) */
-  --color-brand-50: #ecfdf5;
-  --color-brand-100: #d1fae5;
-  --color-brand-200: #a7f3d0;
-  --color-brand-300: #6ee7b7;
-  --color-brand-400: #34d399;
-  --color-brand-500: #10b981;
-  --color-brand-600: #059669;
-  --color-brand-700: #047857;
-  --color-brand-800: #065f46;
-  --color-brand-900: #064e3b;
-  --color-brand-950: #022c22;
-
-  /* Accent colors (complementary) */
-  --color-accent-50: #fef3c7;
-  --color-accent-100: #fde68a;
-  --color-accent-200: #fcd34d;
-  --color-accent-300: #fbbf24;
-  --color-accent-400: #f59e0b;
-  --color-accent-500: #d97706;
-  --color-accent-600: #b45309;
-  --color-accent-700: #92400e;
-  --color-accent-800: #78350f;
-  --color-accent-900: #451a03;
-
-  /* Semantic color primitives */
-  --color-success-light: #d1fae5;
-  --color-success: #10b981;
-  --color-success-dark: #065f46;
-
-  --color-warning-light: #fef3c7;
-  --color-warning: #f59e0b;
-  --color-warning-dark: #78350f;
-
-  --color-error-light: #fee2e2;
-  --color-error: #ef4444;
-  --color-error-dark: #7f1d1d;
-
-  --color-info-light: #dbeafe;
-  --color-info: #3b82f6;
-  --color-info-dark: #1e3a8a;
+  --color-brand-500: var(--accent);
+  --color-brand-600: var(--accent-600);
+  --color-brand-300: var(--accent-300);
 
   /* === SPACING PRIMITIVES === */
   /* Refined spacing scale: 8px base unit */
@@ -104,18 +103,24 @@
   --space-64: 16rem;    /* 256px - legacy support */
 
   /* === TYPOGRAPHY PRIMITIVES === */
-  /* Refined type scale: base 16px */
-  --font-size-xs: 0.75rem;      /* 12px */
-  --font-size-sm: 0.875rem;     /* 14px */
-  --font-size-base: 1rem;       /* 16px */
-  --font-size-md: 1rem;         /* 16px */
-  --font-size-lg: 1.125rem;     /* 18px */
-  --font-size-xl: 1.5rem;       /* 24px */
-  --font-size-2xl: 2rem;        /* 32px */
-  --font-size-3xl: 2.75rem;     /* 44px */
-  --font-size-4xl: 3.5rem;      /* 56px */
-  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);    /* 48-60px fluid */
-  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);   /* 60-72px fluid */
+  /* Refined type scale: base 16px - WCAG 2.2 AA Compliant */
+  --font-size-caption: 0.8125rem;   /* 13px - captions, helper text */
+  --font-size-small: 0.875rem;      /* 14px - small text */
+  --font-size-base: 1rem;           /* 16px - body text, REQUIRED for inputs */
+  --font-size-lg: 1.125rem;         /* 18px - emphasized body */
+  
+  /* 2025 Spec-Compliant Fluid Typography */
+  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem);      /* 22-32px - Main headlines */
+  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem);      /* 20-28px - Section headings */
+  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem);    /* 18-24px - Subsection headings */
+  
+  /* Legacy fluid sizes (for decorative/hero elements only) */
+  --font-size-xl: 1.5rem;       /* 24px - static large text */
+  --font-size-2xl: 2rem;        /* 32px - static XL text */
+  --font-size-3xl: 2.75rem;     /* 44px - decorative */
+  --font-size-4xl: 3.5rem;      /* 56px - decorative */
+  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);    /* 48-60px - hero decorative */
+  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);   /* 60-72px - hero decorative */
 
   /* Font weights */
   --font-weight-light: 300;
@@ -249,33 +254,40 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Background colors */
-    --color-bg-canvas: var(--color-neutral-950);
-    --color-bg-surface: var(--color-neutral-900);
-    --color-bg-elevated: var(--color-neutral-800);
+    --bg: var(--ink);
+    --surface: #1a1410;
+    --surface-2: #23201c;
+    --text: var(--bone);
+    --muted: var(--silver);
+    --line: #2e2a26;
+    --accent: var(--coquelicot);
+    --accent-600: color-mix(in oklab, var(--accent) 85%, black);
+    --accent-300: color-mix(in oklab, var(--accent) 55%, white);
+    
+    /* Legacy mappings for dark mode */
+    --color-bg-canvas: var(--bg);
+    --color-bg-surface: var(--surface);
+    --color-bg-elevated: var(--surface-2);
     --color-bg-overlay: rgba(0, 0, 0, 0.9);
-    --color-bg-muted: var(--color-neutral-800);
+    --color-bg-muted: var(--surface);
 
-    /* Text colors */
-    --color-text-primary: var(--color-neutral-50);
-    --color-text-secondary: var(--color-neutral-300);
-    --color-text-muted: var(--color-neutral-400);
-    --color-text-subtle: var(--color-neutral-500);
-    --color-text-on-brand: var(--color-neutral-0);
-    --color-text-inverse: var(--color-neutral-900);
+    --color-text-primary: var(--text);
+    --color-text-secondary: var(--muted);
+    --color-text-muted: var(--muted);
+    --color-text-subtle: var(--muted);
+    --color-text-on-brand: var(--text);
+    --color-text-inverse: var(--bg);
 
-    /* Border colors */
-    --color-border-subtle: var(--color-neutral-800);
-    --color-border-default: var(--color-neutral-700);
-    --color-border-strong: var(--color-neutral-600);
+    --color-border-subtle: var(--line);
+    --color-border-default: var(--line);
+    --color-border-strong: var(--muted);
 
-    /* Interactive colors */
-    --color-interactive-primary: var(--color-brand-400);
-    --color-interactive-primary-hover: var(--color-brand-300);
-    --color-interactive-primary-active: var(--color-brand-200);
+    --color-interactive-primary: var(--accent);
+    --color-interactive-primary-hover: var(--accent-600);
+    --color-interactive-primary-active: var(--accent-600);
 
-    --color-interactive-ghost-hover: var(--color-neutral-800);
-    --color-interactive-ghost-active: var(--color-neutral-700);
+    --color-interactive-ghost-hover: var(--surface);
+    --color-interactive-ghost-active: var(--surface-2);
 
     /* Shadows (lighter in dark mode) */
     --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
@@ -377,6 +389,76 @@
 }
 
 /* ============================================================================
+   NOIR GLASS THEME
+   OKLCH-based dark glass aesthetic with high contrast
+   ============================================================================ */
+
+:root[data-theme="noir"] {
+  --primary: oklch(98% 0.01 95);
+  --warm-lightest: oklch(20% 0.01 260);
+  --warm-light: oklch(40% 0.02 260);
+  --warm-medium: oklch(95% 0.02 85);  /* Paper background for form */
+  --warm-stone: oklch(88% 0.02 95);
+  --warm-tan: oklch(70% 0.08 75);  /* Actual tan: warm beige */
+  --border-contrast: color-mix(in oklch, var(--warm-stone) 80%, white 20%);
+
+  /* Unified depth language */
+  --elev-0: 0 0 0 rgba(0,0,0,0);
+  --elev-1: 0 1px 2px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.04);
+  --elev-2: 0 2px 8px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.06);
+  --elev-3: 0 8px 24px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.08);
+
+  --chip-surface: color-mix(in oklch, #000 6%, transparent);
+  --frame-surface: color-mix(in oklch, #000 10%, transparent);
+
+  /* Refined core palette */
+  --cream: #FFFCEB;
+  --ink: oklch(.22 .03 260);
+  --gold: oklch(.74 .08 90);  /* Darkened for AA on cream */
+  --accent: oklch(.88 .14 150);
+
+  /* Form state colors */
+  --danger: #b00020;
+  --success: #0a7f52;
+
+  /* helpers */
+  --overlay-80: oklch(20% 0.01 260 / 0.80);  /* text-strong color at 80% for glass labels */
+  --overlay-70: oklch(20% 0.01 260 / 0.70);
+}
+
+:root[data-theme="noir"][data-mode="dark"] {
+  --primary: oklch(16% 0.01 260);
+  --warm-lightest: oklch(95% 0.01 95);
+  --warm-light: oklch(80% 0.02 95);
+  --warm-medium: oklch(22% 0.02 85);  /* Dark mode paper */
+  --warm-stone: oklch(32% 0.02 260);
+  --warm-tan: oklch(78% 0.08 75);  /* Lighter tan for dark mode */
+  --border-contrast: color-mix(in oklch, var(--warm-stone) 80%, white 20%);
+
+  /* Dark mode depth */
+  --elev-1: 0 1px 2px rgba(0,0,0,.24), 0 0 0 1px rgba(255,255,255,.06);
+  --elev-2: 0 2px 8px rgba(0,0,0,.28), 0 0 0 1px rgba(255,255,255,.08);
+  --elev-3: 0 8px 24px rgba(0,0,0,.36), 0 0 0 1px rgba(255,255,255,.10);
+
+  --chip-surface: color-mix(in oklch, #fff 6%, transparent);
+  --frame-surface: color-mix(in oklch, #fff 10%, transparent);
+
+  /* Form state colors (same for consistency) */
+  --danger: #f1e8e7;
+  --success: #81c995;
+
+  --overlay-80: oklch(16% 0.01 260 / 0.80);
+  --overlay-70: oklch(16% 0.01 260 / 0.70);
+}
+
+/* SiteHeader Noir variant fallbacks */
+:root {
+  --noir-accent: #d8c199;
+  --noir-pulse: #7be0b0;
+  --warm-sage: #a7c4bc;
+}
+
+/* ============================================================================
    UTILITY: Reduced Motion
    Respect user's motion preferences
    ============================================================================ */
@@ -416,4 +498,47 @@
     --neu-press-inset-dark: rgba(0, 0, 0, 0.65);
     --neu-press-inset-light: rgba(255, 255, 255, 0.08);
   }
+}
+
+/* ============================================================================
+   ACCENT UTILITY CLASSES - COQUELICOT NOIR
+   ============================================================================ */
+
+/* Accent button */
+.btn-accent {
+  color: var(--ink);
+  background: var(--accent);
+  border: 2px solid var(--accent-600);
+  transition: background 150ms ease;
+}
+.btn-accent:hover { 
+  background: var(--accent-600); 
+}
+
+/* Accent focus ring */
+.ring-accent { 
+  box-shadow: 0 0 0 2px var(--accent-300); 
+}
+
+/* ============================================================================
+   PINK EXORCISM - Force all pink to mint
+   ============================================================================ */
+
+:root {
+  --hot-pink: var(--mint-accent) !important;
+  --pink: var(--mint-accent) !important;
+  --magenta: var(--mint-accent) !important;
+}
+
+.status-dot,
+[data-status="live"],
+.badge--online,
+#collabs-dot {
+  background: var(--mint-accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--mint-accent) 25%, transparent);
+}
+
+/* Text halo for small Coquelicot text on light backgrounds */
+.accent-halo { 
+  text-shadow: 0 1px 0 color-mix(in oklch, white 65%, transparent); 
 }

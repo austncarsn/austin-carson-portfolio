@@ -23,6 +23,15 @@ module.exports = {
 
       // === COLORS ===
       colors: {
+        // Coquelicot Noir palette bridges
+        bg: 'var(--bg)',
+        surface: 'var(--surface)',
+        surface2: 'var(--surface-2)',
+        ink: 'var(--text)',
+        muted: 'var(--muted)',
+        line: 'var(--line)',
+        accent: 'var(--accent)',
+        
         // Neutral scale
         neutral: {
           0: 'var(--color-neutral-0)',
@@ -250,6 +259,7 @@ module.exports = {
         '2xl': 'var(--shadow-2xl)',
         low: 'var(--shadow-low)',
         elev: 'var(--shadow-elev)',
+        elev1: 'var(--shadow-1)',
         none: 'none',
       },
 

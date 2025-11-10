@@ -38,7 +38,7 @@ Our design system uses fluid typography with `clamp()` functions that scale betw
 ### Before (Hardcoded)
 ```tsx
 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
-  Austin Carson
+  AUSTIN CARSON
 </h1>
 ```
 

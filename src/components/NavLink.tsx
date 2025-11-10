@@ -7,7 +7,6 @@ export type NavLinkSize = 'default' | 'mobile';
 export interface NavLinkProps {
   href: string;
   children: string;
-  variant?: NavLinkVariant;
   size?: NavLinkSize;
   isActive?: boolean;
   isExternal?: boolean;
@@ -16,94 +15,45 @@ export interface NavLinkProps {
   className?: string;
 }
 
-// Design tokens for consistent spacing and motion
-const SPACING = {
-  padding: {
-    default: 'px-3 py-2',
-    mobile: 'px-4 py-3'
-  },
-  minSize: 'min-h-[44px] min-w-[44px]'
-};
-
-const MOTION = {
-  duration: 'duration-200',
-  easing: 'ease-out',
-  hover: 'hover:scale-[1.02] active:scale-[0.98]'
-};
-
-// Base styles shared across variants
-const baseClasses = [
-  'group/navlink relative inline-flex items-center justify-center',
-  'font-semibold uppercase tracking-[0.12em]',
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)] focus-visible:ring-offset-2',
-  'transition-all duration-200 ease-out',
-  'rounded-lg', // Consistent corner radius
-  SPACING.minSize
-].join(' ');
-
-// Typography scales
-const typography = {
-  default: "font-satoshi text-sm md:text-base",
-  mobile: "font-satoshi text-sm"
-};
-
-// Color schemes for different states
-const colorSchemes = {
-  primary: {
-    base: 'text-text-muted hover:text-brand focus:text-brand',
-    active: 'text-brand',
-    pressed: 'text-brand/80'
-  },
-  secondary: {
-    base: 'text-text-muted hover:text-brand focus:text-brand',
-    active: 'text-brand',
-    pressed: 'text-brand/80'
-  }
-};
-
-// Underline animation for primary links
-const underlineStyles = [
-  "after:absolute after:left-3 after:right-3 after:-bottom-0.5",
-  "after:h-[2px] after:bg-brand after:origin-left after:scale-x-0",
-  "group-hover/navlink:after:scale-x-100 group-focus/navlink:after:scale-x-100",
-  "after:transition-transform after:duration-200 after:ease-out"
-].join(' ');
-
 /**
- * NavLink Component
- *
- * Reusable navigation link with consistent states and variants.
- * Supports hover, focus, active, and pressed states with smooth transitions.
+ * NavLink Component - Navy + Mint theme
+ * Uses role variables: --muted (default), --accent (active/hover)
  */
 export function NavLink({
   href,
   children,
-  variant = 'primary',
   size = 'default',
   isActive = false,
   isExternal = false,
   onClick,
   className = ''
 }: NavLinkProps): ReactElement {
-  const colors = colorSchemes[variant];
-  const padding = SPACING.padding[size];
-  const fontSize = typography[size];
+  
+  const baseStyle = {
+    color: isActive ? 'var(--accent)' : 'var(--muted)',
+    transition: 'color 200ms ease-out'
+  };
 
-  // Build state-based classes
-  const stateClasses = isActive
-    ? `${colors.active} ${variant === 'primary' ? 'after:scale-x-100' : ''}`
-    : colors.base;
+  const handleMouseEnter = (e: MouseEvent<HTMLAnchorElement>): void => {
+    e.currentTarget.style.color = 'var(--accent)';
+  };
 
-  // Combine all classes
-  const linkClasses = [
-    baseClasses,
-    fontSize,
-    stateClasses,
-    padding,
-    variant === 'primary' ? underlineStyles : '',
-    MOTION.hover,
+  const handleMouseLeave = (e: MouseEvent<HTMLAnchorElement>): void => {
+    e.currentTarget.style.color = isActive ? 'var(--accent)' : 'var(--muted)';
+  };
+
+  const baseClasses = [
+    'group/navlink relative inline-flex items-center justify-center',
+    'font-semibold uppercase tracking-[0.12em]',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+    'transition-all duration-200 ease-out',
+    'rounded-lg min-h-[44px] min-w-[44px]',
+    size === 'mobile' ? 'px-4 py-3 text-sm' : 'px-3 py-2 text-sm md:text-base',
     className
   ].filter(Boolean).join(' ');
+
+  // Final link classes (keep simple and predictable).
+  const linkClasses = baseClasses;
 
   // External link attributes
   const externalProps = isExternal ? {
@@ -118,6 +68,9 @@ export function NavLink({
         href={href}
         className={linkClasses}
         onClick={onClick}
+        style={baseStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         aria-current={isActive ? 'location' : undefined}
         {...externalProps}
       >
@@ -132,6 +85,9 @@ export function NavLink({
       to={href}
       className={linkClasses}
       onClick={onClick}
+      style={baseStyle}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       aria-current={isActive ? 'location' : undefined}
     >
       {children}

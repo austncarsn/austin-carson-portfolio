@@ -99,7 +99,6 @@ export function MobileMenu({
                       <NavLink
                         key={item.label}
                         href={item.href}
-                        variant="primary"
                         size="mobile"
                         isActive={isActive}
                         onClick={(e) => {
@@ -122,7 +121,6 @@ export function MobileMenu({
                     <NavLink
                       key={item.label}
                       href={item.href}
-                      variant="secondary"
                       size="mobile"
                       isExternal={item.external}
                       onClick={() => onClose()}

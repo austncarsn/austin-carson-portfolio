@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { Home, Briefcase as Work, Image as Gallery, Mail } from "lucide-react";

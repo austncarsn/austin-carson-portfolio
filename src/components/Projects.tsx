@@ -1,4 +1,4 @@
-import { ProjectCard } from './ProjectCard';
+import { ProjectReel } from './ProjectCard';
 import FadeInSection from './FadeInSection';
 import { FortuneBox } from './FortuneBox';
 import Section from './Section';
@@ -200,7 +200,15 @@ export type Project = ProjectData;
 
 export default function Projects(): React.JSX.Element {
   return (
-    <Section id="work" bgClass="bg-[#0E1013] text-white" labelNumber="02" labelTitle="WORK" labelDelay={0} aria-labelledby="work-section-label">
+    <Section 
+      id="work" 
+      bgClass="bg-[#0E1013] text-white" 
+      labelNumber="02" 
+      labelTitle="WORK" 
+      labelDelay={0} 
+      aria-labelledby="work-section-label"
+      noContainer={true}
+    >
       {/* Subtle grain texture */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-soft-light" 
@@ -211,26 +219,11 @@ export default function Projects(): React.JSX.Element {
         aria-hidden="true"
       />
       
-      <div className="mt-12 sm:mt-16 relative">
+      <div className="relative">
         <div id="work-section-label" className="sr-only">Work Portfolio</div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" role="list">
-          {projects.map((project, index) => (
-            <FadeInSection key={project.id} delay={index * 100} direction="up">
-              <ProjectCard
-                id={project.id}
-                title={project.title}
-                category={project.category}
-                year={project.year}
-                role={project.role}
-                description={project.description}
-                subtitle={project.subtitle}
-                liveUrl={project.liveUrl}
-                githubUrl={project.githubUrl}
-                previewImage={project.previewImage}
-              />
-            </FadeInSection>
-          ))}
-        </div>
+        
+        {/* Enhanced horizontal scroll reel with all new features */}
+        <ProjectReel projects={projects as any} />
       </div>
 
       {/* Fortune Box - Centered after all project cards */}

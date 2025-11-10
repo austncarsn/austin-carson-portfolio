@@ -3,6 +3,7 @@
 
 /* Design Token System - Import first to make tokens available */
 @import "./styles/tokens.css";
+@import "./styles/forms.css";
 
 /* Minimal stylesheet: design tokens + Tailwind directives.
    Typography: Satoshi for all text, Libre Barcode 39 for title branding only.
@@ -13,11 +14,176 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base resets */
-html, body { overflow-x: hidden; }
-progress { appearance: none; display: none !important; }
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+@layer utilities {
+  /* Hide scrollbars while maintaining scroll functionality */
+  .scrollbar-none {
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  /* Unified elevation system */
+  .shadow-1 { box-shadow: var(--elev-1); }
+  .shadow-2 { box-shadow: var(--elev-2); }
+  .shadow-3 { box-shadow: var(--elev-3); }
+
+  /* Window frame with perforated rails */
+  .window {
+    border-radius: 18px;
+    background: var(--frame-surface);
+    box-shadow: var(--elev-2);
+    position: relative;
+  }
+  .window::before,
+  .window::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    height: 8px;
+    background: radial-gradient(circle at 0 50%, rgba(0,0,0,.28) 2px, transparent 2px) repeat-x;
+    background-size: 12px 8px;
+    opacity: .35;
+    filter: blur(.2px);
+  }
+  .window::before { top: -4px; }
+  .window::after { bottom: -4px; }
+  
+  .window .bevel {
+    inset: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -2px 6px rgba(0,0,0,.30);
+  }
+
+  /* Horizontal scroller with snap */
+  .scroller {
+    display: flex;
+    gap: 16px;
+    overflow: auto;
+    scroll-snap-type: x mandatory;
+    padding: 20px;
+    scroll-padding: 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroller::-webkit-scrollbar { display: none; }
+
+  /* Scroller edge fade affordance */
+  .edgeFade {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, var(--cream) 0%, transparent 8%) left,
+      linear-gradient(270deg, var(--cream) 0%, transparent 8%) right;
+    background-repeat: no-repeat;
+    background-size: 20% 100%;
+    mix-blend-mode: soft-light;
+  }
+
+  /* Noise texture for large areas */
+  .page-noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .02;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence baseFrequency=".9" numOctaves="3"/></filter><rect width="300" height="300" filter="url(%23n)" opacity=".8"/></svg>') repeat;
+    mix-blend-mode: multiply;
+  }
+
+  /* Navigation hover effect - Coquelicot accent */
+  .nav-link-item:hover .nav-label {
+    color: var(--accent-300) !important;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE & ACCESSIBILITY FOUNDATION
+   ============================================================================ */
+
+/* Base resets + scroll behavior */
+html {
+  overflow-x: hidden;
+  /* Smooth scrolling for anchor links (respects prefers-reduced-motion) */
+  scroll-behavior: smooth;
+  /* Scroll padding for sticky nav (56-64px header height) */
+  scroll-padding-top: 4rem; /* 64px - accounts for sticky navigation */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  overflow-x: hidden;
+  /* Ensure minimum font size for iOS zoom prevention */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ============================================================================
+   FRAMED RAIL DEPTH SYSTEM
+   ============================================================================ */
+
+/* Subtle bevel + cavity using layered shadows; tuned for light UIs */
+.framed-rail {
+  position: relative;
+}
+
+/* Outer + inner shadows to create an inset channel */
+.shadow-rail {
+  /* outer feather to lift the frame off the page very slightly */
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 12px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Add a pseudo bevel and inner cavity */
+.framed-rail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem; /* matches rounded-2xl */
+  pointer-events: none;
+
+  /* near-bg tint to thicken the "border" without a hard edge */
+  background:
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.65) 0%,
+      rgba(255, 255, 255, 0.0) 24%),
+    radial-gradient(120% 120% at 50% -10%,
+      rgba(0, 0, 0, 0.08), transparent 60%);
+
+  /* inner shadows create the channel illusion */
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.06),     /* top lip */
+    inset 0 -8px 16px rgba(0, 0, 0, 0.07);   /* lower cavity */
+}
+
+/* Rail background token - inner wall ~2-4% darker than page bg */
+:root {
+  --rail-bg: #efe8de;
+}
+
+/* Hide progress indicators */
+progress {
+  appearance: none;
+  display: none !important;
+}
+
 progress::-webkit-progress-bar,
-progress::-webkit-progress-value { background: transparent; }
+progress::-webkit-progress-value {
+  background: transparent;
+}
 
 /* Design Tokens — State-of-the-Art Color System */
 :root {
@@ -52,16 +218,16 @@ progress::-webkit-progress-value { background: transparent; }
   /* ═══════════════════════════════════════════════════════════
      ACCENT COLORS — Secondary highlights and CTAs
      ═══════════════════════════════════════════════════════════ */
-  --accent-50: #FDF2F8;
-  --accent-100: #FCE7F3;
-  --accent-200: #FBCFE8;
-  --accent-300: #F9A8D4;
-  --accent-400: #F472B6;
-  --accent-500: #EC4899; /* Primary accent */
-  --accent-600: #DB2777;
-  --accent-700: #BE185D;
-  --accent-800: #9D174D;
-  --accent-900: #831843;
+  --accent-50: #f0fdf6;
+  --accent-100: #dcfce8;
+  --accent-200: #bbf7d1;
+  --accent-300: #7ff4a3;  /* mint - was pink #F9A8D4 */
+  --accent-400: #4ade80;
+  --accent-500: #22c55e; /* Primary accent */
+  --accent-600: #16a34a;
+  --accent-700: #15803d;
+  --accent-800: #166534;
+  --accent-900: #14532d;
   
   --accent: var(--accent-500);
   --accent-hover: var(--accent-600);
@@ -713,6 +879,30 @@ code, pre, kbd {
   @supports (color: color-mix(in lab, red, red)) {
     :focus-visible { outline: 2px solid color-mix(in oklch, var(--ring), var(--brand-ice) 35%); }
   }
+  
+  /* Noir Glass theme focus ring */
+  [data-theme="noir"] :focus-visible {
+    outline: 2px solid var(--warm-tan);
+    outline-offset: 2px;
+  }
+
+  /* Ticker edge fade mask for SiteHeader */
+  .ticker-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 5%,
+      black 95%,
+      transparent 100%
+    );
+  }
 
   [data-state="open"] { animation: fade-in var(--dur-2) var(--ease-soft) both; }
   [data-state="closed"] { animation: fade-out var(--dur-2) var(--ease-soft) both; }
@@ -978,3 +1168,170 @@ code, pre, kbd {
     opacity: 1;
   }
 }
+
+/* ==========================================================================
+   BEAR FOOTER STYLES (global)
+   Appended outside media queries to remain available across breakpoints
+   ========================================================================== */
+
+/* tokens or fallbacks */
+:root {
+  --bear-fg: oklch(96% 0 0);
+  --bear-muted: oklch(70% 0.03 270);
+  --bear-accent: oklch(75% 0.13 180);
+}
+
+/* footer wrapper */
+.bear-footer {
+  position: sticky; bottom: 0;
+  display: grid; place-items: center;
+  padding: 16px;
+  color: var(--bear-muted);
+  font: 400 14px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto;
+  background: transparent;
+  z-index: 40;
+}
+
+/* the bear bits */
+.bear-footer span[aria-hidden="true"] { display: inline-flex; align-items: center; gap: .25ch; }
+.bear-footer .arm, .bear-footer .spring { display: inline-block; transform-origin: 50% 0%; }
+.bear-footer .table {
+  color: var(--bear-accent);
+  cursor: pointer;
+  transition: transform .25s ease, filter .25s ease;
+}
+.bear-footer:hover .arm { animation: arm-wobble .6s ease-in-out both; }
+.bear-footer:hover .spring { animation: spring-boing .5s ease-out both; }
+.bear-footer:hover .table { filter: drop-shadow(0 2px 0 oklch(60% .03 270)); }
+
+/* optional upright state if you use the toggle JS below */
+.bear-footer .table.upright { transform: translateY(-1px); }
+
+/* keyframes */
+@keyframes arm-wobble { 0%{rotate:0} 35%{rotate:-18deg} 70%{rotate:10deg} 100%{rotate:0} }
+@keyframes spring-boing { 0%{scale:1} 40%{scale:1.2} 100%{scale:1} }
+
+/* === THEME LOCK (Electric Navy + Mint) === */
+@layer base {
+  :root,
+  html.theme-navy {
+    --navy-ink:   #0e1823;
+    --navy-panel: #121f2c;
+    --navy-veil:  #0b2235;
+    --mint:       #9af7c0;
+
+    /* roles */
+    --bg:        var(--navy-ink);
+    --surface:   var(--navy-panel);
+    --surface-2: color-mix(in oklab, white 4%, transparent);
+    --text:      #ebf5ff;
+    --muted:     color-mix(in oklab, white 62%, transparent);
+    --line:      color-mix(in oklab, white 12%, transparent);
+    --accent:    var(--mint);
+    --focus:     var(--accent);
+
+    /* bridge legacy "warm-*" so beige can't leak */
+    --warm-lightest: var(--bg);
+    --warm-medium:   var(--surface);
+    --warm-stone:    var(--muted);
+    --warm-tan:      var(--accent);
+  }
+
+  html, body { background: var(--bg); color: var(--text); }
+}
+
+/* kill stray pink status */
+#collabs-dot, .status-dot, .badge--online, [data-status-dot] {
+  background: var(--accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
+}
+
+/* === COLOR SYSTEM GUARDRAILS === */
+:root {
+  --accent-weak: color-mix(in oklab, var(--accent) 35%, transparent);
+  --accent-wash: color-mix(in oklab, var(--accent) 15%, transparent);
+}
+
+/* base */
+hr, .hairline { border-color: var(--line); }
+
+/* links */
+a { color: var(--accent); }
+
+/* chips / tech badges */
+.badge {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-weak);
+  border-radius: 999px;
+}
+
+/* kill any "pink" or legacy orange on sight (safe overrides) */
+[class*="pink"], [class*="fuchsia"], [style*="#ff4"], [style*="#ff3"], [style*="#ff2"],
+.text-pink-500, .text-pink-400, .text-fuchsia-500, .ring-pink-500 {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* buttons (outline) */
+.btn-outline {
+  color: var(--accent); border: 1px solid var(--accent); background: transparent;
+  border-radius: 999px; padding: 0.5rem 1rem; transition: background 200ms;
+}
+.btn-outline:hover { background: var(--accent-wash); }
+
+/* focus ring for all interactive elements */
+*:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* projects table rows / cards */
+.projects-row {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: transform 200ms, box-shadow 200ms;
+}
+
+.projects-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in oklab, black 25%, transparent);
+}
+
+/* projects grid template: number | thumb | meta | right spacer  */
+@media (min-width: 1024px) {
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 40px 140px 1fr 120px;
+    gap: 16px 24px;
+    align-items: center;
+  }
+}
+@media (max-width: 1023.98px) {
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+  }
+  .projects-grid .thumb { grid-column: 1 / span 1; }
+  .projects-grid .meta  { grid-column: 1 / -1; }
+}
+
+/* spacing & typography */
+.container { max-width: 1200px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 32px); }
+h1 { font-size: clamp(40px, 5vw, 72px); line-height: 1.05; }
+h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; }
+p  { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.6; }
+
+/* prevent horizontal scroll from images or grids */
+img, svg, video { max-width: 100%; height: auto; }
+section { overflow: clip; }
+
+/* motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .bear-footer * { animation: none !important; transition: none !important; }
+  .projects-row { transition: none !important; }
+}
+
+

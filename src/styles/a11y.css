@@ -1,0 +1,16 @@
+/* ============================================================================
+   ACCESSIBILITY UTILITIES
+   Focus rings and reduced motion support
+   ============================================================================ */
+
+/* Focus ring utility - respects outline tokens */
+.focus-ring:focus-visible {
+  outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, var(--color-interactive-focus));
+  outline-offset: var(--focus-ring-offset, 2px);
+}
+
+/* Ensure focus rings are visible above transforms/masks */
+.focus-ring:focus-visible {
+  position: relative;
+  z-index: 10;
+}
