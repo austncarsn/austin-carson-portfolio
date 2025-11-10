@@ -22,6 +22,6 @@
     }
   },
   "include": ["src"],
-  "exclude": ["WORK_SECTION_EXAMPLES.tsx", "api", "src/components/IsometricBlock.tsx"],
+  "exclude": ["api", "src/components/IsometricBlock.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

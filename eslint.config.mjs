@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default [
   {
-    ignores: ['node_modules', 'build', 'dist']
+    ignores: ['node_modules', 'build', 'dist', 'api/**', 'src/components/IsometricBlock.tsx']
   },
   {
     files: ['**/*.{ts,tsx}'],
