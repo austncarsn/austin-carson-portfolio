@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default [
   {
-    ignores: ['node_modules', 'build', 'dist', 'api/**', 'src/components/IsometricBlock.tsx']
+    ignores: ['node_modules', 'build', 'dist', 'api/**', 'src/components/IsometricBlock.tsx', 'vite.config.ts', 'tsconfig.node.json']
   },
   {
     files: ['**/*.{ts,tsx}'],
