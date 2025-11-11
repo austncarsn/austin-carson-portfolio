@@ -1,58 +1,62 @@
 /**
- * Design Tokens - Coquelicot Noir
+ * Design Tokens - New Color System
  * 
- * Palette: Bone neutrals + Coquelicot accent
- * Modes: light (default), dark
+ * Base colors: Chinese White, Powder Blue, Platinum, Orange, Pitch Black, White Chocolate
+ * Semantic layer: bg (primary/secondary/tertiary/surface), text, action
  */
 
 /* ============================================================================
-   PRIMITIVE TOKENS - COQUELICOT NOIR PALETTE
+   BASE TOKENS - COLOR PRIMITIVES
    ============================================================================ */
 
 :root {
-  /* === PRIMITIVES === */
-  --bone: #e3dac9;
-  --almond: #efdecd;
-  --china: #e2e5de;
-  --pearl: #eae0c8;
-  --ink: #100c08;
-  --gray: #808080;
-  --silver: #d8d8d8;
-  --coquelicot: #ff3800;
-  
-  /* === NAVY SYSTEM === */
-  --navy-ink: #0e1823;      /* hero/nav background */
-  --navy-panel: #121f2c;    /* projects/contact surface */
-  --navy-veil: #0b2235;     /* deeper accent for gradients */
-  --mint-accent: #9af7c0;   /* green highlight */
+  /* === BASE COLORS === */
+  --chinese-white: #E2E5DE;
+  --powder-blue: #F4FAFF;
+  --platinum: #E5E4E2;
+  --orange: #FF3800;
+  --pitch-black: #151515;
+  --white-chocolate: #EDE6D6;
 
-  /* === ROLES === */
-  --bg: var(--bone);
-  --surface: var(--pearl);
-  --surface-2: var(--china);
-  --text: var(--ink);
-  --muted: var(--gray);
-  --line: var(--silver);
-  --accent: var(--mint-accent);  /* Use mint as global accent */
+  /* === SEMANTIC TOKENS - BACKGROUND === */
+  --bg: var(--powder-blue);           /* primary background */
+  --bg-secondary: var(--chinese-white);
+  --bg-tertiary: var(--white-chocolate);
+  --surface: #FFFFFF;                  /* card/panel surface */
+  --surface-2: var(--chinese-white);   /* alternative surface */
 
-  /* === HELPERS === */
+  /* === SEMANTIC TOKENS - TEXT === */
+  --text: var(--pitch-black);          /* primary text */
+  --ink: var(--pitch-black);           /* alias for compatibility */
+  --muted: color-mix(in oklab, var(--pitch-black) 60%, var(--powder-blue));  /* muted text */
+  --link: #D63000;                     /* link color */
+
+  /* === SEMANTIC TOKENS - ACTION === */
+  --accent: var(--orange);             /* primary action color */
+  --accent-hover: #FF571A;             /* action hover state */
+  --accent-pressed: #FF6F33;           /* action pressed state */
+
+  /* === DERIVED TOKENS === */
   --accent-600: color-mix(in oklab, var(--accent) 88%, black);
   --accent-300: color-mix(in oklab, var(--accent) 60%, white);
+  --line: var(--platinum);             /* borders/dividers */
   --focus: var(--accent);
+
+  /* === SHADOWS === */
   --shadow-1: 0 10px 30px color-mix(in oklab, black 22%, transparent);
-  
-  /* === ELEVATION === */
   --elev-1: var(--shadow-1);
 
-  /* === BRIDGES (legacy compatibility) === */
+  /* === LEGACY COMPATIBILITY === */
   --primary: var(--text);
   --bg-muted: var(--surface);
+  --bone: var(--chinese-white);        /* legacy bone → chinese-white */
+  --pearl: var(--white-chocolate);     /* legacy pearl → white-chocolate */
   
   /* Legacy bridges so nothing breaks */
   --warm-lightest: var(--bg);
   --warm-medium: var(--surface);
   --warm-stone: var(--muted);
-  --warm-tan: var(--accent);
+  --warm-tan: var(--bg-secondary);
   
   /* Legacy color mappings for gradual migration */
   --color-neutral-0: #ffffff;
@@ -65,8 +69,8 @@
   --color-neutral-600: #525252;
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
-  --color-neutral-900: var(--ink);
-  --color-neutral-950: var(--ink);
+  --color-neutral-900: var(--pitch-black);
+  --color-neutral-950: var(--pitch-black);
   --color-neutral-1000: #000000;
 
   --color-cream-bg: var(--bg);
@@ -451,10 +455,10 @@
   --overlay-70: oklch(16% 0.01 260 / 0.70);
 }
 
-/* SiteHeader Noir variant fallbacks */
+/* SiteHeader fallbacks */
 :root {
   --noir-accent: #d8c199;
-  --noir-pulse: #7be0b0;
+  --noir-pulse: var(--accent);
   --warm-sage: #a7c4bc;
 }
 
@@ -501,44 +505,44 @@
 }
 
 /* ============================================================================
-   ACCENT UTILITY CLASSES - COQUELICOT NOIR
+   ACCENT UTILITY CLASSES - NEW COLOR SYSTEM
    ============================================================================ */
 
 /* Accent button */
 .btn-accent {
-  color: var(--ink);
+  color: #FFFFFF;
   background: var(--accent);
   border: 2px solid var(--accent-600);
   transition: background 150ms ease;
 }
 .btn-accent:hover { 
-  background: var(--accent-600); 
+  background: var(--accent-hover); 
 }
 
 /* Accent focus ring */
 .ring-accent { 
-  box-shadow: 0 0 0 2px var(--accent-300); 
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent); 
 }
 
 /* ============================================================================
-   PINK EXORCISM - Force all pink to mint
+   STATUS INDICATORS - Orange accent
    ============================================================================ */
 
 :root {
-  --hot-pink: var(--mint-accent) !important;
-  --pink: var(--mint-accent) !important;
-  --magenta: var(--mint-accent) !important;
+  --hot-pink: var(--accent) !important;
+  --pink: var(--accent) !important;
+  --magenta: var(--accent) !important;
 }
 
 .status-dot,
 [data-status="live"],
 .badge--online,
 #collabs-dot {
-  background: var(--mint-accent) !important;
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--mint-accent) 25%, transparent);
+  background: var(--accent) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
-/* Text halo for small Coquelicot text on light backgrounds */
+/* Text halo for small accent text on light backgrounds */
 .accent-halo { 
   text-shadow: 0 1px 0 color-mix(in oklch, white 65%, transparent); 
 }
