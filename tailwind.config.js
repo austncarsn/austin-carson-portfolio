@@ -188,10 +188,18 @@ module.exports = {
 
       // === TYPOGRAPHY ===
       fontSize: {
-        xs: ['var(--font-size-xs)', { lineHeight: 'var(--line-height-normal)' }],
-        sm: ['var(--font-size-sm)', { lineHeight: 'var(--line-height-normal)' }],
-        base: ['var(--font-size-base)', { lineHeight: 'var(--line-height-normal)' }],
-        lg: ['var(--font-size-lg)', { lineHeight: 'var(--line-height-normal)' }],
+        // Utility sizes
+        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-normal)' }],  // 13px
+        small: ['var(--font-size-small)', { lineHeight: 'var(--line-height-normal)' }],      // 14px
+        base: ['var(--font-size-base)', { lineHeight: 'var(--line-height-normal)' }],        // 16px
+        lg: ['var(--font-size-lg)', { lineHeight: 'var(--line-height-normal)' }],            // 18px
+        
+        // 2025 Spec-Compliant Semantic Headings
+        h1: ['var(--font-size-h1)', { lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-tight)' }],  // 22-32px
+        h2: ['var(--font-size-h2)', { lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-tight)' }],  // 20-28px
+        h3: ['var(--font-size-h3)', { lineHeight: 'var(--line-height-snug)', letterSpacing: 'var(--letter-spacing-normal)' }], // 18-24px
+        
+        // Legacy sizes (for backwards compatibility)
         xl: ['var(--font-size-xl)', { lineHeight: 'var(--line-height-snug)' }],
         '2xl': ['var(--font-size-2xl)', { lineHeight: 'var(--line-height-snug)' }],
         '3xl': ['var(--font-size-3xl)', { lineHeight: 'var(--line-height-tight)' }],
