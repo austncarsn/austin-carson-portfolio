@@ -23,12 +23,10 @@ export type Project = {
 type Props = {
   projects: Project[];
   initialFilter?: string;
-  // eslint-disable-next-line no-unused-vars
   onProjectClick?: (project: Project, index: number) => void;
   filters?: string[];
 };
 
-// Animation variants
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
   animate: { opacity: 1, y: 0 }
@@ -229,14 +227,12 @@ export function WorkSection({
 }: Props): JSX.Element {
   const [activeFilter, setActiveFilter] = useState(initialFilter);
 
-  // Auto-derive filters from project categories if not provided
   const FILTERS = useMemo(() => {
     if (filters) return ["All", ...filters];
     const cats = Array.from(new Set(projects.map((p: Project) => p.category))).sort();
     return ["All", ...cats];
   }, [projects, filters]);
 
-  // Filter projects by active category
   const filteredProjects = useMemo(
     () =>
       activeFilter === "All"
@@ -255,7 +251,6 @@ export function WorkSection({
       style={{ background: "var(--surface)", color: "var(--text)" }}
       aria-labelledby="work-heading"
     >
-      {/* Gradient overlay for smooth transition from hero */}
       <div
         className="pointer-events-none absolute inset-x-0 -top-8 h-8"
         style={{ background: 'linear-gradient(180deg, transparent, color-mix(in oklab, white 6%, transparent))' }}
@@ -297,7 +292,6 @@ export function WorkSection({
             Projects
           </motion.h2>
 
-          {/* Filter Navigation */}
           <nav className="flex flex-wrap gap-3 md:gap-4" aria-label="Project filters">
             {FILTERS.map((filter, i) => (
               <FilterButton
@@ -311,7 +305,6 @@ export function WorkSection({
           </nav>
         </header>
 
-        {/* Projects List */}
         <motion.div layout className="space-y-4">
           {filteredProjects.map((project, index) => (
             <ProjectCard
@@ -323,7 +316,6 @@ export function WorkSection({
           ))}
         </motion.div>
 
-        {/* Empty state */}
         {filteredProjects.length === 0 && (
           <div 
             className="py-20 text-center text-xl md:text-2xl" 

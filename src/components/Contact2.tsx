@@ -10,7 +10,6 @@ type Contact2Props = {
   socials?: { label: string; href: string }[];
 };
 
-// Stacked cards with 3D perspective
 const ContactMethod3D = memo(({ method, index, isActive, onClick }: any) => (
   <motion.div
     onClick={onClick}

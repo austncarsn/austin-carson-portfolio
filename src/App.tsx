@@ -1,8 +1,3 @@
-/* ==========================================================================
-   App Root Component — The Digital Heart of Your Experience
-   ========================================================================== */
-
-// ─── DEPENDENCIES ───────────────────────────────────────────────────────────
 import type { ReactElement, ReactNode } from 'react';
 import { lazy, Suspense, memo, useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
@@ -13,14 +8,12 @@ import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
 import type { Project } from './components/WorkSection';
 
-// ─── LAZY LOADED COMPONENTS ─────────────────────────────────────────────────
 const HeroBrutalist = lazy(() => import('./components/HeroBrutalist').then(module => ({ default: module.HeroBrutalist })));
 const Contact2 = lazy(() => import('./components/Contact2').then(module => ({ default: module.Contact2 })));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail').then(module => ({ default: module.default })));
 const Resume = lazy(() => import('./components/Resume'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
-// ─── LOADING STATES ─────────────────────────────────────────────────────────
 const LoadingFallback = memo(function LoadingFallback(): ReactElement {
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -37,7 +30,6 @@ const RouteTransition = memo(function RouteTransition({ children }: { children: 
   );
 });
 
-// ─── ACCESSIBILITY LANDMARKS ────────────────────────────────────────────────
 const MainContent = memo(function MainContent({ children }: { children: ReactNode }): ReactElement {
   return (
     <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
@@ -46,18 +38,14 @@ const MainContent = memo(function MainContent({ children }: { children: ReactNod
   );
 });
 
-// ─── SMOOTH SCROLL HANDLER ──────────────────────────────────────────────────
 function ScrollToSection(): null {
   const location = useLocation();
 
   useEffect(() => {
-    // Only handle hash scrolling on the home route (/)
     if (location.pathname !== '/') return;
     
-    // Check if URL has a hash like /#work or /#contact
     const hash = location.hash.replace('#', '');
     if (hash) {
-      // Wait for page to render
       setTimeout(() => {
         const element = document.getElementById(hash);
         if (element) {
@@ -65,7 +53,6 @@ function ScrollToSection(): null {
         }
       }, 100);
     } else {
-      // No hash - scroll to top on initial load
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
   }, [location]);
@@ -73,43 +60,33 @@ function ScrollToSection(): null {
   return null;
 }
 
-// ─── ROOT APPLICATION COMPONENT ─────────────────────────────────────────────
-/**
- * The core application shell orchestrating all user experiences
- * @returns {ReactElement} The complete application interface
- */
 export default function App(): ReactElement {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Adapted projects for use throughout the app
   const projects = adaptGalleryProjects(GALLERY_PROJECTS);
 
-  // Handle project click to open modal
   const handleProjectClick = (project: Project, index: number): void => {
     setSelectedProject(project);
     setSelectedIndex(index);
     setIsModalOpen(true);
   };
 
-  // Handle modal close
   const handleCloseModal = (): void => {
     setIsModalOpen(false);
     setTimeout(() => {
       setSelectedProject(null);
       setSelectedIndex(-1);
-    }, 300); // Wait for exit animation
+    }, 300);
   };
 
-  // Handle next project
   const handleNextProject = (): void => {
     const nextIndex = (selectedIndex + 1) % projects.length;
     setSelectedProject(projects[nextIndex]);
     setSelectedIndex(nextIndex);
   };
 
-  // Handle previous project
   const handlePrevProject = (): void => {
     const prevIndex = selectedIndex === 0 ? projects.length - 1 : selectedIndex - 1;
     setSelectedProject(projects[prevIndex]);
@@ -147,7 +124,6 @@ export default function App(): ReactElement {
                   <RouteTransition>
                     <HeroBrutalist />
                     
-                    {/* Bridge gradient - smooth hero → projects handoff */}
                     <div
                       className="section-bridge"
                       style={{
@@ -199,7 +175,6 @@ export default function App(): ReactElement {
           </MainContent>
         </Suspense>
 
-        {/* Project Detail Modal */}
         <Suspense fallback={null}>
           <ProjectDetail 
             project={selectedProject}

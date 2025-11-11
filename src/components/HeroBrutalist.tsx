@@ -1,12 +1,6 @@
 import { motion } from 'motion/react';
 import type { JSX } from 'react';
 
-/**
- * HeroBrutalist Component — Dark minimalist hero with animated text background
- * Features scrolling text background and slide-in animations
- */
-
-// Animation constants
 const EASING = [0.22, 1, 0.36, 1] as const;
 
 const BACKGROUND_WORDS = [
@@ -35,7 +29,6 @@ const subtitleAnimation = {
 };
 
 export function HeroBrutalist(): JSX.Element {
-  // Quadruple the words array for continuous scrolling effect
   const repeatedWords = [...BACKGROUND_WORDS, ...BACKGROUND_WORDS, ...BACKGROUND_WORDS, ...BACKGROUND_WORDS];
 
   return (
@@ -46,7 +39,6 @@ export function HeroBrutalist(): JSX.Element {
       }}
       aria-label="Hero section"
     >
-      {/* Animated scrolling text background - decorative */}
       <div 
         className="absolute inset-0 flex items-center justify-end pr-8 sm:pr-20 pointer-events-none"
         style={{ opacity: 0.03 }}
@@ -74,7 +66,6 @@ export function HeroBrutalist(): JSX.Element {
         </motion.div>
       </div>
       
-      {/* Main content */}
       <div className="relative z-10 max-w-5xl w-full text-center">
         <motion.h1
           {...titleAnimation}

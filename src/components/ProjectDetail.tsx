@@ -29,7 +29,6 @@ interface ProjectDetailProps {
 }
 
 export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: ProjectDetailProps): React.JSX.Element | null {
-  // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -41,7 +40,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
     };
   }, [isOpen]);
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (!isOpen) return;
@@ -100,7 +98,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                 className="max-w-7xl mx-auto rounded-3xl overflow-hidden"
                 style={{ backgroundColor: 'var(--bg)' }}
               >
-                {/* Header with controls */}
                 <div className="sticky top-0 z-10 px-6 md:px-12 py-6 md:py-8 border-b backdrop-blur-md"
                   style={{ 
                     backgroundColor: 'rgba(244, 250, 255, 0.95)',
@@ -145,9 +142,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="px-6 md:px-12 py-8 md:py-12">
-                  {/* Hero section */}
                   <div className="mb-12 md:mb-20">
                     <div className="flex items-center gap-4 mb-6">
                       <div 
@@ -172,7 +167,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       {project.title}
                     </motion.h1>
 
-                    {/* Meta info */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -244,7 +238,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       )}
                     </motion.div>
 
-                    {/* Tags */}
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -267,7 +260,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                     </motion.div>
                   </div>
 
-                  {/* Main image */}
                   <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -283,9 +275,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                     </div>
                   </motion.div>
 
-                  {/* Content sections */}
                   <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-12 md:mb-20">
-                    {/* Description */}
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -305,7 +295,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       </p>
                     </motion.div>
 
-                    {/* Challenge */}
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -325,7 +314,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       </p>
                     </motion.div>
 
-                    {/* Solution */}
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -345,7 +333,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       </p>
                     </motion.div>
 
-                    {/* Results */}
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -379,7 +366,6 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                     </motion.div>
                   </div>
 
-                  {/* Gallery */}
                   {defaultGallery.length > 1 && (
                     <motion.div
                       initial={{ opacity: 0, y: 40 }}
