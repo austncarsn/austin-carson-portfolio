@@ -82,6 +82,84 @@
   --color-brand-500: var(--accent);
   --color-brand-600: var(--accent-600);
   --color-brand-300: var(--accent-300);
+  
+  /* === TAILWIND SEMANTIC TOKENS === */
+  /* Background tokens */
+  --color-bg-canvas: var(--bg);
+  --color-bg-surface: var(--surface);
+  --color-bg-elevated: var(--surface);
+  --color-bg-overlay: color-mix(in oklab, var(--pitch-black) 85%, transparent);
+  --color-bg-muted: var(--surface-2);
+  --color-bg-glass: color-mix(in oklab, var(--surface) 92%, transparent);
+  --color-bg-panel: var(--surface-2);
+  
+  /* Text tokens */
+  --color-text-primary: var(--text);
+  --color-text-primary-80: color-mix(in oklab, var(--text) 80%, transparent);
+  --color-text-primary-88: color-mix(in oklab, var(--text) 88%, transparent);
+  --color-text-secondary: color-mix(in oklab, var(--text) 70%, var(--bg));
+  --color-text-muted: var(--muted);
+  --color-text-subtle: color-mix(in oklab, var(--muted) 70%, var(--bg));
+  --color-text-on-brand: #FFFFFF;
+  --color-text-inverse: #FFFFFF;
+  
+  /* Border tokens */
+  --color-border-subtle: var(--line);
+  --color-border-default: var(--line);
+  --color-border-strong: color-mix(in oklab, var(--text) 30%, var(--bg));
+  --color-border-brand: var(--accent);
+  --color-border-error: #DC2626;
+  
+  /* Interactive tokens */
+  --color-interactive-primary: var(--accent);
+  --color-interactive-primary-hover: var(--accent-hover);
+  --color-interactive-primary-active: var(--accent-pressed);
+  --color-interactive-secondary: var(--surface-2);
+  --color-interactive-secondary-hover: color-mix(in oklab, var(--surface-2) 90%, var(--text));
+  --color-interactive-secondary-active: color-mix(in oklab, var(--surface-2) 85%, var(--text));
+  --color-interactive-ghost: transparent;
+  --color-interactive-ghost-hover: color-mix(in oklab, var(--surface) 50%, transparent);
+  --color-interactive-ghost-active: color-mix(in oklab, var(--surface) 70%, transparent);
+  --color-interactive-disabled: var(--muted);
+  --color-interactive-focus: var(--accent);
+  
+  /* Status colors */
+  --color-success-light: #DCFCE7;
+  --color-success: #16A34A;
+  --color-success-dark: #15803D;
+  --color-warning-light: #FEF3C7;
+  --color-warning: #F59E0B;
+  --color-warning-dark: #D97706;
+  --color-error-light: #FEE2E2;
+  --color-error: #DC2626;
+  --color-error-dark: #B91C1C;
+  --color-info-light: #DBEAFE;
+  --color-info: #3B82F6;
+  --color-info-dark: #2563EB;
+  
+  /* Accent scale (for Tailwind classes like bg-accent-100) */
+  --color-accent-50: #FFF4F0;
+  --color-accent-100: #FFE8DD;
+  --color-accent-200: #FFCFBB;
+  --color-accent-300: #FFB599;
+  --color-accent-400: #FF8C66;
+  --color-accent-500: var(--orange);
+  --color-accent-600: #D63000;
+  --color-accent-700: #B32800;
+  --color-accent-800: #901F00;
+  --color-accent-900: #6D1700;
+  
+  /* Brand scale (pitch-black) */
+  --color-brand-50: #FAFAFA;
+  --color-brand-100: #F5F5F5;
+  --color-brand-200: #E5E5E5;
+  --color-brand-400: #9E9E9E;
+  --color-brand-500: var(--pitch-black);
+  --color-brand-600: #0D0D0D;
+  --color-brand-700: #0A0A0A;
+  --color-brand-800: #070707;
+  --color-brand-900: #040404;
+  --color-brand-950: #020202;
 
   /* === SPACING PRIMITIVES === */
   /* Refined spacing scale: 8px base unit */
@@ -108,8 +186,10 @@
 
   /* === TYPOGRAPHY PRIMITIVES === */
   /* Refined type scale: base 16px - WCAG 2.2 AA Compliant */
+  --font-size-xs: 0.75rem;          /* 12px - extra small text */
+  --font-size-sm: 0.875rem;         /* 14px - small text */
   --font-size-caption: 0.8125rem;   /* 13px - captions, helper text */
-  --font-size-small: 0.875rem;      /* 14px - small text */
+  --font-size-small: 0.875rem;      /* 14px - small text (legacy) */
   --font-size-base: 1rem;           /* 16px - body text, REQUIRED for inputs */
   --font-size-lg: 1.125rem;         /* 18px - emphasized body */
   
