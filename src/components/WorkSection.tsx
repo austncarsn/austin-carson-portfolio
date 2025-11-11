@@ -1,58 +1,243 @@
 import { useMemo, useState } from "react";
 import type { JSX } from "react";
 import { motion } from "motion/react";
-import { useNavigate } from "react-router-dom";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export type Project = {
   id: string;
   title: string;
   image: string;
   category: string;
-  client?: string;
-  href?: string;
-  // eslint-disable-next-line no-unused-vars
-  onClick?: (_project: Project) => void;
+  year: string;
+  client: string;
+  description: string;
+  fullDescription?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string[];
+  gallery?: string[];
+  tags?: string[];
+  link?: string;
 };
 
 type Props = {
   projects: Project[];
   initialFilter?: string;
   // eslint-disable-next-line no-unused-vars
-  onProjectOpen?: (_p: Project) => void;
+  onProjectClick?: (project: Project, index: number) => void;
   filters?: string[];
-  // eslint-disable-next-line no-unused-vars
-  ImageWithFallback?: (_props: {
-    src: string;
-    alt: string;
-    className?: string;
-  }) => JSX.Element;
 };
+
+// Animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 }
+};
+
+// Filter Button Component
+function FilterButton({ 
+  filter, 
+  isActive, 
+  index, 
+  onClick 
+}: { 
+  filter: string; 
+  isActive: boolean; 
+  index: number; 
+  onClick: () => void;
+}): JSX.Element {
+  return (
+    <motion.button
+      initial={fadeInUp.initial}
+      whileInView={fadeInUp.animate}
+      transition={{ delay: index * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      viewport={{ once: true }}
+      onClick={onClick}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      className="relative px-6 md:px-10 py-3 md:py-4 overflow-hidden transition-all duration-500 group rounded-[16px] md:rounded-[20px]"
+      style={{
+        backgroundColor: isActive ? 'var(--accent)' : 'transparent',
+        color: isActive ? 'var(--bg)' : 'var(--ink)',
+        border: `1px solid ${isActive ? 'var(--accent)' : 'var(--line)'}`
+      }}
+    >
+      <span className="relative z-10 text-[10px] md:text-xs tracking-[0.2em] uppercase font-medium">{filter}</span>
+      {!isActive && (
+        <motion.div
+          className="absolute inset-0"
+          style={{ backgroundColor: 'var(--accent)', opacity: 0 }}
+          whileHover={{ opacity: 0.05 }}
+          transition={{ duration: 0.3 }}
+        />
+      )}
+    </motion.button>
+  );
+}
+
+// Project Card Component
+function ProjectCard({ 
+  project, 
+  index, 
+  onClick 
+}: { 
+  project: Project; 
+  index: number; 
+  onClick: () => void;
+}): JSX.Element {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      onClick={onClick}
+      className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center py-8 md:py-12 border-b cursor-pointer group"
+      style={{ borderColor: 'var(--line)' }}
+    >
+      {/* Index Number */}
+      <div className="hidden md:block md:col-span-1">
+        <motion.span 
+          className="text-3xl md:text-4xl tabular-nums"
+          style={{ 
+            color: 'var(--muted)', 
+            opacity: isHovered ? 1 : 0.4,
+            fontWeight: 300
+          }}
+          animate={{ opacity: isHovered ? 1 : 0.4 }}
+          transition={{ duration: 0.3 }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </motion.span>
+      </div>
+
+      {/* Project Title - First on mobile */}
+      <div className="col-span-1 md:col-span-3 order-1 md:order-none">
+        <motion.h3 
+          className="text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-2 leading-[0.95]"
+          style={{ 
+            color: 'var(--ink)',
+            fontWeight: 600
+          }}
+          animate={{ 
+            x: isHovered ? 8 : 0,
+            color: isHovered ? 'var(--accent)' : 'var(--ink)'
+          }}
+          transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+        >
+          {project.title}
+        </motion.h3>
+        {/* Show metadata on mobile */}
+        <div className="md:hidden mt-4 grid grid-cols-2 gap-4">
+          <MetaField label="Category" value={project.category} />
+          <MetaField label="Client" value={project.client} />
+        </div>
+      </div>
+
+      {/* Project Image */}
+      <div className="col-span-1 md:col-span-4 order-2 md:order-none">
+        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 rounded-[20px]">
+          <motion.div
+            animate={{ scale: isHovered ? 1.08 : 1 }}
+            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+            className="w-full h-full"
+          >
+            <ImageWithFallback
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+          
+          {/* Overlay with description */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 flex items-center justify-center p-6"
+            style={{ backgroundColor: 'rgba(255, 66, 0, 0.95)' }}
+          >
+            <span 
+              className="text-xs md:text-sm tracking-[0.25em] uppercase text-center leading-relaxed"
+              style={{ color: 'var(--bg)', fontWeight: 600 }}
+            >
+              {project.description}
+            </span>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Metadata - Hidden on mobile, shown in title section */}
+      <div className="hidden md:grid col-span-3 grid-cols-2 gap-6">
+        <MetaField label="Category" value={project.category} />
+        <MetaField label="Client" value={project.client} />
+      </div>
+
+      {/* Arrow Indicator */}
+      <div className="hidden md:flex col-span-1 justify-end">
+        <motion.div
+          animate={{ 
+            x: isHovered ? 4 : 0,
+            scale: isHovered ? 1.1 : 1
+          }}
+          transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+          className="w-14 h-14 rounded-full border flex items-center justify-center"
+          style={{ borderColor: isHovered ? 'var(--accent)' : 'var(--line)' }}
+        >
+          <motion.span 
+            className="text-xl"
+            style={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
+            animate={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
+          >
+            →
+          </motion.span>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+// MetaField Component
+function MetaField({ label, value }: { label: string; value: string }): JSX.Element {
+  return (
+    <div>
+      <div 
+        className="text-[10px] tracking-[0.3em] uppercase mb-2 font-medium"
+        style={{ color: 'var(--muted)', opacity: 0.6 }}
+      >
+        {label}
+      </div>
+      <div 
+        className="text-base"
+        style={{ color: 'var(--ink)', fontWeight: 500 }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
 
 export function WorkSection({
   projects,
   initialFilter = "All",
-  onProjectOpen,
+  onProjectClick,
   filters,
-  ImageWithFallback,
 }: Props): JSX.Element {
   const [activeFilter, setActiveFilter] = useState(initialFilter);
-  const navigate = useNavigate();
-
-  // Detect reduced motion preference
-  const reduceMotion = useMemo(() => {
-    if (typeof window === "undefined" || !("matchMedia" in window)) return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
 
   // Auto-derive filters from project categories if not provided
-  const derivedFilters = useMemo(() => {
+  const FILTERS = useMemo(() => {
     if (filters) return ["All", ...filters];
     const cats = Array.from(new Set(projects.map((p: Project) => p.category))).sort();
     return ["All", ...cats];
   }, [projects, filters]);
 
   // Filter projects by active category
-  const visible = useMemo(
+  const filteredProjects = useMemo(
     () =>
       activeFilter === "All"
         ? projects
@@ -60,28 +245,9 @@ export function WorkSection({
     [projects, activeFilter]
   );
 
-  // Unified navigation handler
-  const open = (p: Project): void => {
-    if (p.onClick) {
-      p.onClick(p);
-      return;
-    }
-    if (p.href) {
-      // Use React Router for internal navigation, native for external
-      if (p.href.startsWith('http')) {
-        window.location.href = p.href;
-      } else {
-        navigate(p.href);
-      }
-      return;
-    }
-    onProjectOpen?.(p);
+  const handleProjectClick = (project: Project, index: number): void => {
+    onProjectClick?.(project, index);
   };
-
-  // Default image component if none provided
-  const ImageComponent = ImageWithFallback ?? (({ src, alt, className }: { src: string; alt: string; className?: string }): JSX.Element => (
-    <img src={src} alt={alt} className={className} loading="lazy" />
-  ));
 
   return (
     <section
@@ -95,189 +261,78 @@ export function WorkSection({
         style={{ background: 'linear-gradient(180deg, transparent, color-mix(in oklab, white 6%, transparent))' }}
       />
       
-      <div className="max-w-[1800px] mx-auto relative">
-        {/* Header + filters */}
-        <div className="mb-16">
+      <div className="max-w-[1800px] mx-auto">
+        {/* Header Section */}
+        <header className="mb-16 md:mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            className="mb-8"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div 
+                className="w-12 md:w-16 h-[1px]"
+                style={{ backgroundColor: 'var(--accent)' }}
+              />
+              <span 
+                className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
+                style={{ color: 'var(--muted)' }}
+              >
+                Selected Work
+              </span>
+            </div>
+          </motion.div>
+
           <motion.h2
             id="work-heading"
-            initial={reduceMotion ? false : { opacity: 0, y: 30 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-6xl md:text-8xl tracking-tighter mb-10 md:mb-12"
-            style={{ color: "color-mix(in oklab, var(--text) 95%, transparent)" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+            className="text-6xl md:text-8xl lg:text-9xl tracking-[-0.02em] mb-12 md:mb-16"
+            style={{ color: 'var(--ink)', fontWeight: 600 }}
           >
             Projects
           </motion.h2>
 
-          <div role="tablist" aria-label="Project filters" className="flex flex-wrap gap-3">
-            {derivedFilters.map((filter, i) => (
-              <motion.button
+          {/* Filter Navigation */}
+          <nav className="flex flex-wrap gap-3 md:gap-4" aria-label="Project filters">
+            {FILTERS.map((filter, i) => (
+              <FilterButton
                 key={filter}
-                role="tab"
-                aria-selected={activeFilter === filter}
-                aria-pressed={activeFilter === filter}
-                initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                transition={{ delay: reduceMotion ? 0 : i * 0.06 }}
-                viewport={{ once: true }}
+                filter={filter}
+                isActive={activeFilter === filter}
+                index={i}
                 onClick={() => setActiveFilter(filter)}
-                className="px-6 md:px-8 py-2.5 md:py-3 border-2 rounded-full transition-all duration-300 focus:outline-none focus-ring"
-                style={{
-                  borderColor: activeFilter === filter ? "var(--primary)" : "var(--warm-medium)",
-                  backgroundColor: activeFilter === filter ? "var(--primary)" : "transparent",
-                  color: activeFilter === filter ? "var(--warm-lightest)" : "var(--warm-stone)",
-                }}
-              >
-                {filter}
-              </motion.button>
+              />
             ))}
-          </div>
-        </div>
+          </nav>
+        </header>
 
-        {/* Project list */}
-        <ul className="space-y-6 md:space-y-8" aria-live="polite">
-          {visible.map((project: Project, index: number) => (
-            <motion.li
-              key={project.id ?? project.title}
-              initial={reduceMotion ? false : { opacity: 0, x: -50 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
-              transition={{ delay: reduceMotion ? 0 : index * 0.06 }}
-              viewport={{ once: true }}
-              className="group projects-row"
-              style={{ borderBottom: '1.25px solid color-mix(in oklab, white 8%, transparent)' }}
-            >
-              {/* Anchor row so keyboard users can activate the whole row */}
-              <a
-                href={project.href || undefined}
-                target={project.href?.startsWith("http") ? "_blank" : undefined}
-                rel={project.href?.startsWith("http") ? "noopener noreferrer" : undefined}
-                onClick={(e) => {
-                  // Helper: detect modified clicks (Cmd/Ctrl+Click, etc.)
-                  const isModified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-                  
-                  // Only take over if we have a navigation target
-                  const hasTarget = !!(project.href || project.onClick || onProjectOpen);
-                  if (!hasTarget) return;
-
-                  // For normal left-clicks, prevent default and use our open()
-                  if (!isModified) {
-                    e.preventDefault();
-                    open(project);
-                  }
-                  // For Cmd/Ctrl+Click, let browser handle it (new tab)
-                }}
-                className="grid grid-cols-12 gap-4 md:gap-6 items-center py-6 md:py-8 border-b outline-none focus-ring"
-                style={{ borderColor: "var(--warm-medium)" }}
-              >
-                {/* Number */}
-                <div className="col-span-2 sm:col-span-1">
-                  <span
-                    className="text-2xl md:text-3xl tabular-nums"
-                    style={{ color: 'color-mix(in oklab, white 35%, transparent)' }}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                {/* Image */}
-                <div className="col-span-10 sm:col-span-5 md:col-span-3">
-                  <div 
-                    className="relative aspect-[4/3] overflow-hidden rounded-xl projects-thumb"
-                    style={{ boxShadow: '0 10px 24px color-mix(in oklab, black 35%, transparent)' }}
-                  >
-                    <ImageComponent
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover will-change-transform transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                </div>
-
-                {/* Title */}
-                <div className="col-span-12 sm:col-span-6 md:col-span-3">
-                  <h3
-                    className="text-3xl md:text-5xl tracking-tighter transition-opacity group-hover:opacity-70"
-                    style={{ color: 'color-mix(in oklab, white 92%, transparent)' }}
-                  >
-                    {project.title}
-                  </h3>
-                </div>
-
-                {/* Meta: Category */}
-                <div className="col-span-6 md:col-span-2">
-                  <div
-                    className="text-[11px] md:text-sm tracking-wider uppercase mb-1"
-                    style={{ color: 'color-mix(in oklab, white 60%, transparent)' }}
-                  >
-                    Category
-                  </div>
-                  <div className="text-base md:text-lg" style={{ color: "var(--accent)" }}>
-                    {project.category}
-                  </div>
-                </div>
-
-                {/* Meta: Client */}
-                <div className="col-span-6 md:col-span-2">
-                  <div
-                    className="text-[11px] md:text-sm tracking-wider uppercase mb-1"
-                    style={{ color: 'color-mix(in oklab, white 60%, transparent)' }}
-                  >
-                    Client
-                  </div>
-                  <div className="text-base md:text-lg" style={{ color: 'color-mix(in oklab, white 75%, transparent)' }}>
-                    {project.client ?? "—"}
-                  </div>
-                </div>
-
-                {/* Arrow - true button to prevent accidental navigation */}
-                <div className="hidden md:flex md:col-span-1 justify-end">
-                  {!reduceMotion ? (
-                    <motion.button
-                      type="button"
-                      onClick={(e) => { 
-                        e.preventDefault(); 
-                        e.stopPropagation();
-                        open(project); 
-                      }}
-                      animate={{ x: [0, 10, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center"
-                      style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
-                      aria-label={`Open ${project.title}`}
-                    >
-                      →
-                    </motion.button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={(e) => { 
-                        e.preventDefault(); 
-                        e.stopPropagation();
-                        open(project); 
-                      }}
-                      className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center"
-                      style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
-                      aria-label={`Open ${project.title}`}
-                    >
-                      →
-                    </button>
-                  )}
-                </div>
-              </a>
-            </motion.li>
+        {/* Projects List */}
+        <motion.div layout className="space-y-4">
+          {filteredProjects.map((project, index) => (
+            <ProjectCard
+              key={project.id || project.title}
+              project={project}
+              index={index}
+              onClick={() => handleProjectClick(project, index)}
+            />
           ))}
+        </motion.div>
 
-          {/* Empty state */}
-          {visible.length === 0 && (
-            <li 
-              className="py-16 text-center text-xl md:text-2xl" 
-              style={{ color: "var(--warm-stone)" }}
-              role="status"
-            >
-              No projects found. Try another filter.
-            </li>
-          )}
-        </ul>
+        {/* Empty state */}
+        {filteredProjects.length === 0 && (
+          <div 
+            className="py-20 text-center text-xl md:text-2xl" 
+            style={{ color: "var(--muted)" }}
+            role="status"
+          >
+            No projects found. Try another filter.
+          </div>
+        )}
       </div>
     </section>
   );

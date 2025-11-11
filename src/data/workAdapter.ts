@@ -14,6 +14,14 @@ type GalleryProject = {
   cover: string;
   alt?: string;
   ratio?: '4:5' | '16:9' | '1:1';
+  year?: string;
+  description?: string;
+  fullDescription?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string[];
+  tags?: string[];
+  link?: string;
 };
 
 /**
@@ -28,8 +36,15 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
     title: p.title,
     image: p.cover,
     category,
+    year: p.year ?? '2025',
     client: extractClient(p.tag ?? ''),
-    href: p.href,
+    description: p.description ?? p.alt ?? '',
+    fullDescription: p.fullDescription,
+    challenge: p.challenge,
+    solution: p.solution,
+    results: p.results,
+    tags: p.tags,
+    link: p.link,
   };
 }
 
@@ -37,7 +52,7 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
  * Extract client/type metadata from tag
  * Maps legacy tags to client labels for WorkSection display
  */
-function extractClient(tag?: string): string | undefined {
+function extractClient(tag?: string): string {
   const clientMap: Record<string, string> = {
     'Design Portfolio': 'Personal',
     'Web App': 'Product',
@@ -45,8 +60,8 @@ function extractClient(tag?: string): string | undefined {
     'Icon System': 'Design System',
     'AI Tooling': 'Product',
   };
-  if (!tag) return undefined;
-  return clientMap[tag];
+  if (!tag) return 'Personal';
+  return clientMap[tag] ?? 'Personal';
 }
 
 /**

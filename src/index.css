@@ -790,12 +790,12 @@ code, pre, kbd {
     border-radius: 4px;
   }
   @supports (color: color-mix(in lab, red, red)) {
-    :focus-visible { outline: 2px solid color-mix(in oklch, var(--ring), var(--brand-ice) 35%); }
+    :focus-visible { outline: 2px solid color-mix(in oklch, var(--accent), var(--bg) 35%); }
   }
   
-  /* Noir Glass theme focus ring */
-  [data-theme="noir"] :focus-visible {
-    outline: 2px solid var(--warm-tan);
+  /* Focus ring */
+  [data-theme="light"] :focus-visible {
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 

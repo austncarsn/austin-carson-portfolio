@@ -1,18 +1,7 @@
 import { motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { Mail, Phone, MapPin, Linkedin, Github, Instagram, ArrowRight } from "lucide-react";
+import { memo, useMemo, useCallback, useState } from "react";
 import type { ReactElement } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-const Schema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: z.string().email("Enter a valid email"),
-  company: z.string().optional(),
-  budget: z.string().optional(),
-  message: z.string().min(10, "Tell me a little more"),
-});
-type FormValues = z.infer<typeof Schema>;
 
 type Contact2Props = {
   directEmail: string;
@@ -21,422 +10,449 @@ type Contact2Props = {
   socials?: { label: string; href: string }[];
 };
 
+// Stacked cards with 3D perspective
+const ContactMethod3D = memo(({ method, index, isActive, onClick }: any) => (
+  <motion.div
+    onClick={onClick}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.15, duration: 0.6 }}
+    viewport={{ once: true }}
+    whileHover={{ 
+      y: -8,
+      transition: { duration: 0.3 }
+    }}
+    className="cursor-pointer relative group rounded-2xl md:rounded-3xl shadow-lg"
+    style={{
+      transformStyle: 'preserve-3d',
+      perspective: '1000px'
+    }}
+  >
+    <div 
+      className="p-6 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-500"
+      style={{ 
+        backgroundColor: isActive ? 'var(--accent)' : 'white',
+        boxShadow: isActive 
+          ? '0 20px 40px rgba(255, 66, 0, 0.2)' 
+          : '0 10px 30px rgba(0, 0, 0, 0.08)'
+      }}
+    >
+      <div className="flex items-start justify-between mb-4 md:mb-6">
+        <div 
+          className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300"
+          style={{ 
+            backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : 'var(--bg)'
+          }}
+        >
+          <method.icon 
+            size={24} 
+            className="md:w-7 md:h-7"
+            style={{ color: isActive ? 'white' : 'var(--accent)' }}
+          />
+        </div>
+        <ArrowRight 
+          size={20} 
+          className="md:w-6 md:h-6 transition-transform duration-300 group-hover:translate-x-2"
+          style={{ color: isActive ? 'white' : 'var(--accent)' }}
+        />
+      </div>
+      <div 
+        className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase mb-2 md:mb-3"
+        style={{ 
+          color: isActive ? 'white' : 'var(--ink)',
+          opacity: 0.7
+        }}
+      >
+        {method.label}
+      </div>
+      <div 
+        className="text-xl md:text-2xl mb-1 md:mb-2 break-all"
+        style={{ color: isActive ? 'white' : 'var(--ink)' }}
+      >
+        {method.value}
+      </div>
+      <div 
+        className="text-sm"
+        style={{ 
+          color: isActive ? 'white' : 'var(--ink)',
+          opacity: 0.6
+        }}
+      >
+        {method.description}
+      </div>
+    </div>
+  </motion.div>
+));
+
+ContactMethod3D.displayName = 'ContactMethod3D';
+
 export function Contact2({
   directEmail,
   phone = "",
-  office = { lines: [] },
   socials = [],
 }: Contact2Props): ReactElement {
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "err">("idle");
-  const [cooldownUntil, setCooldownUntil] = useState<number>(0);
-  const reduceMotion = useMemo(
-    () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
-    []
-  );
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormValues>({ resolver: zodResolver(Schema) });
+  const [activeMethod, setActiveMethod] = useState<number>(0);
+  const [formStep, setFormStep] = useState(1);
 
-  const onSubmit = async (data: FormValues): Promise<void> => {
-    // Rate limit check
-    const now = Date.now();
-    if (now < cooldownUntil) {
-      setStatus("err");
-      return;
+  const contactMethods = useMemo(() => [
+    {
+      icon: Mail,
+      label: 'Email',
+      value: directEmail,
+      description: 'Best for detailed inquiries'
+    },
+    {
+      icon: Phone,
+      label: 'Phone',
+      value: phone || 'Available upon request',
+      description: 'Quick questions and support'
+    },
+    {
+      icon: MapPin,
+      label: 'Location',
+      value: 'Seattle, WA',
+      description: 'Remote & on-site available'
     }
+  ], [directEmail, phone]);
 
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      setStatus("ok");
-      reset();
-      setCooldownUntil(Date.now() + 60000); // 60s cooldown
-    } catch {
-      setStatus("err");
-    } finally {
-      setTimeout(() => setStatus("idle"), 4000);
-    }
-  };
+  const socialIcons = useMemo(() => ({
+    'LinkedIn': Linkedin,
+    'GitHub': Github,
+    'Instagram': Instagram,
+  }), []);
+
+  const handleMethodClick = useCallback((index: number) => {
+    setActiveMethod(index);
+  }, []);
+
+  const nextStep = useCallback(() => {
+    setFormStep(prev => Math.min(prev + 1, 3));
+  }, []);
 
   return (
-    <section
-      className="relative min-h-screen"
-      style={{ background: "var(--surface)", color: "var(--text)" }}
+    <section 
+      className="relative min-h-screen px-4 md:px-8 lg:px-20 py-16 md:py-24 lg:py-32"
+      style={{ backgroundColor: 'var(--bg)' }}
     >
-      <style>{`
-        input:focus, textarea:focus { 
-          border-color: var(--focus) !important; 
-        }
-        ::placeholder { 
-          color: color-mix(in oklab, var(--text) 55%, transparent); 
-        }
-      `}</style>
-      
-      <div className="grid lg:grid-cols-[60%_40%] min-h-screen">
-        {/* Left: form */}
-        <div
-          className="p-8 md:p-16 lg:p-24 flex flex-col justify-center"
+      <div className="relative z-10 max-w-[1800px] mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-12 md:mb-20"
         >
-          <div 
-            className="w-full max-w-[760px] rounded-2xl p-8 md:p-12"
-            style={{ 
-              background: "var(--surface-2)", 
-              border: "1px solid var(--line)" 
-            }}
-          >
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 50 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+          <div className="flex items-center justify-center gap-3 md:gap-4 mb-6">
+            <div 
+              className="w-12 md:w-16 h-[1px]"
+              style={{ backgroundColor: 'var(--accent)' }}
+            />
+            <span 
+              className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
+              style={{ color: 'var(--muted)' }}
             >
-            <p
-              className="text-xs tracking-[0.5em] uppercase mb-6"
-              style={{ color: 'color-mix(in oklab, white 50%, transparent)' }}
-            >
-              [Form]
-            </p>
-
-            <h2
-              className="text-6xl md:text-8xl tracking-tighter leading-[0.9] mb-10"
-              style={{ color: 'color-mix(in oklab, white 95%, transparent)' }}
-            >
-              Start a
-              <br />
-              Project
-            </h2>
-
-            <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-8">
-              {/* Name */}
-              <Field
-                id="name"
-                label="Your Name"
-                type="text"
-                autoComplete="name"
-                register={register}
-                error={errors.name?.message}
-              />
-              {/* Email */}
-              <Field
-                id="email"
-                label="Email Address"
-                type="email"
-                autoComplete="email"
-                register={register}
-                error={errors.email?.message}
-              />
-              {/* Company */}
-              <Field
-                id="company"
-                label="Company"
-                type="text"
-                autoComplete="organization"
-                register={register}
-                error={errors.company?.message}
-              />
-              {/* Budget */}
-              <BudgetField
-                id="budget"
-                label="Budget Range"
-                register={register}
-                error={errors.budget?.message}
-              />
-
-              {/* Message */}
-              <div>
-                <label htmlFor="message" className="sr-only">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  {...register("message")}
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-err" : undefined}
-                  rows={5}
-                  placeholder="Tell me about your project"
-                  className="w-full bg-transparent border-b pb-4 text-[18px] leading-6 outline-none resize-y transition-[border-color,border-width] duration-150"
-                  style={{
-                    borderColor: "var(--line)",
-                    color: "var(--text)",
-                    borderWidth: "1.25px",
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = "var(--focus)";
-                    e.currentTarget.style.borderWidth = "2px";
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = "var(--line)";
-                    e.currentTarget.style.borderWidth = "1.25px";
-                  }}
-                />
-                {errors.message && (
-                  <p id="message-err" className="mt-2 text-sm" style={{ color: "var(--danger, #b00020)" }}>
-                    {errors.message.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Honeypot */}
-              <div className="sr-only" aria-hidden="true">
-                <label htmlFor="website">Website</label>
-                <input
-                  id="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  {...register("website" as keyof FormValues)}
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="group flex items-center gap-4 pt-4 disabled:opacity-60"
-              >
-                <span
-                  className="text-3xl md:text-4xl tracking-tighter"
-                  style={{ color: 'color-mix(in oklab, white 95%, transparent)' }}
-                >
-                  {status === "sending" ? "Sending…" : "Send inquiry"}
-                </span>
-                <span
-                  className="inline-flex w-10 h-10 rounded-full border-2 items-center justify-center transition-transform group-hover:translate-x-1"
-                  style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
-                >
-                  →
-                </span>
-              </button>
-
-              {/* Privacy note */}
-              <p className="text-xs opacity-60" style={{ color: 'color-mix(in oklab, white 60%, transparent)' }}>
-                Your information is never shared. I'll reply within 24 hours.
-              </p>
-
-              {/* Live region for feedback */}
-              <div aria-live="polite" className="mt-3 text-sm">
-                {status === "ok" && (
-                  <span style={{ color: "var(--success, oklch(55% 0.1 150))" }}>
-                    Thanks — I'll reply soon.
-                  </span>
-                )}
-                {status === "err" && (
-                  <span style={{ color: "var(--danger, oklch(45% 0.12 28))" }}>
-                    Something went wrong. Try again or email me.
-                  </span>
-                )}
-              </div>
-            </form>
-            </motion.div>
+              Get In Touch
+            </span>
+            <div 
+              className="w-12 md:w-16 h-[1px]"
+              style={{ backgroundColor: 'var(--accent)' }}
+            />
           </div>
-        </div>
-
-        {/* Right: info */}
-        <div
-          className="p-8 md:p-16 flex flex-col justify-between lg:sticky lg:top-0 lg:h-screen"
-          style={{ color: 'color-mix(in oklab, white 85%, transparent)' }}
-        >
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 50 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            viewport={{ once: true }}
+          <h2 
+            className="text-6xl md:text-8xl lg:text-9xl tracking-[-0.02em]"
+            style={{ color: 'var(--ink)', fontWeight: 600 }}
           >
-            <p
-              className="text-xs tracking-[0.5em] uppercase mb-8"
-              style={{ color: 'color-mix(in oklab, white 50%, transparent)' }}
-            >
-              [Info]
-            </p>
+            Let's Talk
+          </h2>
+        </motion.div>
 
-            <div className="space-y-12">
-              <div>
-                <h3 className="text-2xl mb-3" style={{ color: "var(--accent)" }}>
-                  Direct Contact
-                </h3>
-                <div className="space-y-2">
-                  <a
-                    className="block text-xl underline-offset-4 hover:underline focus-ring"
-                    style={{ color: 'color-mix(in oklab, white 90%, transparent)' }}
-                    href={`mailto:${directEmail}`}
-                  >
-                    {directEmail}
-                  </a>
-                  {phone && (
-                    <a
-                      className="block text-xl underline-offset-4 hover:underline focus-ring"
-                      style={{ color: 'color-mix(in oklab, white 90%, transparent)' }}
-                      href={`tel:${phone.replace(/\D/g, "")}`}
-                    >
-                      {phone}
-                    </a>
-                  )}
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+          {/* Left - Contact Methods */}
+          <div className="space-y-4 md:space-y-6">
+            {contactMethods.map((method, i) => (
+              <ContactMethod3D
+                key={i}
+                method={method}
+                index={i}
+                isActive={activeMethod === i}
+                onClick={() => handleMethodClick(i)}
+              />
+            ))}
+
+            {/* Social Links */}
+            {socials.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                viewport={{ once: true }}
+                className="p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-lg"
+                style={{ backgroundColor: 'white' }}
+              >
+                <div 
+                  className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase mb-4 md:mb-6"
+                  style={{ color: 'var(--ink)', opacity: 0.6 }}
+                >
+                  Follow Me
                 </div>
-              </div>
-
-              {office.lines.length > 0 && (
-                <div>
-                  <h3 className="text-2xl mb-3" style={{ color: "var(--warm-tan)" }}>
-                    Office
-                  </h3>
-                  <p
-                    className="text-xl leading-relaxed"
-                    style={{ color: "var(--warm-lightest)" }}
-                  >
-                    {office.lines.map((l, i) => (
-                      <span key={i}>
-                        {l}
-                        <br />
-                      </span>
-                    ))}
-                  </p>
-                </div>
-              )}
-
-              {socials.length > 0 && (
-                <div>
-                  <h3 className="text-2xl mb-3" style={{ color: "var(--accent)" }}>
-                    Follow
-                  </h3>
-                  <div className="flex flex-wrap gap-6">
-                    {socials.map((s) => (
-                      <a
-                        key={s.label}
-                        href={s.href}
-                        className="text-lg hover:translate-y-[-3px] transition-transform focus-ring"
-                        style={{ color: 'color-mix(in oklab, white 90%, transparent)' }}
+                <div className="grid grid-cols-2 gap-3 md:gap-4">
+                  {socials.map((social, i) => {
+                    const IconComponent = socialIcons[social.label as keyof typeof socialIcons];
+                    return (
+                      <motion.a
+                        key={i}
+                        href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.7 + i * 0.05 }}
+                        viewport={{ once: true }}
+                        whileHover={{ scale: 1.05, y: -3 }}
+                        className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl transition-all duration-300"
+                        style={{ backgroundColor: 'rgba(39, 37, 31, 0.04)' }}
                       >
-                        {s.label}
-                      </a>
-                    ))}
-                  </div>
+                        {IconComponent && (
+                          <IconComponent size={18} className="md:w-5 md:h-5" style={{ color: 'var(--accent)' }} />
+                        )}
+                        <span 
+                          className="text-xs md:text-sm"
+                          style={{ color: 'var(--ink)' }}
+                        >
+                          {social.label}
+                        </span>
+                      </motion.a>
+                    );
+                  })}
                 </div>
-              )}
+              </motion.div>
+            )}
+          </div>
+
+          {/* Right - Multi-step form */}
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.8, 
+              delay: 0.2,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+            viewport={{ once: true }}
+            className="p-6 md:p-10 lg:p-12 rounded-2xl md:rounded-3xl"
+            style={{ 
+              backgroundColor: 'white',
+              boxShadow: '0 30px 60px rgba(0, 0, 0, 0.12), 0 10px 20px rgba(0, 0, 0, 0.08)'
+            }}
+          >
+            {/* Step indicator */}
+            <div className="flex items-center justify-between mb-8 md:mb-12">
+              {[1, 2, 3].map((step) => (
+                <div key={step} className="flex items-center gap-2 md:gap-3">
+                  <motion.div 
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-500"
+                    animate={{
+                      backgroundColor: formStep >= step ? 'var(--accent)' : 'transparent',
+                      scale: formStep === step ? [1, 1.1, 1] : 1
+                    }}
+                    transition={{
+                      scale: {
+                        duration: 0.6,
+                        repeat: formStep === step ? Infinity : 0,
+                        repeatDelay: 1
+                      }
+                    }}
+                    style={{ 
+                      border: `2px solid ${formStep >= step ? 'var(--accent)' : 'rgba(39, 37, 31, 0.2)'}`
+                    }}
+                  >
+                    <span 
+                      className="text-xs md:text-sm"
+                      style={{ color: formStep >= step ? 'white' : 'var(--ink)' }}
+                    >
+                      {step}
+                    </span>
+                  </motion.div>
+                  {step < 3 && (
+                    <motion.div 
+                      className="w-8 md:w-12 h-px"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: formStep > step ? 1 : 0 }}
+                      transition={{ duration: 0.5 }}
+                      style={{ 
+                        backgroundColor: 'var(--accent)',
+                        transformOrigin: 'left'
+                      }}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
+
+            <form className="space-y-6 md:space-y-8">
+              {formStep === 1 && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <label 
+                      className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase block mb-2 md:mb-3"
+                      style={{ color: 'var(--ink)', opacity: 0.6 }}
+                    >
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full bg-transparent border-b-2 pb-3 md:pb-4 text-lg md:text-xl outline-none transition-all duration-300 focus:border-accent rounded-lg px-2"
+                      style={{ 
+                        borderColor: 'rgba(39, 37, 31, 0.2)',
+                        color: 'var(--ink)'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label 
+                      className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase block mb-2 md:mb-3"
+                      style={{ color: 'var(--ink)', opacity: 0.6 }}
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="w-full bg-transparent border-b-2 pb-3 md:pb-4 text-lg md:text-xl outline-none transition-all duration-300 focus:border-accent rounded-lg px-2"
+                      style={{ 
+                        borderColor: 'rgba(39, 37, 31, 0.2)',
+                        color: 'var(--ink)'
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+
+              {formStep === 2 && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div>
+                    <label 
+                      className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase block mb-2 md:mb-3"
+                      style={{ color: 'var(--ink)', opacity: 0.6 }}
+                    >
+                      Project Type
+                    </label>
+                    <select
+                      className="w-full bg-transparent border-b-2 pb-3 md:pb-4 text-lg md:text-xl outline-none transition-all duration-300 focus:border-accent rounded-lg px-2"
+                      style={{ 
+                        borderColor: 'rgba(39, 37, 31, 0.2)',
+                        color: 'var(--ink)'
+                      }}
+                    >
+                      <option>Web Design</option>
+                      <option>Mobile App</option>
+                      <option>AI/ML Project</option>
+                      <option>Full-Stack Development</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label 
+                      className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase block mb-2 md:mb-3"
+                      style={{ color: 'var(--ink)', opacity: 0.6 }}
+                    >
+                      Budget Range
+                    </label>
+                    <select
+                      className="w-full bg-transparent border-b-2 pb-3 md:pb-4 text-lg md:text-xl outline-none transition-all duration-300 focus:border-accent rounded-lg px-2"
+                      style={{ 
+                        borderColor: 'rgba(39, 37, 31, 0.2)',
+                        color: 'var(--ink)'
+                      }}
+                    >
+                      <option>$5k - $10k</option>
+                      <option>$10k - $25k</option>
+                      <option>$25k - $50k</option>
+                      <option>$50k+</option>
+                    </select>
+                  </div>
+                </motion.div>
+              )}
+
+              {formStep === 3 && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div>
+                    <label 
+                      className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase block mb-2 md:mb-3"
+                      style={{ color: 'var(--ink)', opacity: 0.6 }}
+                    >
+                      Project Details
+                    </label>
+                    <textarea
+                      rows={6}
+                      className="w-full border-2 p-4 outline-none resize-none transition-all duration-300 focus:border-accent rounded-2xl"
+                      style={{ 
+                        borderColor: 'rgba(39, 37, 31, 0.2)',
+                        color: 'var(--ink)',
+                        backgroundColor: 'rgba(39, 37, 31, 0.02)'
+                      }}
+                      placeholder="Tell us about your project..."
+                    />
+                  </div>
+                </motion.div>
+              )}
+
+              <div className="flex gap-3 md:gap-4">
+                {formStep > 1 && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="button"
+                    onClick={() => setFormStep(prev => prev - 1)}
+                    className="flex-1 py-3 md:py-4 text-xs md:text-sm tracking-[0.25em] md:tracking-[0.3em] uppercase border-2 rounded-2xl transition-all duration-300 flex items-center justify-center"
+                    style={{ 
+                      borderColor: 'rgba(39, 37, 31, 0.2)',
+                      color: 'var(--ink)'
+                    }}
+                  >
+                    Back
+                  </motion.button>
+                )}
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="button"
+                  onClick={formStep < 3 ? nextStep : undefined}
+                  className="flex-1 py-3 md:py-4 text-xs md:text-sm tracking-[0.25em] md:tracking-[0.3em] uppercase rounded-2xl transition-all duration-300 flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: 'var(--accent)',
+                    color: 'white',
+                    boxShadow: '0 10px 25px rgba(255, 66, 0, 0.3)'
+                  }}
+                >
+                  {formStep < 3 ? 'Next' : 'Submit'}
+                </motion.button>
+              </div>
+            </form>
           </motion.div>
         </div>
       </div>
     </section>
-  );
-}
-
-/* — helpers — */
-type FieldProps = {
-  id: keyof FormValues;
-  label: string;
-  type: string;
-  autoComplete?: string;
-  inputMode?: "numeric" | "text" | "email" | "tel" | "url" | "search" | "none" | "decimal";
-  register: ReturnType<typeof useForm<FormValues>>["register"];
-  error?: string;
-};
-function Field({ id, label, type, autoComplete, inputMode, register, error }: FieldProps): ReactElement {
-  return (
-    <div>
-      <label htmlFor={id} className="sr-only">
-        {label}
-      </label>
-      <input
-        id={id}
-        type={type}
-        {...register(id)}
-        autoComplete={autoComplete}
-        inputMode={inputMode}
-        placeholder={label}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-err` : undefined}
-        className="w-full bg-transparent border-b pb-4 text-[18px] leading-6 outline-none transition-[border-color,border-width] duration-150"
-        style={{
-          borderColor: "var(--warm-stone)",
-          color: "var(--primary)",
-          borderWidth: "1.25px",
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = "var(--primary)";
-          e.currentTarget.style.borderWidth = "2px";
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = "var(--warm-stone)";
-          e.currentTarget.style.borderWidth = "1px";
-        }}
-      />
-      {error && (
-        <p id={`${id}-err`} className="mt-2 text-sm" style={{ color: "var(--danger, #b00020)" }}>
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/* — Budget field with masking — */
-type BudgetFieldProps = {
-  id: keyof FormValues;
-  label: string;
-  register: ReturnType<typeof useForm<FormValues>>["register"];
-  error?: string;
-};
-function BudgetField({ id, label, register, error }: BudgetFieldProps): ReactElement {
-  const [displayValue, setDisplayValue] = useState("");
-
-  const formatBudget = (val: string): string => {
-    // Extract numbers only
-    const nums = val.replace(/\D/g, "");
-    if (!nums) return "";
-    // Format as $Xk (e.g., "5000" → "$5k")
-    const k = Math.floor(parseInt(nums) / 1000);
-    return k > 0 ? `$${k}k` : `$${nums}`;
-  };
-
-  return (
-    <div>
-      <label htmlFor={id} className="sr-only">
-        {label}
-      </label>
-      <input
-        id={id}
-        type="text"
-        {...register(id)}
-        inputMode="numeric"
-        placeholder={label}
-        value={displayValue}
-        onChange={(e) => {
-          const raw = e.target.value.replace(/\D/g, "");
-          setDisplayValue(formatBudget(e.target.value));
-          // Store raw value in form
-          e.target.value = raw;
-        }}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-err` : undefined}
-        className="w-full bg-transparent border-b pb-4 text-[18px] leading-6 outline-none transition-[border-color,border-width] duration-150"
-        style={{
-          borderColor: "var(--warm-stone)",
-          color: "var(--primary)",
-          borderWidth: "1.25px",
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = "var(--primary)";
-          e.currentTarget.style.borderWidth = "2px";
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = "var(--warm-stone)";
-          e.currentTarget.style.borderWidth = "1px";
-        }}
-      />
-      {error && (
-        <p id={`${id}-err`} className="mt-2 text-sm" style={{ color: "var(--danger, #b00020)" }}>
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

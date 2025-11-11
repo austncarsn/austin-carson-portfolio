@@ -1,236 +1,451 @@
-import { useParams, Link } from "react-router-dom";
-import { useMemo, useState, useEffect } from "react";
-import { ArrowLeft, ExternalLink } from "lucide-react";
-import { PROJECTS, type ProjectId, type Project, type CaseStudy } from "../components/Projects";
-import React from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { X, ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useEffect } from "react";
+import type React from "react";
 
-/* --------------------------- Utilities ------------------------------ */
-
-function isExternal(url: string | undefined): boolean {
-  if (!url) return false;
-  return url.startsWith("http://") || url.startsWith("https://");
-}
-
-/* --------------------------- Subcomponents -------------------------- */
-
-function TechPill({ label }: { label: string }): React.JSX.Element {
-  return (
-    <span className="font-satoshi text-sm font-medium text-white bg-brand border border-brand/20 rounded-md px-4 py-2 transition-colors duration-200 hover:bg-[var(--brand-hover)]">
-      {label}
-    </span>
-  );
-}
-
-function CtaLink({
-  href,
-  children,
-  variant = "primary",
-  icon,
-}: {
-  href?: string;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-  icon?: React.ReactNode;
-}): React.JSX.Element | null {
-  if (!isExternal(href)) return null;
-  
-  const baseClasses = "inline-flex items-center gap-3 font-satoshi font-medium text-[15px] px-6 py-3 rounded-md transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-hover)]";
-  const variantClasses = variant === "primary"
-    ? "bg-brand text-white hover:opacity-90"
-    : "bg-brand-700 text-white border border-brand-700 hover:bg-brand";
-  
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${baseClasses} ${variantClasses}`}
-    >
-      {children}
-      {icon}
-    </a>
-  );
-}
-
-function ProjectMeta({
-  category,
-  year,
-}: {
+interface Project {
+  title: string;
   category: string;
   year: string;
-}): React.JSX.Element {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="font-satoshi text-sm text-text-muted uppercase tracking-wider">
-        {category}
-      </span>
-      <span className="w-1 h-1 rounded-full bg-brand" aria-hidden="true" />
-      <span className="font-satoshi text-sm text-text-muted uppercase tracking-wider">
-        {year}
-      </span>
-    </div>
-  );
+  client: string;
+  image: string;
+  description: string;
+  fullDescription?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string[];
+  gallery?: string[];
+  tags?: string[];
+  link?: string;
 }
 
-/* --------------------------- Main Component ---------------------------- */
+interface ProjectDetailProps {
+  project: Project | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
+}
 
-export default function ProjectDetail(): React.JSX.Element {
-  const params = useParams<{ id: string }>();
-  const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
-  const [caseStudyLoading, setCaseStudyLoading] = useState(false);
-
-  const project = useMemo<Project | null>(() => {
-    const id = params.id as ProjectId | undefined;
-    return id ? (PROJECTS[id] ?? null) : null;
-  }, [params.id]);
-
-  // Lazy load case study data
+export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: ProjectDetailProps): React.JSX.Element | null {
+  // Prevent body scroll when modal is open
   useEffect(() => {
-    if (project?.id && !caseStudy && !caseStudyLoading) {
-      setCaseStudyLoading(true);
-      import('../data/caseStudies').then(module => {
-        const caseStudies = module.CASE_STUDIES;
-        setCaseStudy(caseStudies[project.id as keyof typeof caseStudies] || null);
-        setCaseStudyLoading(false);
-      }).catch(() => {
-        setCaseStudyLoading(false);
-      });
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
     }
-  }, [project?.id, caseStudy, caseStudyLoading]);
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
-  if (!project) {
-    return (
-      <div className="min-h-screen bg-canvas flex items-center justify-center px-4">
-        <div className="text-center space-y-6">
-            <h1 className="font-satoshi text-4xl text-text-primary">Project Not Found</h1>
-            <p className="font-satoshi text-text-muted">The project you're looking for doesn't exist.</p>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 font-satoshi font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Return Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      if (!isOpen) return;
+      
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft' && onPrev) onPrev();
+      if (e.key === 'ArrowRight' && onNext) onNext();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, onNext, onPrev]);
+
+  if (!project) return null;
+
+  const defaultGallery = project.gallery || [project.image];
+  const defaultTags = project.tags || [project.category, project.year];
+  const defaultResults = project.results || [
+    '300% increase in user engagement',
+    'Award-winning design recognition',
+    'Successfully launched in 3 months'
+  ];
 
   return (
-    <article className="min-h-screen w-full bg-canvas">
-      {/* Hero Section */}
-      <section className="w-full border-b border-structure px-6 pb-16 pt-16 sm:px-10 sm:pt-20 md:pt-28 lg:px-16 lg:pt-32 xl:px-20 xl:pt-[120px]">
-        <div className="mx-auto max-w-[1280px]">
-          {/* Back Link */}
-          <div className="mb-12">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 font-satoshi font-medium text-text-primary hover:text-brand transition-colors duration-200 link-underline"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Projects
-            </Link>
-          </div>
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={onClose}
+            className="fixed inset-0 z-50"
+            style={{ 
+              backgroundColor: 'rgba(39, 37, 31, 0.95)',
+              backdropFilter: 'blur(10px)'
+            }}
+          />
 
-          {/* Meta */}
-          <div className="mb-6">
-            <ProjectMeta category={project.category} year={project.year} />
-          </div>
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-50 overflow-y-auto"
+          >
+            <div className="min-h-screen px-4 md:px-8 lg:px-20 py-8 md:py-12">
+              <motion.div
+                initial={{ y: 60, scale: 0.95 }}
+                animate={{ y: 0, scale: 1 }}
+                exit={{ y: 60, scale: 0.95 }}
+                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                className="max-w-7xl mx-auto rounded-3xl overflow-hidden"
+                style={{ backgroundColor: 'var(--bg)' }}
+              >
+                {/* Header with controls */}
+                <div className="sticky top-0 z-10 px-6 md:px-12 py-6 md:py-8 border-b backdrop-blur-md"
+                  style={{ 
+                    backgroundColor: 'rgba(244, 250, 255, 0.95)',
+                    borderColor: 'var(--line)'
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <motion.button
+                      onClick={onClose}
+                      whileHover={{ scale: 1.05, rotate: 90 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-12 h-12 rounded-full flex items-center justify-center border transition-colors"
+                      style={{ borderColor: 'var(--line)' }}
+                    >
+                      <X size={20} style={{ color: 'var(--ink)' }} />
+                    </motion.button>
 
-          {/* Title */}
-          <div className="space-y-4 mb-12">
-            <h1 className="font-barcode text-h2 leading-[1.1] text-text-primary tracking-[-0.02em]">
-              {project.title}
-            </h1>
-            <div className="w-24 h-[3px] bg-brand rounded-[1px]"></div>
-          </div>
-
-          {/* Description */}
-          <p className="font-satoshi text-lead leading-[1.7] text-text-muted max-w-[800px]">
-            {project.description}
-          </p>
-
-          {/* Short case study summary */}
-          {caseStudy && (
-            <div className="mt-6 p-6 bg-canvas border border-neutral-200/20 rounded-md max-w-[900px]">
-              <h3 className="font-satoshi text-base text-text-primary mb-4">Case Study</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <h4 className="font-satoshi text-sm text-text-primary mb-2">Problem</h4>
-                  <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
-                    {caseStudy.problem.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-satoshi text-sm text-text-primary mb-2">Approach</h4>
-                  <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
-                    {caseStudy.approach.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {caseStudy.impact && (
-                  <div>
-                    <h4 className="font-satoshi text-sm text-text-primary mb-2">Impact</h4>
-                    <ul className="list-disc pl-5 font-satoshi text-sm text-text-muted leading-[1.6] space-y-2">
-                      {caseStudy.impact.map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
+                    <div className="flex items-center gap-3">
+                      {onPrev && (
+                        <motion.button
+                          onClick={onPrev}
+                          whileHover={{ scale: 1.05, x: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-12 h-12 rounded-full flex items-center justify-center border transition-colors"
+                          style={{ borderColor: 'var(--line)' }}
+                        >
+                          <ArrowLeft size={20} style={{ color: 'var(--ink)' }} />
+                        </motion.button>
+                      )}
+                      {onNext && (
+                        <motion.button
+                          onClick={onNext}
+                          whileHover={{ scale: 1.05, x: 2 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-12 h-12 rounded-full flex items-center justify-center border transition-colors"
+                          style={{ borderColor: 'var(--line)' }}
+                        >
+                          <ArrowRight size={20} style={{ color: 'var(--ink)' }} />
+                        </motion.button>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+                </div>
 
-      {/* Main Content */}
-      <section className="w-full px-6 py-16 sm:px-10 md:py-20 lg:px-16 xl:px-20">
-        <div className="mx-auto max-w-[1280px] space-y-16">
-          {/* Long Description */}
-          {project.longDescription && (
-            <div className="space-y-6">
-              <h2 className="font-satoshi text-[32px] text-text-primary tracking-[-0.01em]">
-                Overview
-              </h2>
-              <div className="prose prose-lg max-w-none">
-                <p className="font-satoshi text-[18px] leading-[1.8] text-text-muted whitespace-pre-line">
-                  {project.longDescription}
-                </p>
-              </div>
-            </div>
-          )}
+                {/* Content */}
+                <div className="px-6 md:px-12 py-8 md:py-12">
+                  {/* Hero section */}
+                  <div className="mb-12 md:mb-20">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div 
+                        className="w-12 md:w-16 h-[1px]"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                      />
+                      <span 
+                        className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        Case Study
+                      </span>
+                    </div>
 
-          {/* Technologies */}
-          {project.technologies && project.technologies.length > 0 && (
-            <div className="space-y-6">
-              <h2 className="font-satoshi text-[32px] text-text-primary tracking-[-0.01em]">
-                Technologies
-              </h2>
-              <div className="flex flex-wrap gap-3">
-                {project.technologies.map((tech, index) => (
-                  <TechPill key={index} label={tech} />
-                ))}
-              </div>
-            </div>
-          )}
+                    <motion.h1
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-6xl md:text-8xl lg:text-9xl tracking-[-0.02em] mb-8"
+                      style={{ color: 'var(--ink)', fontWeight: 600 }}
+                    >
+                      {project.title}
+                    </motion.h1>
 
-          {/* Call to Action Links */}
-          <div className="flex flex-wrap gap-4 pt-8 border-t border-structure">
-            <CtaLink href={project.liveUrl} variant="primary" icon={<ExternalLink className="h-4 w-4" />}>
-              View Live Project
-            </CtaLink>
-            <CtaLink href={project.githubUrl} variant="secondary" icon={<ExternalLink className="h-4 w-4" />}>
-              View on GitHub
-            </CtaLink>
-          </div>
-        </div>
-      </section>
-    </article>
+                    {/* Meta info */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8"
+                    >
+                      <div>
+                        <div 
+                          className="text-[10px] tracking-[0.3em] uppercase mb-2"
+                          style={{ color: 'var(--muted)', opacity: 0.6 }}
+                        >
+                          Client
+                        </div>
+                        <div 
+                          className="text-lg md:text-xl"
+                          style={{ color: 'var(--ink)', fontWeight: 500 }}
+                        >
+                          {project.client}
+                        </div>
+                      </div>
+                      <div>
+                        <div 
+                          className="text-[10px] tracking-[0.3em] uppercase mb-2"
+                          style={{ color: 'var(--muted)', opacity: 0.6 }}
+                        >
+                          Year
+                        </div>
+                        <div 
+                          className="text-lg md:text-xl"
+                          style={{ color: 'var(--ink)', fontWeight: 500 }}
+                        >
+                          {project.year}
+                        </div>
+                      </div>
+                      <div>
+                        <div 
+                          className="text-[10px] tracking-[0.3em] uppercase mb-2"
+                          style={{ color: 'var(--muted)', opacity: 0.6 }}
+                        >
+                          Category
+                        </div>
+                        <div 
+                          className="text-lg md:text-xl"
+                          style={{ color: 'var(--ink)', fontWeight: 500 }}
+                        >
+                          {project.category}
+                        </div>
+                      </div>
+                      {project.link && (
+                        <div>
+                          <motion.a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl"
+                            style={{ backgroundColor: 'var(--accent)' }}
+                          >
+                            <span 
+                              className="text-xs tracking-[0.25em] uppercase"
+                              style={{ color: 'white', fontWeight: 600 }}
+                            >
+                              Visit
+                            </span>
+                            <ExternalLink size={16} style={{ color: 'white' }} />
+                          </motion.a>
+                        </div>
+                      )}
+                    </motion.div>
+
+                    {/* Tags */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="flex flex-wrap gap-3"
+                    >
+                      {defaultTags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className="px-4 py-2 rounded-full text-xs tracking-[0.2em] uppercase"
+                          style={{ 
+                            backgroundColor: 'rgba(255, 66, 0, 0.1)',
+                            color: 'var(--accent)',
+                            fontWeight: 500
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </motion.div>
+                  </div>
+
+                  {/* Main image */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="mb-12 md:mb-20"
+                  >
+                    <div className="aspect-video rounded-3xl overflow-hidden">
+                      <ImageWithFallback
+                        src={defaultGallery[0]}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Content sections */}
+                  <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-12 md:mb-20">
+                    {/* Description */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      <h3 
+                        className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
+                        Overview
+                      </h3>
+                      <p 
+                        className="text-lg leading-relaxed"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        {project.fullDescription || `${project.description}. This project showcased our ability to blend creativity with strategic thinking, delivering a solution that not only met the client's needs but exceeded their expectations. Through careful planning and innovative design, we created an experience that resonates with users and drives meaningful engagement.`}
+                      </p>
+                    </motion.div>
+
+                    {/* Challenge */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                    >
+                      <h3 
+                        className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
+                        The Challenge
+                      </h3>
+                      <p 
+                        className="text-lg leading-relaxed"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        {project.challenge || `${project.client} needed a comprehensive solution that would help them stand out in a competitive market. The challenge was to create something that felt fresh and innovative while remaining true to their brand identity and core values.`}
+                      </p>
+                    </motion.div>
+
+                    {/* Solution */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      <h3 
+                        className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
+                        Our Solution
+                      </h3>
+                      <p 
+                        className="text-lg leading-relaxed"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        {project.solution || `We approached this project with a user-first mindset, conducting extensive research and testing to ensure every decision was informed by real data. Our team developed a comprehensive strategy that addressed both immediate needs and long-term goals.`}
+                      </p>
+                    </motion.div>
+
+                    {/* Results */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                    >
+                      <h3 
+                        className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
+                        Results
+                      </h3>
+                      <ul className="space-y-4">
+                        {defaultResults.map((result, i) => (
+                          <li 
+                            key={i}
+                            className="flex items-start gap-3"
+                          >
+                            <div 
+                              className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                              style={{ backgroundColor: 'var(--accent)' }}
+                            />
+                            <span 
+                              className="text-lg leading-relaxed"
+                              style={{ color: 'var(--muted)' }}
+                            >
+                              {result}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  </div>
+
+                  {/* Gallery */}
+                  {defaultGallery.length > 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1 }}
+                      className="mb-12 md:mb-20"
+                    >
+                      <h3 
+                        className="text-3xl md:text-4xl mb-8 tracking-[-0.01em]"
+                        style={{ color: 'var(--ink)', fontWeight: 600 }}
+                      >
+                        Project Gallery
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {defaultGallery.slice(1).map((img, i) => (
+                          <div 
+                            key={i}
+                            className="aspect-[4/3] rounded-2xl overflow-hidden"
+                          >
+                            <ImageWithFallback
+                              src={img}
+                              alt={`${project.title} gallery ${i + 1}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* CTA */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.1 }}
+                    className="text-center py-12 md:py-16"
+                  >
+                    <p 
+                      className="text-xl md:text-2xl mb-8"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      Interested in working together?
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -4 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-12 py-5 rounded-2xl"
+                      style={{ backgroundColor: 'var(--accent)' }}
+                      onClick={onClose}
+                    >
+                      <span 
+                        className="text-xs tracking-[0.25em] uppercase"
+                        style={{ color: 'white', fontWeight: 600 }}
+                      >
+                        Get In Touch
+                      </span>
+                    </motion.button>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
+
+export default ProjectDetail;

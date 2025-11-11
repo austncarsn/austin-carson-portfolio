@@ -4,19 +4,19 @@
 
 // ─── DEPENDENCIES ───────────────────────────────────────────────────────────
 import type { ReactElement, ReactNode } from 'react';
-import { lazy, Suspense, memo, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { lazy, Suspense, memo, useEffect, useState } from 'react';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop';
 import { SiteHeader } from './components/SiteHeader';
 import { WorkSection } from './components/WorkSection';
-import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
+import type { Project } from './components/WorkSection';
 
 // ─── LAZY LOADED COMPONENTS ─────────────────────────────────────────────────
 const HeroBrutalist = lazy(() => import('./components/HeroBrutalist').then(module => ({ default: module.HeroBrutalist })));
 const Contact2 = lazy(() => import('./components/Contact2').then(module => ({ default: module.Contact2 })));
-const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
+const ProjectDetail = lazy(() => import('./components/ProjectDetail').then(module => ({ default: module.default })));
 const Resume = lazy(() => import('./components/Resume'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
@@ -79,16 +79,52 @@ function ScrollToSection(): null {
  * @returns {ReactElement} The complete application interface
  */
 export default function App(): ReactElement {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Adapted projects for use throughout the app
+  const projects = adaptGalleryProjects(GALLERY_PROJECTS);
+
+  // Handle project click to open modal
+  const handleProjectClick = (project: Project, index: number): void => {
+    setSelectedProject(project);
+    setSelectedIndex(index);
+    setIsModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = (): void => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setSelectedProject(null);
+      setSelectedIndex(-1);
+    }, 300); // Wait for exit animation
+  };
+
+  // Handle next project
+  const handleNextProject = (): void => {
+    const nextIndex = (selectedIndex + 1) % projects.length;
+    setSelectedProject(projects[nextIndex]);
+    setSelectedIndex(nextIndex);
+  };
+
+  // Handle previous project
+  const handlePrevProject = (): void => {
+    const prevIndex = selectedIndex === 0 ? projects.length - 1 : selectedIndex - 1;
+    setSelectedProject(projects[prevIndex]);
+    setSelectedIndex(prevIndex);
+  };
+
   return (
     <Router>
       <ScrollToTop />
       <ScrollToSection />
       <div 
         className="flex flex-col min-h-screen bg-background text-foreground"
-        data-theme="noir"
+        data-theme="light"
       >
         <SiteHeader
-          variant="noir"
           brandTitle="AUSTIN CARSON"
           since="Since 2025"
           items={[
@@ -100,7 +136,6 @@ export default function App(): ReactElement {
           cta={{ label: "Resume", href: "/resume", external: true }}
           tickerText="Available for projects • AI-Powered Educational Interfaces • Creative Tech & Design Systems"
           tickerSpeedSec={18}
-          LinkComponent={Link}
         />
         
         <Suspense fallback={<LoadingFallback />}>
@@ -123,8 +158,8 @@ export default function App(): ReactElement {
                     
                     <section id="work" style={{ background: 'var(--surface)' }}>
                       <WorkSection 
-                        projects={adaptGalleryProjects(GALLERY_PROJECTS)} 
-                        ImageWithFallback={ImageWithFallback}
+                        projects={projects}
+                        onProjectClick={handleProjectClick}
                       />
                     </section>
                     
@@ -143,15 +178,6 @@ export default function App(): ReactElement {
                 } 
               />
               
-              <Route 
-                path="/project/:id" 
-                element={
-                  <RouteTransition>
-                    <ProjectDetail />
-                  </RouteTransition>
-                } 
-              />
-
               <Route
                 path="/resume"
                 element={
@@ -171,6 +197,17 @@ export default function App(): ReactElement {
               />
             </Routes>
           </MainContent>
+        </Suspense>
+
+        {/* Project Detail Modal */}
+        <Suspense fallback={null}>
+          <ProjectDetail 
+            project={selectedProject}
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            onNext={selectedIndex < projects.length - 1 ? handleNextProject : undefined}
+            onPrev={selectedIndex > 0 ? handlePrevProject : undefined}
+          />
         </Suspense>
       </div>
     </Router>
