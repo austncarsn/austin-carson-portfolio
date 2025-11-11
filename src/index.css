@@ -1124,7 +1124,9 @@ code, pre, kbd {
 @keyframes arm-wobble { 0%{rotate:0} 35%{rotate:-18deg} 70%{rotate:10deg} 100%{rotate:0} }
 @keyframes spring-boing { 0%{scale:1} 40%{scale:1.2} 100%{scale:1} }
 
-/* === THEME LOCK (Electric Navy + Mint) === */
+/* === THEME OVERRIDE DISABLED (Using new color system from tokens.css) === */
+/* The theme-navy class was overriding the new powder-blue/orange palette */
+/*
 @layer base {
   :root,
   html.theme-navy {
@@ -1133,7 +1135,6 @@ code, pre, kbd {
     --navy-veil:  #0b2235;
     --mint:       #9af7c0;
 
-    /* roles */
     --bg:        var(--navy-ink);
     --surface:   var(--navy-panel);
     --surface-2: color-mix(in oklab, white 4%, transparent);
@@ -1143,7 +1144,6 @@ code, pre, kbd {
     --accent:    var(--mint);
     --focus:     var(--accent);
 
-    /* bridge legacy "warm-*" so beige can't leak */
     --warm-lightest: var(--bg);
     --warm-medium:   var(--surface);
     --warm-stone:    var(--muted);
@@ -1152,6 +1152,7 @@ code, pre, kbd {
 
   html, body { background: var(--bg); color: var(--text); }
 }
+*/
 
 /* kill stray pink status */
 #collabs-dot, .status-dot, .badge--online, [data-status-dot] {
