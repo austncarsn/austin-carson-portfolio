@@ -8,7 +8,7 @@ import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
 import type { Project } from './components/WorkSection';
 
-const HeroBrutalist = lazy(() => import('./components/HeroBrutalist').then(module => ({ default: module.HeroBrutalist })));
+const Hero = lazy(() => import('./components/Hero').then(module => ({ default: module.Hero })));
 const Contact2 = lazy(() => import('./components/Contact2').then(module => ({ default: module.Contact2 })));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail').then(module => ({ default: module.default })));
 const Resume = lazy(() => import('./components/Resume'));
@@ -122,13 +122,13 @@ export default function App(): ReactElement {
                 index 
                 element={
                   <RouteTransition>
-                    <HeroBrutalist />
+                    <Hero />
                     
                     <div
                       className="section-bridge"
                       style={{
                         height: '64px',
-                        background: 'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)'
+                        background: 'linear-gradient(180deg, var(--chinese-white) 0%, var(--surface) 100%)'
                       }}
                     />
                     
