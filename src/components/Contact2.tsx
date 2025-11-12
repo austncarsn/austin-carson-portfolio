@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Mail, Phone, MapPin, Linkedin, Github, Instagram, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Github, Instagram, ArrowRight, type LucideIcon } from "lucide-react";
 import { memo, useMemo, useCallback, useState } from "react";
 import type { ReactElement } from "react";
 
@@ -10,7 +10,21 @@ type Contact2Props = {
   socials?: { label: string; href: string }[];
 };
 
-const ContactMethod3D = memo(({ method, index, isActive, onClick }: any) => (
+type ContactMethod = {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  description: string;
+};
+
+type ContactMethod3DProps = {
+  method: ContactMethod;
+  index: number;
+  isActive: boolean;
+  onClick: () => void;
+};
+
+const ContactMethod3D = memo(({ method, index, isActive, onClick }: ContactMethod3DProps) => (
   <motion.div
     onClick={onClick}
     initial={{ opacity: 0, y: 30 }}

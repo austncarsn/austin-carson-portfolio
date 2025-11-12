@@ -26,7 +26,7 @@ import { ArrowRight, ExternalLink, Github, X } from "lucide-react";
 // -----------------------------
 // Types
 // -----------------------------
-export type ProjectCardProps = {
+export type ProjectCardProps = Readonly<{
   id?: string;
   title: string;
   category: string;
@@ -37,7 +37,7 @@ export type ProjectCardProps = {
   liveUrl?: string;
   githubUrl?: string;
   previewImage?: string;
-};
+}>;
 
 // -----------------------------
 // Utils
@@ -299,7 +299,12 @@ function CardScrollItem({
       boxShadow,
       transformStyle: "preserve-3d" as const,
       willChange: "transform",
-    } as any;
+    } as React.CSSProperties & {
+      scale: typeof scale;
+      y: typeof y;
+      rotateX: typeof tilt;
+      boxShadow: typeof boxShadow;
+    };
   }, [reduceMotion, scale, y, tilt, boxShadow]);
 
   return (
@@ -334,7 +339,7 @@ function ScrollGradientMask(): JSX.Element {
 // -----------------------------
 // ProjectReel — horizontal scroller + snap + FX
 // -----------------------------
-export function ProjectReel({ projects, title }: { projects: ProjectCardProps[]; title?: string }): JSX.Element {
+export function ProjectReel({ projects, title }: { projects: readonly ProjectCardProps[]; title?: string }): JSX.Element {
   const scrollerRef = useRef<HTMLElement>(null);
   const reduceMotion = usePrefersReducedMotion();
 
@@ -359,14 +364,17 @@ export function ProjectReel({ projects, title }: { projects: ProjectCardProps[];
               "radial-gradient(600px 160px at 40% 20%, rgba(0,160,255,0.15), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(255,64,0,0.12), transparent 60%)",
             x: bgX,
             opacity: bgOpacity,
-          } as any}
+          } as React.CSSProperties & {
+            x: typeof bgX;
+            opacity: typeof bgOpacity;
+          }}
         />
       )}
 
       <ScrollGradientMask />
 
       <motion.div
-        ref={scrollerRef as any}
+        ref={scrollerRef as React.RefObject<HTMLDivElement>}
         className="relative overflow-x-auto overflow-y-visible snap-x snap-mandatory no-scrollbar px-6 sm:px-8"
         style={{
           scrollSnapType: "x mandatory",
@@ -376,7 +384,7 @@ export function ProjectReel({ projects, title }: { projects: ProjectCardProps[];
       >
         <ul className="flex gap-6 sm:gap-8 py-2">
           {projects.map((p, i) => (
-            <CardScrollItem key={p.id ?? p.title} container={scrollerRef as any} index={i}>
+            <CardScrollItem key={p.id ?? p.title} container={scrollerRef as React.RefObject<HTMLDivElement>} index={i}>
               <ProjectCard {...p} />
             </CardScrollItem>
           ))}

@@ -249,7 +249,7 @@ export default function Projects(): React.JSX.Element {
         <div id="work-section-label" className="sr-only">Work Portfolio</div>
         
         {/* Enhanced horizontal scroll reel with all new features */}
-        <ProjectReel projects={projects as any} />
+        <ProjectReel projects={projects} />
       </div>
 
       {/* Fortune Box - Centered after all project cards */}

@@ -33,16 +33,11 @@ type Props = {
 };
 
 export function SiteHeader({
-  brandTitle: _brandTitle = "AUSTIN CARSON",
-  since: _since = "Since 2025",
   items = [
     { label: "Index", href: "/" },
     { label: "Work", href: "/#work" },
     { label: "Contact", href: "/#contact" }
   ],
-  statusText: _statusText = "Production Ready",
-  statusIndicatorColor: _statusIndicatorColor = "var(--accent)",
-  cta: _cta = { label: "Get Started", href: "/#work" },
   tickerText = "Available for projects",
   tickerRepeat = 8,
   tickerSpeedSec = 25,

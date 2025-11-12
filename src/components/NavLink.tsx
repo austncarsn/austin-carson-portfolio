@@ -5,7 +5,7 @@ type NavLinkProps = {
   size?: 'mobile' | 'desktop';
   isActive?: boolean;
   isExternal?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   children: React.ReactNode;
 };
 

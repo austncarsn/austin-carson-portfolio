@@ -1,6 +1,6 @@
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ImageWithFallback } from "../../common/media/ImageWithFallback";
-import { useRef } from "react";
 
 export function Hero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
