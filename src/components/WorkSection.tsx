@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { JSX } from "react";
 import { motion } from "motion/react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./common/media/ImageWithFallback";
 
 export type Project = {
   id: string;

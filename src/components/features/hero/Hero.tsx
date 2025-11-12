@@ -1,8 +1,8 @@
 import { motion, useScroll, useTransform } from "motion/react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "../../common/media/ImageWithFallback";
 import { useRef } from "react";
 
-export function Hero() {
+export function Hero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,

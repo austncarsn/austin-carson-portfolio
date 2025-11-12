@@ -8,7 +8,7 @@ import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
 import type { Project } from './components/WorkSection';
 
-const Hero = lazy(() => import('./components/Hero').then(module => ({ default: module.Hero })));
+const Hero = lazy(() => import('./components/features/hero/Hero').then(module => ({ default: module.Hero })));
 const Contact2 = lazy(() => import('./components/Contact2').then(module => ({ default: module.Contact2 })));
 const ProjectDetail = lazy(() => import('./components/ProjectDetail').then(module => ({ default: module.default })));
 const Resume = lazy(() => import('./components/Resume'));
