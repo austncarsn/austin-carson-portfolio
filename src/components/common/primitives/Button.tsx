@@ -160,7 +160,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const isDisabled = disabled || loading;
 
-    // Base classes
     const baseClasses = `
       inline-flex items-center justify-center
       font-satoshi font-semibold
@@ -173,7 +172,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled:opacity-60
     `;
 
-    // Combine all classes
     const classes = [
       baseClasses,
       iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
@@ -193,22 +191,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={classes}
         {...props}
       >
-        {/* Loading spinner */}
         {loading && (
           <Loader2 className="animate-spin" size={size === 'xs' ? 12 : size === 'sm' ? 14 : 16} />
         )}
 
-        {/* Icon before */}
-        {!loading && iconBefore && <span className="inline-flex">{iconBefore}</span>}
-
-        {/* Text content */}
+        {!loading && iconBefore && <span className="flex-shrink-0">{iconBefore}</span>}
+        
         {!iconOnly && children && <span>{children}</span>}
-
-        {/* Icon only content */}
-        {iconOnly && !loading && children}
-
-        {/* Icon after */}
-        {!loading && iconAfter && <span className="inline-flex">{iconAfter}</span>}
+        
+        {!loading && iconAfter && <span className="flex-shrink-0">{iconAfter}</span>}
       </button>
     );
   }

@@ -1,13 +1,9 @@
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 /**
- * Card variants (visual hierarchy)
+ * Card visual variants
  */
-export type CardVariant = 
-  | 'elevated'   // Floating card with shadow
-  | 'outlined'   // Card with border
-  | 'filled'     // Subtle background fill
-  | 'ghost';     // Minimal styling
+export type CardVariant = 'elevated' | 'outlined' | 'filled' | 'ghost';
 
 /**
  * Card padding sizes
@@ -19,23 +15,21 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
   /** Padding size */
   padding?: CardPadding;
-  /** Interactive card (adds hover state) */
+  /** Interactive hover state */
   interactive?: boolean;
   /** Disabled state */
   disabled?: boolean;
-  /** Children */
-  children: ReactNode;
 }
 
 /**
  * Padding styles mapping
  */
 const paddingStyles: Record<CardPadding, string> = {
-  none: '',
-  sm: 'p-3 sm:p-4',
-  md: 'p-4 sm:p-6',
-  lg: 'p-6 sm:p-8',
-  xl: 'p-8 sm:p-10',
+  none: 'p-0',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+  xl: 'p-10',
 };
 
 /**
@@ -43,53 +37,55 @@ const paddingStyles: Record<CardPadding, string> = {
  */
 const variantStyles: Record<CardVariant, string> = {
   elevated: `
-    bg-bg-surface
+    bg-surface
+    border border-neutral-200
     shadow-md hover:shadow-lg
-    border border-border-subtle
   `,
   outlined: `
-    bg-bg-canvas
-    border-2 border-border-default
+    bg-surface
+    border-2 border-neutral-300
+    hover:border-neutral-400
   `,
   filled: `
-    bg-bg-subtle
-    border border-border-subtle
+    bg-neutral-100
+    border border-neutral-200
   `,
   ghost: `
     bg-transparent
+    hover:bg-neutral-50
   `,
 };
 
 /**
- * Card - Flexible container component with design token integration
+ * Card - Flexible container component
  * 
  * Features:
  * - 4 visual variants (elevated, outlined, filled, ghost)
- * - 5 padding presets (none, sm, md, lg, xl)
- * - Interactive state for clickable cards
+ * - 5 padding sizes (none, sm, md, lg, xl)
+ * - Optional interactive hover states
  * - Disabled state support
  * - Design token integration
- * - Responsive padding
+ * - Semantic sub-components (Header, Title, Description, Content, Footer)
  * 
  * @example
  * ```tsx
- * // Elevated card with medium padding
- * <Card variant="elevated" padding="md">
- *   <h3>Card Title</h3>
- *   <p>Card content goes here</p>
- * </Card>
- * 
- * // Interactive card with hover effect
- * <Card variant="elevated" interactive onClick={handleClick}>
- *   <h3>Clickable Card</h3>
- * </Card>
- * 
- * // Outlined card with large padding
- * <Card variant="outlined" padding="lg">
+ * // Elevated card with content
+ * <Card variant="elevated" padding="lg">
  *   <CardHeader>
- *     <CardTitle>Title</CardTitle>
+ *     <CardTitle>Project Title</CardTitle>
+ *     <CardDescription>Brief description</CardDescription>
  *   </CardHeader>
- *   <CardContent>Content</CardContent>
+ *   <CardContent>
+ *     Main content here
+ *   </CardContent>
+ *   <CardFooter>
+ *     <Button>View Details</Button>
+ *   </CardFooter>
+ * </Card>
+ * 
+ * // Interactive card
+ * <Card variant="outlined" interactive>
+ *   Clickable card content
  * </Card>
  * ```
  */
@@ -106,35 +102,20 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) {
-    // Base classes
     const baseClasses = `
       rounded-xl
       transition-all duration-200
+      overflow-hidden
     `;
 
-    // Interactive classes
-    const interactiveClasses = interactive
-      ? `
-        cursor-pointer
-        hover:scale-[1.02]
-        active:scale-[0.98]
-        focus-visible:outline-none
-        focus-visible:ring-2
-        focus-visible:ring-brand
-        focus-visible:ring-offset-2
-      `
+    const interactiveClasses = interactive && !disabled
+      ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
       : '';
 
-    // Disabled classes
     const disabledClasses = disabled
-      ? `
-        opacity-60
-        cursor-not-allowed
-        pointer-events-none
-      `
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
       : '';
 
-    // Combine all classes
     const classes = [
       baseClasses,
       paddingStyles[padding],
@@ -151,9 +132,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={classes}
-        role={interactive ? 'button' : undefined}
-        tabIndex={interactive && !disabled ? 0 : undefined}
-        aria-disabled={disabled}
         {...props}
       >
         {children}
@@ -165,7 +143,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 Card.displayName = 'Card';
 
 /**
- * CardHeader - Semantic header section for cards
+ * CardHeader - Header section for cards
  */
 export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function CardHeader({ className = '', children, ...props }, ref) {
@@ -184,14 +162,14 @@ export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
 CardHeader.displayName = 'CardHeader';
 
 /**
- * CardTitle - Semantic title for card headers
+ * CardTitle - Semantic heading for card headers
  */
 export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(
   function CardTitle({ className = '', children, ...props }, ref) {
     return (
       <h3
         ref={ref}
-        className={`font-satoshi font-bold text-h4 text-text-primary mb-2 ${className}`.trim()}
+        className={`font-satoshi font-bold text-h4 text-text-primary mb-1 ${className}`.trim()}
         {...props}
       >
         {children}

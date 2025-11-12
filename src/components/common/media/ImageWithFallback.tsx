@@ -6,7 +6,7 @@ interface ImageWithFallbackProps {
   className?: string;
 }
 
-export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbackProps) {
+export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbackProps): React.ReactElement {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
