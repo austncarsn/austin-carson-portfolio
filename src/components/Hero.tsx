@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Download, ExternalLink } from 'lucide-react';
 import type { JSX } from 'react';
+import heroImage from '../assets/hero.jpeg';
 
 const SKILLS = [
   'UI/UX Design',
@@ -20,7 +21,6 @@ interface HeroProps {
   tagline?: string;
   bioShort?: string;
   bioExtended?: string[];
-  initials?: string;
   skills?: readonly string[];
   resumeLink?: string;
   linkedInLink?: string;
@@ -36,7 +36,6 @@ export function Hero({
     "With over 7 years of experience, I've had the privilege of working with startups and established brands to craft meaningful digital products that users love.",
     "My approach combines strategic thinking with meticulous attention to detail, ensuring every pixel serves a purpose."
   ],
-  initials = 'AC',
   skills = SKILLS,
   resumeLink = '/resume',
   linkedInLink = 'https://linkedin.com/in/austincarson',
@@ -56,23 +55,14 @@ export function Hero({
               className="sticky top-24"
             >
               <div 
-                className="aspect-[3/4] rounded-3xl mb-8 flex items-center justify-center"
+                className="aspect-[3/4] rounded-3xl mb-8 overflow-hidden"
                 style={{ backgroundColor: 'var(--powder-blue)' }}
               >
-                <motion.div
-                  animate={{
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="text-9xl font-bold"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  {initials}
-                </motion.div>
+                <img 
+                  src={heroImage}
+                  alt={`${firstName} ${lastName}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div className="flex gap-4">
