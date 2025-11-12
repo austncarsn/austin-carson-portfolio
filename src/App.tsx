@@ -128,7 +128,7 @@ export default function App(): ReactElement {
                       className="section-bridge"
                       style={{
                         height: '64px',
-                        background: 'linear-gradient(180deg, var(--chinese-white) 0%, var(--surface) 100%)'
+                        background: 'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)'
                       }}
                     />
                     
