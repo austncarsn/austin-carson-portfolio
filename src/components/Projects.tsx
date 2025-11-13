@@ -4,11 +4,11 @@ import { FortuneBox } from './FortuneBox';
 import Section from './Section';
 import React from 'react';
 // Import project preview assets so Vite resolves their URLs correctly
-import greenProjectPreview from '@/assets/green_project_preview.png';
+import greenProjectPreview from '@/assets/green_project_preview.webp';
 import floralFiftyNine from '@/assets/floralfiftynine.png';
-import chromeCameoPreview from '@/assets/chrome_cameo_preview.png';
-import aiPromptPreview from '@/assets/ai_prompt.png';
-import samanthaPreview from '@/assets/samantha.png';
+import chromeCameoPreview from '@/assets/chrome_cameo_preview.webp';
+import aiPromptPreview from '@/assets/ai_prompt.webp';
+import samanthaPreview from '@/assets/samantha.webp';
 
 // Project data with extended descriptions
 export type CaseStudy = {
@@ -228,7 +228,7 @@ export default function Projects(): React.JSX.Element {
   return (
     <Section 
       id="work" 
-      bgClass="bg-token-surface text-token-primary" 
+      bgClass="bg-[#0E1013] text-white" 
       labelNumber="02" 
       labelTitle="WORK" 
       labelDelay={0} 

@@ -1,10 +1,10 @@
-import meLeft from '@/assets/me_left2.png';
-import wallLeft from '@/assets/wall_left.png';
-import wallRight from '@/assets/wall_right.png';
-import left2 from '@/assets/left_2.png';
-import right2 from '@/assets/right_2.png';
-import farRight from '@/assets/far_right.png';
-import pizzaMan from '@/assets/pizza_man.png';
+import meLeft from '@/assets/me_left2.webp';
+import wallLeft from '@/assets/wall_left.webp';
+import wallRight from '@/assets/wall_right.webp';
+import left2 from '@/assets/left_2.webp';
+import right2 from '@/assets/right_2.webp';
+import farRight from '@/assets/far_right.webp';
+import pizzaMan from '@/assets/pizza_man.webp';
 
 export const GALLERY_IMAGES = [
   {

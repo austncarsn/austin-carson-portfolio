@@ -1,12 +1,12 @@
 import React, { useRef, useMemo, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { ImageWithFallback } from "../../common/media/ImageWithFallback";
-import astroNature from "../../../assets/astro_nature.jpg";
+import astroNature from "../../../assets/astro_nature.webp";
 // floralWall was previously used in the gallery; no longer needed after reordering
 // keep import commented for now in case you want to re-enable it later
 // import floralWall from "../../../assets/flowal_wall.jpeg";
-import wallArt from "../../../assets/wall_art.png";
-import cowboys from "../../../assets/Cowboys.jpg";
+import wallArt from "../../../assets/wall_art.webp";
+import cowboys from "../../../assets/Cowboys.webp";
 
 
 export function Hero(): React.ReactElement {
