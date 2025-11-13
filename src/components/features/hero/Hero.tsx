@@ -144,50 +144,56 @@ export function Hero(): React.ReactElement {
           className="relative w-full h-[150vh]"
         >
           <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 p-3 md:p-8 lg:p-12">
-            {gallery.map((image, i) => (
-              <motion.div
-                key={i}
-                initial={reduce ? false : { opacity: 0, y: isMobile ? 12 : 36, scale: 0.99 }}
-                animate={reduce ? {} : { opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: isMobile ? i * 0.06 : i * 0.12, duration: isMobile ? 0.45 : 0.7, ease: [0.2, 0.8, 0.2, 1] }}
-                className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
-                onMouseEnter={() => !isMobile && setIsHovering(true)}
-                onMouseLeave={() => !isMobile && setIsHovering(false)}
-              >
+            {gallery.map((image, i) => {
+              const isCenter = i === 1;
+              return (
                 <motion.div
-                  className={`relative w-full overflow-hidden rounded-xl md:rounded-3xl bg-surface ${isMobile ? 'h-[48vh]' : 'h-[70vh] md:h-[96vh]'}`}
-                  whileHover={reduce || isMobile ? undefined : {
-                    scale: 1.02,
-                    transition: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
-                  }}
-                  whileTap={isMobile ? { scale: 0.985 } : undefined}
+                  key={i}
+                  initial={reduce ? false : { opacity: 0, y: isMobile ? 12 : 36, scale: 0.99 }}
+                  animate={reduce ? {} : { opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: isMobile ? i * 0.06 : i * 0.12, duration: isMobile ? 0.45 : 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+                  className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
+                  onMouseEnter={() => !isMobile && setIsHovering(true)}
+                  onMouseLeave={() => !isMobile && setIsHovering(false)}
+                  whileHover={reduce || isMobile ? undefined : { y: -4 }}
                 >
                   <motion.div
-                    whileHover={reduce || isMobile ? undefined : { scale: 1.06 }}
-                    transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
-                    className="w-full h-full"
+                    className={`relative w-full overflow-hidden ${isCenter ? 'rounded-xl md:rounded-3xl bg-surface' : 'rounded-lg bg-surface'} ${isMobile ? 'h-[48vh]' : 'h-[70vh] md:h-[96vh]'}`}
+                    whileTap={isMobile ? { scale: 0.985 } : undefined}
+                    style={isCenter ? { boxShadow: '0 18px 48px rgba(0,0,0,0.12)' } : {}}
                   >
-                    <ImageWithFallback
-                      src={image.src}
-                      alt={image.alt}
-                      className={image.className ?? "w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"}
-                      loading={i === 0 ? 'eager' : 'lazy'}
+                    <motion.div
+                      whileHover={reduce || isMobile ? undefined : { y: isCenter ? -8 : -6, scale: isCenter ? 1.03 : 1.01 }}
+                      transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                      className={`w-full h-full ${isCenter ? '' : 'filter blur-sm opacity-60'}`}
+                    >
+                      <ImageWithFallback
+                        src={image.src}
+                        alt={image.alt}
+                        className={image.className ?? "w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"}
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                      />
+                    </motion.div>
+
+                    {/* Active-card inner glow / subtle inner border */}
+                    {isCenter && (
+                      <div aria-hidden="true" className="absolute inset-0 pointer-events-none rounded-xl" style={{ boxShadow: 'inset 0 0 40px rgba(255,255,255,0.06), inset 0 0 18px rgba(255,200,150,0.03)' }} />
+                    )}
+
+                    {/* Enhanced vignette with subtle grain texture */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        maskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
+                        WebkitMaskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
+                        background: "linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 35%)",
+                      }}
                     />
                   </motion.div>
-                  
-                  {/* Enhanced vignette with subtle grain texture */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      maskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
-                      WebkitMaskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
-                      background: "linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 35%)",
-                    }}
-                  />
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Optimized foreground fade */}
@@ -195,7 +201,8 @@ export function Hero(): React.ReactElement {
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(180deg, transparent 0%, rgba(250, 250, 248, 0.65) 55%, #fafaf8 85%)",
+              // strengthen the bottom gradient so the headline reads clearly
+              background: "linear-gradient(180deg, transparent 0%, rgba(250, 250, 248, 0.9) 55%, #fafaf8 95%)",
             }}
           />
         </motion.div>
@@ -239,7 +246,7 @@ export function Hero(): React.ReactElement {
             initial={reduce ? false : { opacity: 0, y: isMobile ? 8 : 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.5 }}
-            className="text-base md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 md:mb-20 px-4 text-neutral-600 leading-relaxed"
+            className="text-base md:text-xl lg:text-2xl max-w-2xl mx-auto mb-8 md:mb-20 px-4 text-neutral-500 leading-relaxed"
           >
             Design systems that scale. Experiences that connect. Impact you can measure.
           </motion.p>
@@ -254,44 +261,30 @@ export function Hero(): React.ReactElement {
             <motion.a
               href="#work"
               aria-label="Explore the work section"
-              whileHover={reduce || isMobile ? undefined : { scale: 1.04, y: -3 }}
-              whileTap={{ scale: 0.96 }}
-              className="group relative overflow-hidden inline-flex items-center justify-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 shadow-lg shadow-neutral-900/20 w-full sm:w-auto min-h-[48px]"
+              whileHover={reduce || isMobile ? undefined : { y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-3 md:gap-4 px-6 md:px-10 py-3 md:py-4 rounded-full bg-neutral-900 text-white shadow-lg w-full sm:w-auto min-h-[48px]"
               onClick={handleExploreClick}
               onFocus={(e) => e.currentTarget.setAttribute('data-focused', 'true')}
               onBlur={(e) => e.currentTarget.removeAttribute('data-focused')}
             >
-              <span className="relative z-10 tracking-[0.15em] md:tracking-[0.25em] uppercase text-xs md:text-sm">
+              <span className="relative z-10 tracking-[0.08em] md:tracking-[0.12em] uppercase text-xs md:text-sm">
                 Explore the work
               </span>
               <motion.span
-                className="relative z-10 text-base md:text-lg"
+                className="relative z-10 text-sm md:text-base"
                 animate={reduce || isMobile ? undefined : { x: [0, 4, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
               >
-                →
+                ↗
               </motion.span>
-              {/* Optimized hover wash with initial state */}
-              <motion.div
-                aria-hidden="true"
-                className="absolute inset-0 bg-neutral-800"
-                initial={{ opacity: 0 }}
-                whileHover={reduce || isMobile ? undefined : { opacity: 1 }}
-                transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
-              />
             </motion.a>
               <a
                 href="#/resume"
                 aria-label="View resume"
-                className="inline-flex items-center justify-center px-6 md:px-8 py-4 md:py-5 rounded-2xl w-full sm:w-auto min-h-[48px]"
-                style={{
-                  color: 'var(--color-text-primary)',
-                  background: 'var(--color-cream-bg)',
-                  border: '1px solid var(--color-border-subtle)',
-                  fontWeight: 'var(--font-weight-medium)'
-                }}
+                className="inline-flex items-center justify-center px-4 md:px-6 py-3 md:py-3 rounded-full w-full sm:w-auto min-h-[48px] text-neutral-700 hover:underline"
               >
-                <span className="tracking-[0.15em] md:tracking-[0.2em] uppercase text-xs md:text-sm">Resume</span>
+                <span className="tracking-[0.06em] md:tracking-[0.1em] uppercase text-xs md:text-sm">Resume</span>
               </a>
             </motion.div>
 
