@@ -230,6 +230,31 @@ export function WorkSection({
   filters,
 }: Props): JSX.Element {
   const [activeFilter, setActiveFilter] = useState(initialFilter);
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+  const prefersReduced = usePrefersReducedMotion();
+  const [isVisible, setIsVisible] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (prefersReduced) {
+      setIsVisible(true);
+      return;
+    }
+    const el = sectionRef.current;
+    if (!el || typeof window === 'undefined') return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            obs.disconnect();
+          }
+        });
+      },
+      { root: null, threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [prefersReduced]);
 
   const FILTERS = useMemo(() => {
     if (filters) return ["All", ...filters];
@@ -251,7 +276,9 @@ export function WorkSection({
 
   return (
     <section
-      className="relative min-h-screen px-8 md:px-16 py-24"
+      id="work"
+      ref={sectionRef}
+      className={`relative min-h-screen px-8 md:px-16 py-24 projects-section ${isVisible ? 'is-visible' : ''}`}
       style={{ background: "var(--surface)", color: "var(--text)" }}
       aria-labelledby="work-heading"
     >

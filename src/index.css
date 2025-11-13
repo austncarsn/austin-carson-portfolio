@@ -398,6 +398,34 @@ code, pre, kbd {
 }
 
 /* Animation utilities */
+
+/* ==========================================================================
+   SECTION REVEAL: Projects entrance animation used when scrolling from the Hero
+   - The reveal is triggered by an IntersectionObserver in the WorkSection
+   - Respects prefers-reduced-motion by disabling transitions when requested
+   ========================================================================== */
+
+.projects-section {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms var(--ease-smooth), transform 700ms var(--ease-smooth);
+  will-change: opacity, transform;
+}
+
+.projects-section.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-section,
+  .projects-section.is-visible {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
 .animate-in {
   animation-fill-mode: both;
 }
