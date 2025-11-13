@@ -143,6 +143,21 @@ export const SiteHeader = memo(function SiteHeader({
           </div>
 
           <nav className="navbar-nav nav-center" aria-label="Primary navigation">
+            {/* decorative SVG wave sits behind the nav items for a stronger curved edge */}
+            <div className="nav-wave" aria-hidden>
+              <svg
+                viewBox="0 0 600 40"
+                preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="nav-wave-svg"
+                aria-hidden
+              >
+                <path
+                  d="M0 10 C150 40 450 0 600 12 L600 40 L0 40 Z"
+                  fill="var(--color-bg-canvas)"
+                />
+              </svg>
+            </div>
             {items.map((item, index) => (
               <button
                 key={item.href || item.label}

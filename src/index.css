@@ -2075,6 +2075,42 @@ header[role='banner'] {
     Arial;
 }
 
+/* Make nav-center position relative so an SVG wave can be placed behind it */
+.nav-center {
+  position: relative;
+  overflow: visible;
+}
+.nav-center .nav-item {
+  position: relative;
+  z-index: 2;
+}
+.nav-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 36px;
+  pointer-events: none;
+  z-index: 1;
+  display: block;
+}
+.nav-wave-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.nav-wave-svg path {
+  filter: drop-shadow(0 8px 18px rgba(14, 21, 28, 0.06));
+}
+
+/* remove pill border-radius in favor of the SVG wave visual on larger viewports */
+@media (min-width: 640px) {
+  .nav-center {
+    border-radius: 0;
+    padding-bottom: 0.6rem;
+  }
+}
+
 /* inside the centered nav, use brand blue for text */
 .nav-center .nav-item {
   color: var(--accent);
