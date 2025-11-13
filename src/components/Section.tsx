@@ -48,14 +48,14 @@ export default function Section({
             <FadeInSection delay={labelDelay}>
               <div className="mb-12 sm:mb-14 md:mb-16">
                 <div className={`flex items-center gap-3 sm:gap-4 ${labelClassName}`}>
-                  <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-token-muted" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                  <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-neutral-400" style={{ fontVariantNumeric: 'tabular-nums' }}>
                     {labelNumber}
                   </span>
-                  <div className="flex-1 h-[1px] border-token ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
+                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
                   <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.15em] uppercase text-text-secondary">
                     {labelTitle}
                   </span>
-                  <div className="flex-1 h-[1px] border-token ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
+                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
                 </div>
               </div>
             </FadeInSection>

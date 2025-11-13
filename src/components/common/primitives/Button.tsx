@@ -65,47 +65,47 @@ const iconOnlySizeStyles: Record<ButtonSize, string> = {
  */
 const variantStyles: Record<ButtonVariant, string> = {
   primary: `
-    bg-token-accent text-on-accent
-    border border-token
+    bg-neutral-900 text-white
+    border border-neutral-800
     rounded-2xl
-    hover:opacity-90 active:opacity-80
-    disabled:opacity-50
+    hover:bg-neutral-800 active:bg-neutral-700
+    disabled:bg-neutral-200 disabled:text-neutral-400
     shadow-lg hover:shadow-xl
-    focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2
   `,
   secondary: `
-    bg-token-surface text-token-primary
-    hover:brightness-95
-    disabled:opacity-50
+    bg-surface text-text-primary
+    hover:bg-surface/80 active:bg-surface/70
+    disabled:bg-surface disabled:text-neutral-300
     shadow-sm hover:shadow
-    focus-visible:ring-2 focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2
   `,
   ghost: `
-    bg-transparent text-token-primary
-    hover:bg-token-surface-weak active:bg-token-surface-weak
-    disabled:opacity-50
-    focus-visible:ring-2 focus-visible:ring-offset-2
+    bg-transparent text-text-primary
+    hover:bg-surface active:bg-surface/70
+    disabled:text-neutral-300
+    focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2
   `,
   outline: `
-    bg-transparent text-token-primary border-2 border-token
-    hover:bg-token-surface-weak
-    active:bg-token-surface-weak
-    disabled:opacity-50
-    focus-visible:ring-2 focus-visible:ring-offset-2
+    bg-transparent text-text-primary border-2 border-neutral-300
+    hover:bg-neutral-50 hover:border-neutral-400
+    active:bg-neutral-100 active:border-neutral-500
+    disabled:border-neutral-200 disabled:text-neutral-300
+    focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2
   `,
   danger: `
-    bg-token-error text-on-error
-    hover:opacity-90 active:opacity-80
-    disabled:opacity-50
+    bg-error text-white
+    hover:bg-error-hover active:bg-error-active
+    disabled:bg-error-subtle disabled:text-error-muted
     shadow-sm hover:shadow-md
-    focus-visible:ring-2 focus-visible:ring-[var(--color-error)] focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2
   `,
   success: `
-    bg-token-success text-on-accent
-    hover:opacity-90 active:opacity-80
-    disabled:opacity-50
+    bg-success text-white
+    hover:bg-success-hover active:bg-success-active
+    disabled:bg-success-subtle disabled:text-success-muted
     shadow-sm hover:shadow-md
-    focus-visible:ring-2 focus-visible:ring-[var(--color-success)] focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-success focus-visible:ring-offset-2
   `,
 };
 

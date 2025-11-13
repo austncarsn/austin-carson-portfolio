@@ -47,7 +47,7 @@ const variantStyles: Record<CardVariant, string> = {
     hover:border-neutral-400
   `,
   filled: `
-    bg-neutral-100
+    bg-surface
     border border-neutral-200
   `,
   ghost: `

@@ -140,7 +140,7 @@ export function Hero(): React.ReactElement {
                 onMouseLeave={() => !isMobile && setIsHovering(false)}
               >
                 <motion.div
-                  className="relative w-full h-[70vh] md:h-[96vh] overflow-hidden rounded-xl md:rounded-3xl bg-neutral-100"
+                  className="relative w-full h-[70vh] md:h-[96vh] overflow-hidden rounded-xl md:rounded-3xl bg-surface"
                   whileHover={reduce || isMobile ? undefined : { 
                     scale: 1.02,
                     transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }

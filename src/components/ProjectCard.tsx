@@ -164,8 +164,8 @@ export const ProjectCard = memo(
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (
-              <div className="absolute inset-0 w-full h-full bg-token-surface-weak flex items-center justify-center">
-                <span className="text-sm text-token-muted">No preview</span>
+              <div className="absolute inset-0 w-full h-full bg-neutral-200 flex items-center justify-center">
+                <span className="text-sm text-neutral-500">No preview</span>
               </div>
             )}
             <div
@@ -177,7 +177,7 @@ export const ProjectCard = memo(
             />
             <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
               <h3
-                className="text-on-dark text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
+                className="text-white text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
                 style={{ letterSpacing: "-0.5px" }}
               >
                 {title}
@@ -225,7 +225,7 @@ export const ProjectCard = memo(
                 <Link
                   to={`/project/${id}`}
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                 >
                   Details
                   <ArrowRight className="w-4 h-4" />
@@ -237,7 +237,7 @@ export const ProjectCard = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                 >
                   Live Demo
                   <ExternalLink className="w-4 h-4" />
@@ -249,7 +249,7 @@ export const ProjectCard = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                 >
                   Repo
                   <Github className="w-4 h-4" />
