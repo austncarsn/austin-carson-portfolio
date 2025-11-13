@@ -107,7 +107,7 @@ export function Hero(): React.ReactElement {
     <section
       ref={containerRef}
       aria-label="Intro"
-      className="relative min-h-screen isolate overflow-hidden"
+      className="relative min-h-screen isolate overflow-hidden hero-frame"
     >
       {/* Interactive cursor gradient - desktop only */}
       {!reduce && !isMobile && (
