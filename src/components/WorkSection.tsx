@@ -257,8 +257,8 @@ export function WorkSection({
       />
       
       <div className="max-w-[1800px] mx-auto">
-        {/* Header Section */}
-        <header className="mb-16 md:mb-24">
+  {/* Header Section */}
+  <header className="mb-16 md:mb-24 relative overflow-visible">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -291,6 +291,9 @@ export function WorkSection({
           >
             Projects
           </motion.h2>
+
+          {/* Perforated decorative rail beneath the projects header */}
+          <div aria-hidden="true" className="perforated-rail absolute left-0 right-0 -bottom-6 md:-bottom-8" />
 
           <nav className="flex flex-wrap gap-3 md:gap-4" aria-label="Project filters">
             {FILTERS.map((filter, i) => (
