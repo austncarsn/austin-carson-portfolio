@@ -149,7 +149,7 @@ export const GALLERY_PROJECTS: GalleryProject[] = [
     ratio: "16:9",
     year: "2025",
     description: "An experimental site for exploring color systems and palettes with playful interactions and exportable swatches.",
-    fullDescription: "Color Rodeo is an interactive playground for designers to explore, remix, and export cohesive color palettes. It features keyboard-friendly controls, accessible contrast previews, and quick export options for tokens and palette PNGs. Built to help teams iterate on brand color systems faster.",
+  fullDescription: "Color Rodeo is an interactive playground for designers to explore, remix, and export cohesive color palettes. It features keyboard-friendly controls, accessible contrast previews, and quick export options for tokens and palette PNGs. Built to help teams iterate on brand color systems faster. Source code: https://github.com/austncarsn/color_rodeo.git",
     challenge: "Designers needed a fast, iterative way to try palette combinations and evaluate accessibility contrast across UI components. Existing tools were either too simplistic or required heavy tooling to export usable tokens.",
     solution: "We built an interactive web app that lets users generate palettes, test contrast against common UI surfaces, and export tokens in CSS/JSON. The UI emphasizes rapid iteration with meaningful defaults and accessible presets.",
     results: [
