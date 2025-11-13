@@ -391,6 +391,10 @@
   --button-radius: var(--radius-lg);
   --button-transition: all var(--duration-normal) var(--ease-out);
 
+  /* Hero frame token - allows designers to control the visual thickness
+    of the hero frame from the token layer. Adjust to taste. */
+  --hero-frame-thickness: 12px;
+
   /* === INPUT TOKENS === */
   --input-height-sm: var(--space-8);
   --input-height-md: var(--space-10);
