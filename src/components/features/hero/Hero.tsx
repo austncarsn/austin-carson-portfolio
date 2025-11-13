@@ -10,39 +10,50 @@ import cowboys from "../../../assets/Cowboys.webp";
 
 
 export function Hero(): React.ReactElement {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const textRef = useRef<HTMLDivElement | null>(null);
   const reduce = useReducedMotion();
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   
   const [cursorPosition, setCursorPosition] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
 
-  // Detect mobile viewport
+  // Detect mobile viewport with a debounced/RAF-backed resize handler
   useEffect(() => {
-    const checkMobile = (): void => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    let raf = 0;
+    const onResize = (): void => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setIsMobile(window.innerWidth < 768));
+    };
+
+    // initial check
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768);
+      window.addEventListener('resize', onResize, { passive: true });
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (typeof window !== 'undefined') window.removeEventListener('resize', onResize as EventListener);
+    };
   }, []);
 
   // Track cursor for interactive gradient (desktop only)
   useEffect(() => {
     if (reduce || isMobile) return;
-    
-  const handleMouseMove = (e: MouseEvent): void => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setCursorPosition({
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height,
-        });
-      }
+
+    const handleMouseMove = (e: MouseEvent): void => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+      setCursorPosition({ x, y });
     };
 
-    const container = containerRef.current;
-    container?.addEventListener("mousemove", handleMouseMove);
-    return () => container?.removeEventListener("mousemove", handleMouseMove);
+    const el = containerRef.current;
+    el?.addEventListener('mousemove', handleMouseMove, { passive: true } as AddEventListenerOptions);
+    return () => el?.removeEventListener('mousemove', handleMouseMove);
   }, [reduce, isMobile]);
 
   const { scrollYProgress } = useScroll({
@@ -51,8 +62,12 @@ export function Hero(): React.ReactElement {
   });
 
   // Reduced parallax motion on mobile for better performance
-  const y = useTransform(scrollYProgress, [0, 1], reduce || isMobile ? ["0%", "0%"] : ["0%", "24%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1, 0.7, 0.05]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? ['0%', '0%'] : isMobile ? ['0%', '8%'] : ['0%', '24%']
+  );
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1, 0.85, 0.12]);
   const scale = useTransform(scrollYProgress, [0, 1], reduce || isMobile ? [1, 1] : [1, 1.05]);
 
   const gallery = useMemo(() => [
@@ -132,30 +147,31 @@ export function Hero(): React.ReactElement {
             {gallery.map((image, i) => (
               <motion.div
                 key={i}
-                initial={reduce ? false : { opacity: 0, y: isMobile ? 24 : 48, scale: 0.985 }}
+                initial={reduce ? false : { opacity: 0, y: isMobile ? 12 : 36, scale: 0.99 }}
                 animate={reduce ? {} : { opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: isMobile ? i * 0.08 : i * 0.12, duration: isMobile ? 0.6 : 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                transition={{ delay: isMobile ? i * 0.06 : i * 0.12, duration: isMobile ? 0.45 : 0.7, ease: [0.2, 0.8, 0.2, 1] }}
                 className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
                 onMouseEnter={() => !isMobile && setIsHovering(true)}
                 onMouseLeave={() => !isMobile && setIsHovering(false)}
               >
                 <motion.div
-                  className="relative w-full h-[70vh] md:h-[96vh] overflow-hidden rounded-xl md:rounded-3xl bg-surface"
-                  whileHover={reduce || isMobile ? undefined : { 
+                  className={`relative w-full overflow-hidden rounded-xl md:rounded-3xl bg-surface ${isMobile ? 'h-[48vh]' : 'h-[70vh] md:h-[96vh]'}`}
+                  whileHover={reduce || isMobile ? undefined : {
                     scale: 1.02,
-                    transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }
+                    transition: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
                   }}
-                  whileTap={isMobile ? { scale: 0.98 } : undefined}
+                  whileTap={isMobile ? { scale: 0.985 } : undefined}
                 >
                   <motion.div
-                    whileHover={reduce || isMobile ? undefined : { scale: 1.08 }}
-                    transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+                    whileHover={reduce || isMobile ? undefined : { scale: 1.06 }}
+                    transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
                     className="w-full h-full"
                   >
                     <ImageWithFallback
                       src={image.src}
                       alt={image.alt}
                       className={image.className ?? "w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"}
+                      loading={i === 0 ? 'eager' : 'lazy'}
                     />
                   </motion.div>
                   

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+/* eslint-disable no-unused-vars -- Some type-only parameter names (project/index) are used for clarity in callback types */
 import type { JSX } from "react";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";

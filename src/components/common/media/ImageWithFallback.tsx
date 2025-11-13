@@ -4,11 +4,13 @@ interface ImageWithFallbackProps {
   src: string;
   alt: string;
   className?: string;
+  /** loading attribute for the native img element — 'lazy' | 'eager' */
+  loading?: 'lazy' | 'eager';
 }
 
-export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbackProps): React.ReactElement {
+export function ImageWithFallback({ src, alt, className = '', loading = 'lazy' }: ImageWithFallbackProps): React.ReactElement {
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   if (error) {
     return (
@@ -20,17 +22,17 @@ export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbac
 
   return (
     <>
-      {loading && (
+      {isLoading && (
         <div className={`${className} bg-neutral-200 animate-pulse`} />
       )}
       <img
         src={src}
         alt={alt}
-        loading="lazy"
+        loading={loading}
         className={className}
         onError={() => setError(true)}
-        onLoad={() => setLoading(false)}
-        style={{ display: loading ? 'none' : 'block' }}
+        onLoad={() => setIsLoading(false)}
+        style={{ display: isLoading ? 'none' : 'block' }}
       />
     </>
   );
