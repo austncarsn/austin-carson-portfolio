@@ -49,10 +49,11 @@ export const SiteHeader = memo(function SiteHeader({
 
   const tokens = useMemo(
     () => ({
-      bg: 'var(--accent)',
-      border: 'color-mix(in oklab, var(--accent) 18%, transparent)',
-      textMuted: 'rgba(255,255,255,0.75)',
-      textPrimary: 'white',
+      // header background should match page canvas; ticker / accents remain blue
+      bg: 'var(--color-bg-canvas)',
+      border: 'color-mix(in oklab, var(--accent) 12%, transparent)',
+      textMuted: 'rgba(46, 136, 255, 0.9)',
+      textPrimary: 'var(--accent)',
       accent: 'var(--accent)',
     }),
     []
@@ -176,18 +177,18 @@ export const SiteHeader = memo(function SiteHeader({
       </div>
       <div
         className={`overflow-hidden border-t ${compact ? 'py-2' : 'py-2.5 md:py-3'} relative`}
-        style={{ borderColor: tokens.border }}
+        style={{ borderColor: tokens.border, backgroundColor: tokens.accent }}
       >
         <div
           className="absolute left-0 top-0 bottom-0 w-16 md:w-24 pointer-events-none z-10"
           style={{
-            background: `linear-gradient(90deg, ${tokens.bg} 0%, transparent 100%)`,
+            background: `linear-gradient(90deg, ${tokens.accent} 0%, transparent 100%)`,
           }}
         />
         <div
           className="absolute right-0 top-0 bottom-0 w-16 md:w-24 pointer-events-none z-10"
           style={{
-            background: `linear-gradient(270deg, ${tokens.bg} 0%, transparent 100%)`,
+            background: `linear-gradient(270deg, ${tokens.accent} 0%, transparent 100%)`,
           }}
         />
         <div className="navbar-ticker" aria-hidden="true">
@@ -199,7 +200,7 @@ export const SiteHeader = memo(function SiteHeader({
               <span
                 key={i}
                 className={`${compact ? 'text-[10px]' : 'text-xs'} tracking-wider uppercase`}
-                style={{ color: tokens.textMuted, opacity: 0.45 }}
+                style={{ color: 'white', opacity: 0.95 }}
               >
                 {tickerText}
               </span>

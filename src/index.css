@@ -1,5 +1,6 @@
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@1,2,3,4,5,6,7,8,9&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
 
 /* Design Token System - Import first to make tokens available */
 @import './styles/tokens.css';
@@ -2056,6 +2057,38 @@ header[role='banner'] {
   display: flex;
   gap: 1.25rem;
   align-items: center;
+}
+.nav-center {
+  /* make the centered nav visually match the page background */
+  background: var(--color-bg-canvas);
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px color-mix(in oklab, black 6%, transparent);
+  font-family:
+    'Plus Jakarta Sans',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial;
+}
+
+/* inside the centered nav, use brand blue for text */
+.nav-center .nav-item {
+  color: var(--accent);
+  background: transparent;
+}
+.nav-center .nav-item:hover {
+  background: color-mix(in oklab, var(--accent) 6%, transparent);
+}
+.nav-center .nav-underline {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--accent) 30%, white),
+    color-mix(in oklab, var(--accent) 10%, white)
+  );
 }
 .nav-item {
   position: relative;
