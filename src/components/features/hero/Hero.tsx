@@ -92,7 +92,7 @@ export function Hero(): React.ReactElement {
     <section
       ref={containerRef}
       aria-label="Intro"
-      className="relative min-h-screen isolate overflow-hidden bg-[#fafaf8]"
+      className="relative min-h-screen isolate overflow-hidden"
     >
       {/* Interactive cursor gradient - desktop only */}
       {!reduce && !isMobile && (

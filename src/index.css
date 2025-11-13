@@ -342,7 +342,10 @@ code, pre, kbd {
 @layer base {
   :root { font-size: var(--font-size-root); }
   body {
-    background: var(--bg-canvas);
+    /* Use hero's warm cream background globally for a cohesive site background
+       This mirrors the hero's previous hardcoded color (#fafaf8). If you later
+       want to scope to tokens, set --bg or --color-bg-canvas in tokens.css. */
+    background: #fafaf8;
     color: var(--text-primary);
     /* Satoshi as the universal font for professional consistency */
     font-family: 'Satoshi', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
