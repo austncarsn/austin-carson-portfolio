@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { Mail, Phone, MapPin, Linkedin, Github, Instagram, ArrowRight, type LucideIcon } from "lucide-react";
 import { memo, useMemo, useCallback, useState } from "react";
 import type { ReactElement } from "react";
@@ -24,14 +25,16 @@ type ContactMethod3DProps = {
   onClick: () => void;
 };
 
-const ContactMethod3D = memo(({ method, index, isActive, onClick }: ContactMethod3DProps) => (
+const ContactMethod3D = memo(({ method, index, isActive, onClick }: ContactMethod3DProps) => {
+  const reduce = usePrefersReducedMotion();
+  return (
   <motion.div
     onClick={onClick}
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.15, duration: 0.6 }}
+    initial={reduce ? undefined : { opacity: 0, y: 30 }}
+    whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+    transition={reduce ? undefined : { delay: index * 0.15, duration: 0.6 }}
     viewport={{ once: true }}
-    whileHover={{ 
+    whileHover={reduce ? undefined : {
       y: -8,
       transition: { duration: 0.3 }
     }}
@@ -95,7 +98,8 @@ const ContactMethod3D = memo(({ method, index, isActive, onClick }: ContactMetho
       </div>
     </div>
   </motion.div>
-));
+  );
+});
 
 ContactMethod3D.displayName = 'ContactMethod3D';
 
