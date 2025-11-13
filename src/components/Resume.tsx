@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button } from './common/primitives';
 import { Download } from 'lucide-react';
 
@@ -58,10 +58,8 @@ const ProjectCard = ({ title, description, techStack }: {
 );
 
 export default function Resume(): React.JSX.Element {
-  
-
-  // Data for AI training experience
-  const aiTrainingExperience = [
+  // Data for AI training experience - memoized to prevent recreation on re-renders
+  const aiTrainingExperience = useMemo(() => [
     {
       title: "AI Evaluator",
       company: "Various Platforms (Contract)",
@@ -73,10 +71,10 @@ export default function Resume(): React.JSX.Element {
         "Annotated multimodal datasets with high precision, supporting cleaner training pipelines."
       ]
     }
-  ];
+  ], []);
 
-  // Data for professional experience
-  const professionalExperience = [
+  // Data for professional experience - memoized to prevent recreation on re-renders
+  const professionalExperience = useMemo(() => [
     {
       title: "Client & Product Specialist",
       company: "Swarovski Crystal",
@@ -87,10 +85,10 @@ export default function Resume(): React.JSX.Element {
         "Trained team members in client-first communication, knowledge retention, and brand storytelling."
       ]
     }
-  ];
+  ], []);
 
-  // Data for projects
-  const projects = [
+  // Data for projects - memoized to prevent recreation on re-renders
+  const projects = useMemo(() => [
     {
       title: "Floral Design SVG — AI-Powered Web App",
       description: [
@@ -118,7 +116,7 @@ export default function Resume(): React.JSX.Element {
         "Created a scalable icon system with consistent stroke geometry, naming conventions, and export tooling."
       ]
     }
-  ];
+  ], []);
 
   return (
     <div className="min-h-screen bg-bg py-12 px-4">

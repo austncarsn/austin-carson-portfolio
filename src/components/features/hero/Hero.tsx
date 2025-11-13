@@ -13,14 +13,22 @@ export function Hero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  
+  const [isMobile, setIsMobile] = useState(false);
   
   const [cursorPosition, setCursorPosition] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
 
-  // Track cursor for interactive gradient
+  // Detect mobile viewport
   useEffect(() => {
-    if (reduce) return;
+    const checkMobile = (): void => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Track cursor for interactive gradient (desktop only)
+  useEffect(() => {
+    if (reduce || isMobile) return;
     
   const handleMouseMove = (e: MouseEvent): void => {
       if (containerRef.current) {
@@ -35,17 +43,17 @@ export function Hero(): React.ReactElement {
     const container = containerRef.current;
     container?.addEventListener("mousemove", handleMouseMove);
     return () => container?.removeEventListener("mousemove", handleMouseMove);
-  }, [reduce]);
+  }, [reduce, isMobile]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  // Transforms must be called at top level, not inside useMemo
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "24%"]);
+  // Reduced parallax motion on mobile for better performance
+  const y = useTransform(scrollYProgress, [0, 1], reduce || isMobile ? ["0%", "0%"] : ["0%", "24%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1, 0.7, 0.05]);
-  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1, 1.05]);
+  const scale = useTransform(scrollYProgress, [0, 1], reduce || isMobile ? [1, 1] : [1, 1.05]);
 
   const gallery = useMemo(() => [
     {
@@ -84,10 +92,10 @@ export function Hero(): React.ReactElement {
     <section
       ref={containerRef}
       aria-label="Intro"
-      className="relative min-h-screen isolate overflow-hidden bg-token-canvas"
+      className="relative min-h-screen isolate overflow-hidden bg-[#fafaf8]"
     >
-      {/* Interactive cursor gradient */}
-      {!reduce && (
+      {/* Interactive cursor gradient - desktop only */}
+      {!reduce && !isMobile && (
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -120,26 +128,27 @@ export function Hero(): React.ReactElement {
           }} 
           className="relative w-full h-[150vh]"
         >
-          <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-4 md:p-8 lg:p-12">
+          <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 p-3 md:p-8 lg:p-12">
             {gallery.map((image, i) => (
               <motion.div
                 key={i}
-                initial={reduce ? false : { opacity: 0, y: 48, scale: 0.985 }}
+                initial={reduce ? false : { opacity: 0, y: isMobile ? 24 : 48, scale: 0.985 }}
                 animate={reduce ? {} : { opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: i * 0.12, duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                transition={{ delay: isMobile ? i * 0.08 : i * 0.12, duration: isMobile ? 0.6 : 0.8, ease: [0.2, 0.8, 0.2, 1] }}
                 className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
+                onMouseEnter={() => !isMobile && setIsHovering(true)}
+                onMouseLeave={() => !isMobile && setIsHovering(false)}
               >
                 <motion.div
-                  className="relative w-full h-[84vh] md:h-[96vh] overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-100"
-                  whileHover={reduce ? undefined : { 
+                  className="relative w-full h-[70vh] md:h-[96vh] overflow-hidden rounded-xl md:rounded-3xl bg-neutral-100"
+                  whileHover={reduce || isMobile ? undefined : { 
                     scale: 1.02,
                     transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }
                   }}
+                  whileTap={isMobile ? { scale: 0.98 } : undefined}
                 >
                   <motion.div
-                    whileHover={reduce ? undefined : { scale: 1.08 }}
+                    whileHover={reduce || isMobile ? undefined : { scale: 1.08 }}
                     transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
                     className="w-full h-full"
                   >
@@ -180,68 +189,68 @@ export function Hero(): React.ReactElement {
       <motion.div
         ref={textRef}
         style={{ opacity: opacity }}
-        className="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 py-24 md:py-32"
+        className="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 py-20 md:py-32"
       >
-        <div className="text-center max-w-6xl">
+        <div className="text-center max-w-6xl w-full">
           
 
           {/* Eyebrow */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
+            initial={reduce ? false : { opacity: 0, y: isMobile ? 12 : 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.5 }}
-            className="mb-8 md:mb-16"
+            className="mb-6 md:mb-16"
           >
-            <div className="inline-flex items-center gap-6">
-              <span className="uppercase text-token-muted text-xs md:text-sm tracking-[0.2em]">
+            <div className="inline-flex items-center gap-4 md:gap-6">
+              <span className="uppercase text-neutral-800 text-[10px] md:text-sm tracking-[0.15em] md:tracking-[0.2em]">
                 Designer & Developer — Austin Carson
               </span>
             </div>
           </motion.div>
 
-          {/* H1 with improved spacing */}
+          {/* H1 with improved mobile sizing */}
           <motion.h1
-            initial={reduce ? false : { y: 28, opacity: 0 }}
+            initial={reduce ? false : { y: isMobile ? 20 : 28, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.25, duration: 0.6 }}
-            className="text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 text-token-primary tracking-tight"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-4 md:mb-8 text-neutral-900 tracking-tight leading-[1.1] px-2"
           >
             Interfaces With Intent
           </motion.h1>
 
-          {/* Subhead */}
+          {/* Subhead with better mobile spacing */}
           <motion.p
-            initial={reduce ? false : { opacity: 0, y: 12 }}
+            initial={reduce ? false : { opacity: 0, y: isMobile ? 8 : 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-10 md:mb-20 px-4 text-token-muted leading-relaxed"
+            className="text-base md:text-xl lg:text-2xl max-w-3xl mx-auto mb-8 md:mb-20 px-4 text-neutral-600 leading-relaxed"
           >
             Design systems that scale. Experiences that connect. Impact you can measure.
           </motion.p>
 
-          {/* Enhanced CTA with better hover state */}
+          {/* Enhanced CTA with mobile-optimized touch targets */}
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 10 }}
+            initial={reduce ? false : { opacity: 0, y: isMobile ? 8 : 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.45 }}
-            className="inline-block"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
           >
             <motion.a
               href="#work"
               aria-label="Explore the work section"
-              whileHover={reduce ? undefined : { scale: 1.04, y: -3 }}
-              whileTap={reduce ? undefined : { scale: 0.98 }}
-              className="group relative overflow-hidden inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-token-accent text-on-accent border border-token shadow-lg"
+              whileHover={reduce || isMobile ? undefined : { scale: 1.04, y: -3 }}
+              whileTap={{ scale: 0.96 }}
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 shadow-lg shadow-neutral-900/20 w-full sm:w-auto min-h-[48px]"
               onClick={handleExploreClick}
               onFocus={(e) => e.currentTarget.setAttribute('data-focused', 'true')}
               onBlur={(e) => e.currentTarget.removeAttribute('data-focused')}
             >
-              <span className="relative z-10 tracking-[0.2em] md:tracking-[0.25em] uppercase text-xs md:text-sm">
+              <span className="relative z-10 tracking-[0.15em] md:tracking-[0.25em] uppercase text-xs md:text-sm">
                 Explore the work
               </span>
               <motion.span
-                className="relative z-10 text-lg"
-                animate={reduce ? undefined : { x: [0, 4, 0] }}
+                className="relative z-10 text-base md:text-lg"
+                animate={reduce || isMobile ? undefined : { x: [0, 4, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
               >
                 →
@@ -249,34 +258,39 @@ export function Hero(): React.ReactElement {
               {/* Optimized hover wash with initial state */}
               <motion.div
                 aria-hidden="true"
-                className="absolute inset-0 bg-token-overlay-accent"
+                className="absolute inset-0 bg-neutral-800"
                 initial={{ opacity: 0 }}
-                whileHover={reduce ? undefined : { opacity: 1 }}
+                whileHover={reduce || isMobile ? undefined : { opacity: 1 }}
                 transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
               />
             </motion.a>
               <a
                 href="#/resume"
                 aria-label="View resume"
-                className="ml-4 inline-flex items-center px-4 py-3 rounded-lg bg-token-surface border border-token text-token-primary font-medium"
+                className="inline-flex items-center justify-center px-6 md:px-8 py-4 md:py-5 rounded-2xl w-full sm:w-auto min-h-[48px]"
+                style={{
+                  color: 'var(--color-text-primary)',
+                  background: 'var(--color-cream-bg)',
+                  border: '1px solid var(--color-border-subtle)',
+                  fontWeight: 'var(--font-weight-medium)'
+                }}
               >
-                Resume
+                <span className="tracking-[0.15em] md:tracking-[0.2em] uppercase text-xs md:text-sm">Resume</span>
               </a>
             </motion.div>
 
-          {/* Enhanced scroll indicator with better animation */}
-          <div className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2">
+          {/* Enhanced scroll indicator - hidden on mobile */}
+          <div className="hidden md:block absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2">
             <motion.div
               animate={reduce ? undefined : { y: [0, 10, 0] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               className="flex flex-col items-center gap-3"
             >
-              <span className="text-[10px] tracking-[0.3em] uppercase text-token-muted">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-neutral-400">
                 Scroll
               </span>
               <motion.div
-                className="w-[1px] h-16"
-                style={{ background: 'linear-gradient(to bottom, rgba(107,114,128,1), transparent)' }}
+                className="w-[1px] h-16 bg-gradient-to-b from-neutral-400 to-transparent"
                 initial={{ scaleY: 0, originY: 0 }}
                 animate={{ scaleY: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}
