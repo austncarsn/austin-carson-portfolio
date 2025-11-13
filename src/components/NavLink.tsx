@@ -5,9 +5,10 @@ type NavLinkProps = {
   size?: 'mobile' | 'desktop';
   isActive?: boolean;
   isExternal?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   children: React.ReactNode;
 };
+ 
 
 export function NavLink({
   href,

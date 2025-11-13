@@ -1,8 +1,8 @@
 import type { ReactElement, ReactNode } from 'react';
-import { lazy, Suspense, memo, useEffect, useState } from 'react';
+import { lazy, Suspense, memo, useEffect, useState, useCallback } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop';
-import { SiteHeader } from './components/SiteHeader';
 import { WorkSection } from './components/WorkSection';
 import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
@@ -64,34 +64,35 @@ export default function App(): ReactElement {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const projects = adaptGalleryProjects(GALLERY_PROJECTS);
 
-  const handleProjectClick = (project: Project, index: number): void => {
+  const handleProjectClick = useCallback((project: Project, index: number): void => {
     setSelectedProject(project);
     setSelectedIndex(index);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = (): void => {
+  const handleCloseModal = useCallback((): void => {
     setIsModalOpen(false);
     setTimeout(() => {
       setSelectedProject(null);
       setSelectedIndex(-1);
     }, 300);
-  };
+  }, []);
 
-  const handleNextProject = (): void => {
+  const handleNextProject = useCallback((): void => {
+    if (!projects || projects.length === 0) return;
     const nextIndex = (selectedIndex + 1) % projects.length;
     setSelectedProject(projects[nextIndex]);
     setSelectedIndex(nextIndex);
-  };
+  }, [projects, selectedIndex]);
 
-  const handlePrevProject = (): void => {
+  const handlePrevProject = useCallback((): void => {
+    if (!projects || projects.length === 0) return;
     const prevIndex = selectedIndex === 0 ? projects.length - 1 : selectedIndex - 1;
     setSelectedProject(projects[prevIndex]);
     setSelectedIndex(prevIndex);
-  };
+  }, [projects, selectedIndex]);
 
   return (
     <Router>
@@ -101,23 +102,11 @@ export default function App(): ReactElement {
         className="flex flex-col min-h-screen bg-background text-foreground"
         data-theme="light"
       >
-        <SiteHeader
-          brandTitle="AUSTIN CARSON"
-          since="Since 2025"
-          items={[
-            { label: "Index", href: "/" },
-            { label: "Work", href: "#work" },
-            { label: "Contact", href: "#contact" },
-          ]}
-          statusText="Open for collabs"
-          cta={{ label: "Resume", href: "/resume", external: true }}
-          tickerText="Available for projects • AI-Powered Educational Interfaces • Creative Tech & Design Systems"
-          tickerSpeedSec={18}
-        />
         
-        <Suspense fallback={<LoadingFallback />}>
-          <MainContent>
-            <Routes>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <MainContent>
+              <Routes>
               <Route 
                 index 
                 element={
@@ -172,8 +161,9 @@ export default function App(): ReactElement {
                 } 
               />
             </Routes>
-          </MainContent>
-        </Suspense>
+            </MainContent>
+          </Suspense>
+        </ErrorBoundary>
 
         <Suspense fallback={null}>
           <ProjectDetail 

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { memo, useState, useEffect } from "react";
 import type { JSX } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useScrollDir } from "@/hooks/useScrollDir";
 import { useCompactHeader } from "@/hooks/useCompactHeader";
@@ -32,7 +31,7 @@ type Props = {
   className?: string;
 };
 
-export function SiteHeader({
+export const SiteHeader = memo(function SiteHeader({
   items = [
     { label: "Index", href: "/" },
     { label: "Work", href: "/#work" },
@@ -161,4 +160,4 @@ export function SiteHeader({
       </div>
     </header>
   );
-}
+});

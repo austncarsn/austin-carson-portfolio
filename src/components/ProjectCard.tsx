@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowRight, ExternalLink, Github, X } from "lucide-react";
+import { ImageWithFallback } from "./common/media/ImageWithFallback";
 
 /*************************************************************
  * Project Cards Scroll FX
@@ -156,15 +157,16 @@ export const ProjectCard = memo(
             className="card-front absolute inset-0 overflow-hidden rounded-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_16px_50px_rgba(0,0,0,0.45)] active:translate-y-[-1px]"
             style={{ backfaceVisibility: "hidden" }}
           >
-            {previewImage && (
-              <img
+            {previewImage ? (
+              <ImageWithFallback
                 src={previewImage}
                 alt={`${title} preview`}
                 className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-                width={640}
-                height={420}
               />
+            ) : (
+              <div className="absolute inset-0 w-full h-full bg-neutral-200 flex items-center justify-center">
+                <span className="text-sm text-neutral-500">No preview</span>
+              </div>
             )}
             <div
               className="absolute inset-0"
@@ -199,17 +201,23 @@ export const ProjectCard = memo(
               <X className="w-5 h-5" />
             </button>
 
-            <div className="space-y-4 pr-8">
-              <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
-                {category} • {year}
-              </p>
+            <div className="space-y-3 pr-8">
+              <div className="flex items-center justify-between">
+                <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
+                  {category}
+                </p>
+                <p className="text-xs text-[var(--muted)]">{year}</p>
+              </div>
+
               <h3 className="text-2xl sm:text-3xl font-bold leading-tight">{title}</h3>
+
               {role && (
                 <p className="text-sm text-[var(--muted)]">
                   <span className="font-medium">Role:</span> {role}
                 </p>
               )}
-              <p className="text-[var(--muted)] leading-relaxed">{description}</p>
+
+              <p className="text-[var(--muted)] leading-relaxed whitespace-pre-line">{description}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-4">

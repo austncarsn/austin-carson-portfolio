@@ -26,6 +26,7 @@ export function ImageWithFallback({ src, alt, className = '' }: ImageWithFallbac
       <img
         src={src}
         alt={alt}
+        loading="lazy"
         className={className}
         onError={() => setError(true)}
         onLoad={() => setLoading(false)}

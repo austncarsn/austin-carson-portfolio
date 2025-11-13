@@ -1,218 +1,282 @@
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useReducedMotion, useInView } from "motion/react";
 import { ImageWithFallback } from "../../common/media/ImageWithFallback";
+
+interface FloatingBadge {
+  id: number;
+  label: string;
+  value: string;
+  delay: number;
+}
 
 export function Hero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const isInView = useInView(containerRef, { once: false, amount: 0.3 });
+  
+  const [cursorPosition, setCursorPosition] = useState({ x: 0.5, y: 0.5 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Track cursor for interactive gradient
+  useEffect(() => {
+    if (reduce) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setCursorPosition({
+          x: (e.clientX - rect.left) / rect.width,
+          y: (e.clientY - rect.top) / rect.height,
+        });
+      }
+    };
+
+    const container = containerRef.current;
+    container?.addEventListener("mousemove", handleMouseMove);
+    return () => container?.removeEventListener("mousemove", handleMouseMove);
+  }, [reduce]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.6, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  // Transforms must be called at top level, not inside useMemo
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["0%", "24%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [1, 1, 1] : [1, 0.7, 0.05]);
+  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1, 1.05]);
+
+  const gallery = useMemo(() => [
+    {
+      src: "https://images.unsplash.com/photo-1572457598110-2e060c4588ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmUlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NjI5NTIyMTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      alt: "Modern architecture interior"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1704428381485-fbdc84a7e58c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwd29ya3NwYWNlJTIwZGVzaWdufGVufDF8fHx8MTc2Mjk4MjkxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      alt: "Minimalist workspace design"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1758627506826-0658170e5cf6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHN0dWRpbyUyMHNwYWNlfGVufDF8fHx8MTc2Mjg4NjE0MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      alt: "Creative studio space"
+    },
+  ], []);
+
+  const floatingBadges: FloatingBadge[] = useMemo(() => [
+    { id: 1, label: "Projects", value: "50+", delay: 0.6 },
+    { id: 2, label: "Years", value: "8+", delay: 0.7 },
+    { id: 3, label: "Clients", value: "30+", delay: 0.8 },
+  ], []);
 
   return (
-    <section 
+    <section
       ref={containerRef}
-      className="relative min-h-screen overflow-hidden"
-      style={{ backgroundColor: 'var(--bg)' }}
+      aria-label="Intro"
+      className="relative min-h-screen isolate overflow-hidden bg-[#fafaf8]"
     >
-      <div 
-        className="absolute inset-0 pointer-events-none mix-blend-overlay"
-        style={{ 
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.03\'/%3E%3C/svg%3E")',
-          opacity: 0.4
+      {/* Interactive cursor gradient */}
+      {!reduce && (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: `radial-gradient(600px circle at ${cursorPosition.x * 100}% ${cursorPosition.y * 100}%, rgba(255, 200, 150, 0.08), transparent 60%)`,
+          }}
+          animate={{
+            opacity: isHovering ? 1 : 0.6,
+          }}
+          transition={{ duration: 0.4 }}
+        />
+      )}
+
+      {/* Subtle texture overlay */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.15]"
+        style={{
+          background:
+            "radial-gradient(1200px 600px at 10% 10%, rgba(0, 0, 0, 0.04), transparent 60%), radial-gradient(900px 500px at 90% 15%, rgba(200, 150, 100, 0.06), transparent 55%)",
         }}
       />
 
+      {/* Gallery parallax with optimized rendering */}
       <div className="absolute inset-0">
         <motion.div 
-          style={{ y, scale }}
-          className="relative w-full h-[130vh]"
+          style={{ 
+            y: y, 
+            scale: scale,
+          }} 
+          className="relative w-full h-[110vh]"
         >
           <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-4 md:p-8 lg:p-12">
-            {[
-              'https://images.unsplash.com/photo-1618556450991-2f1af64e8191?w=600&h=800&fit=crop',
-              'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=800&fit=crop',
-              'https://images.unsplash.com/photo-1618556450994-a6a128ef0d9d?w=600&h=800&fit=crop'
-            ].map((src, i) => (
+            {gallery.map((image, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 100, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  delay: i * 0.15, 
-                  duration: 1.2,
-                  ease: [0.19, 1, 0.22, 1]
-                }}
-                className={`relative h-full ${i === 2 ? 'hidden lg:block' : ''}`}
+                initial={reduce ? false : { opacity: 0, y: 48, scale: 0.985 }}
+                animate={reduce ? {} : { opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: i * 0.12, duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
               >
-                <div className="relative w-full h-full overflow-hidden rounded-[12px] md:rounded-[20px]">
-                  <ImageWithFallback
-                    src={src}
-                    alt={`Gallery ${i + 1}`}
-                    className="w-full h-full object-cover grayscale brightness-75 contrast-110 hover:grayscale-0 hover:brightness-100 transition-all duration-1000 ease-out"
-                  />
-                  <div 
+                <motion.div
+                  className="relative w-full h-[56vh] md:h-[64vh] overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-100"
+                  whileHover={reduce ? undefined : { 
+                    scale: 1.02,
+                    transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }
+                  }}
+                >
+                  <motion.div
+                    whileHover={reduce ? undefined : { scale: 1.08 }}
+                    transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+                    className="w-full h-full"
+                  >
+                    <ImageWithFallback
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"
+                    />
+                  </motion.div>
+                  
+                  {/* Enhanced vignette with subtle grain texture */}
+                  <div
+                    aria-hidden="true"
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.2) 100%)'
+                      maskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
+                      WebkitMaskImage: "radial-gradient(120% 120% at 50% 40%, transparent 55%, black 100%)",
+                      background: "linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 35%)",
                     }}
                   />
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </div>
-          
-          <div 
-            className="absolute inset-0"
+
+          {/* Optimized foreground fade */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(180deg, rgba(244, 250, 255, 0) 0%, rgba(244, 250, 255, 0.4) 25%, rgba(244, 250, 255, 0.75) 50%, rgba(244, 250, 255, 0.9) 70%, rgba(244, 250, 255, 0.95) 80%, var(--bg) 90%)',
-              backdropFilter: 'blur(0.5px)'
+              background: "linear-gradient(180deg, transparent 0%, rgba(250, 250, 248, 0.65) 55%, #fafaf8 85%)",
             }}
           />
         </motion.div>
       </div>
 
-      <motion.div 
-        style={{ opacity }}
+      {/* Text block with enhanced layout */}
+      <motion.div
+        ref={textRef}
+        style={{ opacity: opacity }}
         className="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 py-24 md:py-32"
       >
         <div className="text-center max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-            className="mb-8 md:mb-16"
-          >
-            <div className="inline-flex items-center gap-3 md:gap-6">
-              <motion.div 
-                className="h-[1px]"
-                initial={{ width: 0 }}
-                animate={{ width: 40 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                style={{ backgroundColor: 'var(--accent)' }}
-              />
-              <span 
-                className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
-                style={{ color: 'var(--muted)' }}
-              >
-                Designer & Developer — Austin Carson
-              </span>
-              <motion.div 
-                className="h-[1px]"
-                initial={{ width: 0 }}
-                animate={{ width: 40 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                style={{ backgroundColor: 'var(--accent)' }}
-              />
-            </div>
-          </motion.div>
-
-          <div className="mb-10 md:mb-20 overflow-hidden space-y-2 md:space-y-4">
-            {[
-              { word: 'Crafting', color: 'var(--ink)', italic: false },
-              { word: 'Elegant', color: 'var(--accent)', italic: false },
-              { word: 'Interfaces', color: 'var(--ink)', italic: true }
-            ].map((item, i) => (
+          {/* Floating badges - new feature */}
+          <div className="absolute top-12 md:top-20 left-1/2 -translate-x-1/2 flex gap-3 md:gap-4">
+            {floatingBadges.map((badge) => (
               <motion.div
-                key={item.word}
-                initial={{ y: 250, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ 
-                  delay: 0.9 + i * 0.12, 
-                  duration: 1,
-                  ease: [0.19, 1, 0.22, 1]
-                }}
+                key={badge.id}
+                initial={reduce ? false : { opacity: 0, y: -20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: badge.delay, duration: 0.6 }}
+                whileHover={reduce ? undefined : { y: -4, scale: 1.05 }}
+                className="backdrop-blur-md bg-white/40 border border-neutral-200/50 rounded-xl px-4 py-2 shadow-sm"
               >
-                <h1 
-                  className="text-[clamp(2.5rem,12vw,16rem)] leading-[0.88] tracking-[-0.04em]"
-                  style={{ 
-                    color: item.color,
-                    fontStyle: item.italic ? 'italic' : 'normal',
-                    fontWeight: item.italic ? 300 : 600
-                  }}
-                >
-                  {item.word}
-                </h1>
+                <div className="text-xs text-neutral-500 uppercase tracking-wider">{badge.label}</div>
+                <div className="text-lg text-neutral-900 mt-0.5">{badge.value}</div>
               </motion.div>
             ))}
           </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
+          {/* Eyebrow */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.6, duration: 0.8 }}
-            className="text-base md:text-lg lg:text-2xl max-w-3xl mx-auto mb-10 md:mb-20 leading-relaxed px-4"
-            style={{ color: 'var(--muted)', letterSpacing: '-0.01em' }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="mb-8 md:mb-16"
           >
-            Bridging creativity with code. I design and build digital experiences with React, TypeScript, and AI—creating design systems that resonate, inspire, and transform how people interact with technology.
+            <div className="inline-flex items-center gap-6">
+              <span className="uppercase text-neutral-800 text-xs md:text-sm tracking-[0.2em]">
+                Designer & Developer — Austin Carson
+              </span>
+            </div>
+          </motion.div>
+
+          {/* H1 with improved spacing */}
+          <motion.h1
+            initial={reduce ? false : { y: 28, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.25, duration: 0.6 }}
+            className="text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 text-neutral-900 tracking-tight"
+          >
+            Interfaces With Intent
+          </motion.h1>
+
+          {/* Subhead */}
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.5 }}
+            className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-10 md:mb-20 px-4 text-neutral-600 leading-relaxed"
+          >
+            Design systems that scale. Experiences that connect. Impact you can measure.
           </motion.p>
 
+          {/* Enhanced CTA with better hover state */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={reduce ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.8, duration: 0.8 }}
+            transition={{ delay: 0.55, duration: 0.45 }}
             className="inline-block"
           >
             <motion.a
               href="#work"
-              whileHover={{ scale: 1.05, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              className="group relative px-8 md:px-12 py-4 md:py-5 overflow-hidden inline-flex items-center gap-3 md:gap-4 rounded-[16px] md:rounded-[20px]"
-              style={{ backgroundColor: 'var(--accent)' }}
+              aria-label="Explore the work section"
+              whileHover={reduce ? undefined : { scale: 1.04, y: -3 }}
+              whileTap={reduce ? undefined : { scale: 0.98 }}
+              className="group relative overflow-hidden inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 shadow-lg shadow-neutral-900/20"
+              onFocus={(e) => e.currentTarget.setAttribute('data-focused', 'true')}
+              onBlur={(e) => e.currentTarget.removeAttribute('data-focused')}
             >
-              <span 
-                className="relative z-10 text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.25em] uppercase"
-                style={{ color: 'var(--bg)', fontWeight: 600 }}
-              >
-                View Projects
+              <span className="relative z-10 tracking-[0.2em] md:tracking-[0.25em] uppercase text-xs md:text-sm">
+                Explore the work
               </span>
               <motion.span
-                className="relative z-10 text-base md:text-lg"
-                initial={{ x: 0 }}
-                whileHover={{ x: 4 }}
-                style={{ color: 'var(--bg)' }}
+                className="relative z-10 text-lg"
+                animate={reduce ? undefined : { x: [0, 4, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
               >
                 →
               </motion.span>
+              {/* Optimized hover wash with initial state */}
               <motion.div
-                className="absolute inset-0"
-                style={{ backgroundColor: 'var(--ink)' }}
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                aria-hidden="true"
+                className="absolute inset-0 bg-neutral-800"
+                initial={{ opacity: 0 }}
+                whileHover={reduce ? undefined : { opacity: 1 }}
+                transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
               />
             </motion.a>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.2 }}
-            className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2"
-          >
+          {/* Enhanced scroll indicator with better animation */}
+          <div className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2">
             <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="flex flex-col items-center gap-3 md:gap-4"
+              animate={reduce ? undefined : { y: [0, 10, 0] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              className="flex flex-col items-center gap-3"
             >
-              <span 
-                className="text-[9px] md:text-[10px] tracking-[0.25em] md:tracking-[0.3em] uppercase font-medium"
-                style={{ color: 'var(--muted)', opacity: 0.7 }}
-              >
+              <span className="text-[10px] tracking-[0.3em] uppercase text-neutral-400">
                 Scroll
               </span>
-              <div 
-                className="w-[1px] h-12 md:h-20"
-                style={{ 
-                  background: 'linear-gradient(to bottom, var(--accent), transparent)'
-                }}
+              <motion.div
+                className="w-[1px] h-16 bg-gradient-to-b from-neutral-400 to-transparent"
+                initial={{ scaleY: 0, originY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ delay: 1, duration: 0.8 }}
               />
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
     </section>

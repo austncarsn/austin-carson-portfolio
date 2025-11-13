@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
  * @param threshold - Minimum scroll distance to trigger direction change (default: 8px)
  * @returns "up" | "down"
  */
-export function useScrollDir(threshold = 8) {
+export function useScrollDir(threshold = 8): "up" | "down" {
   const [dir, setDir] = useState<"up" | "down">("up");
   
   useEffect(() => {
     let last = window.scrollY;
     
-    const onScroll = () => {
+    const onScroll = (): void => {
       const y = window.scrollY;
       if (Math.abs(y - last) > threshold) {
         setDir(y > last ? "down" : "up");
