@@ -411,6 +411,99 @@ kbd {
   }
 }
 
+/* ==========================================================================
+   HERO MICRO-DECORATIONS
+   Small, low-risk visual enhancements for the hero: animated underline,
+   subtle glow frame, and an accent CTA style.
+   These are intentionally token-driven and accessible (prefers-reduced-motion
+   respected where appropriate).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-heading::after,
+  .hero-cta::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.hero-heading {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.28em;
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(46, 136, 255, 0.14),
+    rgba(113, 175, 255, 0.22) 40%,
+    rgba(46, 136, 255, 0.12)
+  );
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 420ms var(--ease-smooth);
+}
+
+.hero-heading:hover::after,
+.hero-heading:focus::after {
+  transform: scaleX(1);
+}
+
+/* Subtle halo/glow behind the hero content to lift it visually */
+.hero-accent-glow {
+  position: absolute;
+  inset: auto 0 8% 0;
+  height: 40%;
+  pointer-events: none;
+  filter: blur(36px) saturate(110%);
+  opacity: 0.18;
+  background: radial-gradient(
+    600px 200px at 50% 0%,
+    rgba(46, 136, 255, 0.12),
+    transparent 40%
+  );
+  z-index: 15;
+}
+
+/* CTA styling for hero 'Explore' button */
+.hero-cta {
+  position: relative;
+  overflow: visible;
+  transition:
+    transform 220ms var(--ease-smooth),
+    box-shadow 220ms var(--ease-smooth);
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+.hero-cta::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 28px;
+  height: 8px;
+  transform: translateX(-50%) scaleY(0.6);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
+  border-radius: 8px;
+  opacity: 0;
+  transition:
+    opacity 220ms var(--ease-smooth),
+    transform 220ms var(--ease-smooth);
+}
+.hero-cta:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scaleY(1);
+}
+
 /* Navigation animations */
 @keyframes nav-fade-in {
   from {

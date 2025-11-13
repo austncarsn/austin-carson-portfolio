@@ -206,7 +206,7 @@ const HeroText: React.FC = () => {
         initial={reduceMotion ? false : { y: isMobile ? 12 : 24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-4 md:mb-6 text-neutral-900 tracking-tight leading-[1.05] font-bold"
+        className="hero-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-4 md:mb-6 text-neutral-900 tracking-tight leading-[1.05] font-bold"
       >
         Interfaces With Intent
       </motion.h1>
@@ -222,7 +222,7 @@ const HeroText: React.FC = () => {
         <a
           href="#work"
           onClick={handleExploreClick}
-          className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white shadow-lg"
+          className="hero-cta inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white shadow-lg"
         >
           Explore the work
         </a>
@@ -302,6 +302,7 @@ export function Hero(): React.ReactElement {
           <CursorGradient x={cursor.x} y={cursor.y} visible={isHovering} />
         )}
         <TextureOverlay />
+        <div className="hero-accent-glow" aria-hidden />
 
         <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-20 md:py-28">
           <div className="relative z-30">
