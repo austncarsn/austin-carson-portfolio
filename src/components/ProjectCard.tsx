@@ -368,8 +368,9 @@ export function ProjectReel({ projects, title }: { projects: readonly ProjectCar
           aria-hidden
           className="absolute -z-10 top-0 left-0 right-0 h-[200%] blur-3xl"
           style={{
+            // warm accent-based glow (avoid cool blue tones)
             background:
-              "radial-gradient(600px 160px at 40% 20%, rgba(0,160,255,0.15), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(255,64,0,0.12), transparent 60%)",
+              "radial-gradient(600px 160px at 40% 20%, rgba(255,56,0,0.08), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(255,200,150,0.06), transparent 60%)",
             x: bgX,
             opacity: bgOpacity,
           } as React.CSSProperties & {

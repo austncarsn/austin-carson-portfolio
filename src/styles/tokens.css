@@ -133,9 +133,10 @@
   --color-error-light: #FEE2E2;
   --color-error: #DC2626;
   --color-error-dark: #B91C1C;
-  --color-info-light: #DBEAFE;
-  --color-info: #3B82F6;
-  --color-info-dark: #2563EB;
+  /* Align info to warm accent to avoid cool-blue clashes and keep palette unified */
+  --color-info-light: var(--color-accent-100);
+  --color-info: var(--color-accent-400);
+  --color-info-dark: var(--color-accent-600);
   
   /* Accent scale (for Tailwind classes like bg-accent-100) */
   --color-accent-50: #FFF4F0;
@@ -390,10 +391,6 @@
 
   --button-radius: var(--radius-lg);
   --button-transition: all var(--duration-normal) var(--ease-out);
-
-  /* Hero frame token - allows designers to control the visual thickness
-    of the hero frame from the token layer. Adjust to taste. */
-  --hero-frame-thickness: 12px;
 
   /* === INPUT TOKENS === */
   --input-height-sm: var(--space-8);

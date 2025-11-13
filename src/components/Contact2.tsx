@@ -149,7 +149,7 @@ export function Contact2({
   return (
     <section 
       className="relative min-h-screen px-4 md:px-8 lg:px-20 py-16 md:py-24 lg:py-32"
-      style={{ backgroundColor: 'var(--bg)' }}
+      style={{ backgroundColor: 'var(--color-bg-canvas)' }}
     >
       <div className="relative z-10 max-w-[1800px] mx-auto">
         {/* Header */}
@@ -205,7 +205,7 @@ export function Contact2({
                 transition={{ delay: 0.6 }}
                 viewport={{ once: true }}
                 className="p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-lg"
-                style={{ backgroundColor: 'white' }}
+                style={{ backgroundColor: 'var(--color-bg-surface)' }}
               >
                 <div 
                   className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase mb-4 md:mb-6"
@@ -227,8 +227,8 @@ export function Contact2({
                         transition={{ delay: 0.7 + i * 0.05 }}
                         viewport={{ once: true }}
                         whileHover={{ scale: 1.05, y: -3 }}
-                        className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl transition-all duration-300"
-                        style={{ backgroundColor: 'rgba(39, 37, 31, 0.04)' }}
+                        className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl transition-all duration-300 border"
+                        style={{ backgroundColor: 'transparent', borderColor: 'var(--line)' }}
                       >
                         {IconComponent && (
                           <IconComponent size={18} className="md:w-5 md:h-5" style={{ color: 'var(--accent)' }} />
