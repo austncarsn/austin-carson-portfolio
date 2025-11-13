@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import type { JSX } from "react";
 import { motion } from "motion/react";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { ImageWithFallback } from "./common/media/ImageWithFallback";
 
 export type Project = {
@@ -44,11 +45,13 @@ function FilterButton({
   index: number; 
   onClick: () => void;
 }): JSX.Element {
+  const reduce = usePrefersReducedMotion();
+
   return (
     <motion.button
-      initial={fadeInUp.initial}
-      whileInView={fadeInUp.animate}
-      transition={{ delay: index * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      initial={reduce ? undefined : fadeInUp.initial}
+      whileInView={reduce ? undefined : fadeInUp.animate}
+      transition={reduce ? undefined : { delay: index * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
       viewport={{ once: true }}
       onClick={onClick}
       whileHover={{ y: -2 }}
@@ -260,10 +263,10 @@ export function WorkSection({
   {/* Header Section */}
   <header className="mb-16 md:mb-24 relative overflow-visible">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={usePrefersReducedMotion() ? undefined : { opacity: 0, y: 40 }}
+            whileInView={usePrefersReducedMotion() ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            transition={usePrefersReducedMotion() ? undefined : { duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
             className="mb-8"
           >
             <div className="flex items-center gap-4 mb-6">
@@ -282,10 +285,10 @@ export function WorkSection({
 
           <motion.h2
             id="work-heading"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={usePrefersReducedMotion() ? undefined : { opacity: 0, y: 40 }}
+            whileInView={usePrefersReducedMotion() ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+            transition={usePrefersReducedMotion() ? undefined : { duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
             className="text-6xl md:text-8xl lg:text-9xl tracking-[-0.02em] mb-12 md:mb-16"
             style={{ color: 'var(--ink)', fontWeight: 600 }}
           >

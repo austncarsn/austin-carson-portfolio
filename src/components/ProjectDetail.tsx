@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { X, ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "./common/media/ImageWithFallback";
 import { useEffect } from "react";
@@ -29,6 +30,7 @@ interface ProjectDetailProps {
 }
 
 export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: ProjectDetailProps): React.JSX.Element | null {
+  const reduce = usePrefersReducedMotion();
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -69,10 +71,10 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
         <>
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={reduce ? undefined : { opacity: 0 }}
+            animate={reduce ? undefined : { opacity: 1 }}
+            exit={reduce ? undefined : { opacity: 0 }}
+            transition={reduce ? undefined : { duration: 0.3 }}
             onClick={onClose}
             className="fixed inset-0 z-50"
             style={{ 
@@ -83,18 +85,18 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
 
           {/* Modal Content */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={reduce ? undefined : { opacity: 0 }}
+            animate={reduce ? undefined : { opacity: 1 }}
+            exit={reduce ? undefined : { opacity: 0 }}
+            transition={reduce ? undefined : { duration: 0.4 }}
             className="fixed inset-0 z-50 overflow-y-auto"
           >
             <div className="min-h-screen px-4 md:px-8 lg:px-20 py-8 md:py-12">
               <motion.div
-                initial={{ y: 60, scale: 0.95 }}
-                animate={{ y: 0, scale: 1 }}
-                exit={{ y: 60, scale: 0.95 }}
-                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                initial={reduce ? undefined : { y: 60, scale: 0.95 }}
+                animate={reduce ? undefined : { y: 0, scale: 1 }}
+                exit={reduce ? undefined : { y: 60, scale: 0.95 }}
+                transition={reduce ? undefined : { duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
                 className="max-w-7xl mx-auto rounded-3xl overflow-hidden"
                 style={{ backgroundColor: 'var(--bg)' }}
               >
