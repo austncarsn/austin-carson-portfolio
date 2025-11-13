@@ -398,34 +398,6 @@ code, pre, kbd {
 }
 
 /* Animation utilities */
-
-/* ==========================================================================
-   SECTION REVEAL: Projects entrance animation used when scrolling from the Hero
-   - The reveal is triggered by an IntersectionObserver in the WorkSection
-   - Respects prefers-reduced-motion by disabling transitions when requested
-   ========================================================================== */
-
-.projects-section {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 700ms var(--ease-smooth), transform 700ms var(--ease-smooth);
-  will-change: opacity, transform;
-}
-
-.projects-section.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .projects-section,
-  .projects-section.is-visible {
-    transition: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
-}
-
 .animate-in {
   animation-fill-mode: both;
 }
@@ -470,58 +442,9 @@ code, pre, kbd {
   opacity: 0.06;
 }
 
-/* Hero framed depth - thicker border + layered shadow to create an illusion of depth
-   Uses CSS variables for easy tuning: --hero-frame-thickness, --hero-frame-color */
-.hero-frame {
-  position: relative;
-  border-radius: 1rem;
-  overflow: hidden;
-  /* thickness is the visual outer outline size */
-  --hero-frame-thickness: var(--hero-frame-thickness, 12px);
-  --hero-frame-color: var(--color-hero-frame);
-  /* Stronger layered shadows for pronounced depth */
-  box-shadow:
-    0 36px 96px color-mix(in oklab, black 16%, transparent), /* distant soft shadow */
-    0 12px 36px color-mix(in oklab, black 10%, transparent), /* mid shadow */
-    0 6px 18px color-mix(in oklab, black 6%, transparent);  /* contact shadow */
-  /* Outer outline that sits above the shadow to read as a border. offset tuned to the thickness */
-  outline: calc(var(--hero-frame-thickness) * 1) solid var(--hero-frame-color);
-  outline-offset: calc(var(--hero-frame-thickness) * -1.5);
-}
-
-.hero-frame::before {
-  /* mid rim — a subtle gradient band between the outer outline and the inner content */
-  content: "";
-  position: absolute;
-  inset: calc(var(--hero-frame-thickness) * 0.35);
-  border-radius: calc(1rem - calc(var(--hero-frame-thickness) * 0.35));
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(0,0,0,0.04));
-  mix-blend-mode: normal;
-  opacity: 0.9;
-}
-
-.hero-frame::after {
-  /* inner bevel + cavity shadow to accent the depth */
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.75), inset 0 -18px 48px rgba(0,0,0,0.08);
-}
-
-/* Reduce the frame intensity on small viewports so it doesn't overpower content */
-@media (max-width: 767px) {
-  .hero-frame {
-    --hero-frame-thickness: 8px;
-    box-shadow: 0 12px 30px color-mix(in oklab, black 12%, transparent), 0 6px 14px color-mix(in oklab, black 8%, transparent);
-    outline-offset: calc(var(--hero-frame-thickness) * -1.25);
-  }
-  .hero-frame::after {
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -10px 24px rgba(0,0,0,0.06);
-  }
-}
+/* Note: hero framing removed — earlier design added a framed outline and inset shadow.
+   The styles were removed to make the hero full-bleed. The token --color-hero-frame is
+   retained in tokens.css in case other components rely on it. */
 
 .fade-out {
   animation-name: nav-fade-out;
