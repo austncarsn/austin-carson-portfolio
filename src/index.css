@@ -93,9 +93,17 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: .02;
+    /* Opacity is theme-aware via the --page-noise-opacity variable (defaults to 0.02)
+       Use [data-theme="dark"] to override to 0 for dark theme. */
+    opacity: var(--page-noise-opacity, .02);
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence baseFrequency=".9" numOctaves="3"/></filter><rect width="300" height="300" filter="url(%23n)" opacity=".8"/></svg>') repeat;
     mix-blend-mode: multiply;
+  }
+
+  /* Theme-aware override: hide page noise in dark theme by setting opacity to 0
+     The app root sets data-theme="light" or "dark" on the main wrapper. */
+  [data-theme="dark"] .page-noise {
+    opacity: 0;
   }
 
   /* Navigation hover effect - Coquelicot accent */
