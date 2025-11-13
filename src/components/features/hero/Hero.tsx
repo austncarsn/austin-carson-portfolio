@@ -11,6 +11,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useMotionValue,
   useReducedMotion,
   type MotionValue,
 } from 'motion/react';
@@ -90,18 +91,39 @@ type GalleryImage = { src: string; alt: string; className?: string };
 
 function GalleryItem({
   image,
+  index,
   onMouseEnter,
   onMouseLeave,
   eager,
 }: {
   image: GalleryImage;
+  index: number;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   eager?: boolean;
 }): React.ReactElement {
-  const { reduceMotion, isMobile } = useHeroContext();
+  const { reduceMotion, isMobile, scrollYProgress } = useHeroContext();
   const initialScale = reduceMotion ? 1 : 0.99;
   const initialY = reduceMotion ? 0 : isMobile ? 8 : 20;
+
+  // Always create a progress MotionValue to keep hooks stable; use a fallback when
+  // the real scrollYProgress is not available. This ensures useTransform is
+  // called consistently every render (React hook rules).
+  const fallbackProgress = useMotionValue(0);
+  const progress = scrollYProgress ?? fallbackProgress;
+
+  const depth = 1 + index * 0.12; // small incremental depth per index
+  const yParallax = useTransform(
+    progress,
+    [0, 1],
+    reduceMotion || isMobile ? [0, 0] : [depth * 6, -depth * 6]
+  );
+  const rotateParallax = useTransform(
+    progress,
+    [0, 1],
+    reduceMotion || isMobile ? [0, 0] : [depth * 0.6, -depth * 0.6]
+  );
+
   return (
     <motion.div
       initial={{ opacity: reduceMotion ? 1 : 0, y: initialY, scale: initialScale }}
@@ -113,6 +135,8 @@ function GalleryItem({
       style={{
         boxShadow: 'var(--shadow-card)',
         transition: 'box-shadow .28s ease, transform .28s ease',
+        y: yParallax,
+        rotate: rotateParallax,
       }}
     >
       <div
@@ -150,7 +174,7 @@ function MobileGalleryCarousel({
   return (
     <div className="w-full max-w-md">
       <div className="w-full">
-        <GalleryItem image={images[index]} eager />
+        <GalleryItem image={images[index]} index={index} eager />
       </div>
       <div className="flex items-center justify-between mt-4 px-2">
         <button
@@ -319,6 +343,7 @@ export function Hero(): React.ReactElement {
               {images.map((img, i) => (
                 <GalleryItem
                   key={i}
+                  index={i}
                   image={img}
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
@@ -327,10 +352,10 @@ export function Hero(): React.ReactElement {
             </div>
             <div className="hidden md:flex lg:hidden w-full flex-col items-center gap-8 pointer-events-auto">
               <div className="flex w-full gap-6 justify-center">
-                <GalleryItem image={images[0]} />
-                <GalleryItem image={images[1]} />
+                <GalleryItem image={images[0]} index={0} />
+                <GalleryItem image={images[1]} index={1} />
               </div>
-              <GalleryItem image={images[2]} />
+              <GalleryItem image={images[2]} index={2} />
             </div>
             <div className="md:hidden w-full flex items-center justify-center pointer-events-auto py-8">
               <MobileGalleryCarousel images={images} />
