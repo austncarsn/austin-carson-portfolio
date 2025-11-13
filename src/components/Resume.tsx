@@ -1,132 +1,241 @@
 import React from 'react';
+import { Button } from './common/primitives';
+import { Download } from 'lucide-react';
+
+// Reusable Section Header Component
+const SectionHeader = ({ title }: { title: string }): React.JSX.Element => (
+  <h2 className="text-xs uppercase tracking-wider mb-4 font-semibold text-neutral-900 border-b-2 border-accent pb-2">{title}</h2>
+);
+
+// Reusable Skill Card Component
+const SkillCard = ({ title, skills }: { title: string; skills: string[] }): React.JSX.Element => (
+  <div className="bg-surface border border-line p-4 rounded-lg shadow-sm">
+    <div className="font-semibold text-neutral-900 mb-2">{title}</div>
+    <ul className="list-disc list-inside text-sm text-neutral-700 space-y-1.5">
+      {skills.map((skill, index) => (
+        <li key={index}>{skill}</li>
+      ))}
+    </ul>
+  </div>
+);
+
+// Reusable Job Card Component
+const JobCard = ({ title, company, period, responsibilities }: { 
+  title: string; 
+  company: string; 
+  period: string; 
+  responsibilities: string[] 
+}): React.JSX.Element => (
+  <div className="mb-5">
+    <div className="flex justify-between items-start mb-1">
+      <div className="font-semibold text-neutral-900">{title}</div>
+      <div className="text-neutral-600 text-sm whitespace-nowrap ml-4">{period}</div>
+    </div>
+    <div className="text-neutral-600 text-sm mb-3">{company}</div>
+    <ul className="list-disc list-inside space-y-1.5 text-sm text-neutral-700">
+      {responsibilities.map((resp, index) => (
+        <li key={index}>{resp}</li>
+      ))}
+    </ul>
+  </div>
+);
+
+// Reusable Project Card Component
+const ProjectCard = ({ title, description, techStack }: { 
+  title: string; 
+  description: string[]; 
+  techStack?: string 
+}): React.JSX.Element => (
+  <div className="mb-5">
+    <div className="font-semibold text-neutral-900 mb-2">{title}</div>
+    <ul className="list-disc list-inside space-y-1.5 text-sm text-neutral-700">
+      {description.map((desc, index) => (
+        <li key={index}>{desc}</li>
+      ))}
+    </ul>
+    {techStack && <p className="text-sm text-neutral-600 mt-2 italic">{techStack}</p>}
+  </div>
+);
 
 export default function Resume(): React.JSX.Element {
+  
+
+  // Data for AI training experience
+  const aiTrainingExperience = [
+    {
+      title: "AI Evaluator",
+      company: "Various Platforms (Contract)",
+      period: "2023–Present",
+      responsibilities: [
+        "Scored LLM outputs for coherence, reasoning, alignment, and safety across diverse tasks.",
+        "Detected hallucination patterns and bias signals; provided structured feedback to improve model reliability.",
+        "Refined prompts and annotation guidelines to increase consistency and reduce ambiguity.",
+        "Annotated multimodal datasets with high precision, supporting cleaner training pipelines."
+      ]
+    }
+  ];
+
+  // Data for professional experience
+  const professionalExperience = [
+    {
+      title: "Client & Product Specialist",
+      company: "Swarovski Crystal",
+      period: "July 2024–July 2025",
+      responsibilities: [
+        "Exceeded monthly sales targets by ~20% through tailored client education and experience design.",
+        "Optimized display layouts using behavioral insights, boosting engagement and conversion.",
+        "Trained team members in client-first communication, knowledge retention, and brand storytelling."
+      ]
+    }
+  ];
+
+  // Data for projects
+  const projects = [
+    {
+      title: "Floral Design SVG — AI-Powered Web App",
+      description: [
+        "Built a generative tool allowing creators to produce, preview, and export scalable floral illustrations as SVGs.",
+        "Integrated image-to-vector workflows and AI-assisted styling for rapid creative iteration."
+      ],
+      techStack: "Tech Stack: React, Next.js, TypeScript, Tailwind CSS, Figma, Git, Canvas API, SVG Optimization"
+    },
+    {
+      title: "AI Prompt Studio: Vehicles",
+      description: [
+        "Designed a focused interface for engineering and testing vehicle design prompts.",
+        "Improved output consistency by standardizing prompt structures and evaluation criteria."
+      ]
+    },
+    {
+      title: "Cameo Store — Minimal E-Commerce Demo",
+      description: [
+        "Developed a clean, performant browsing experience showcasing attention to detail and micro-interactions."
+      ]
+    },
+    {
+      title: "American Heritage Icon Library",
+      description: [
+        "Created a scalable icon system with consistent stroke geometry, naming conventions, and export tooling."
+      ]
+    }
+  ];
+
   return (
-  <div className="min-h-screen bg-canvas px-6 py-12 sm:px-10">
-    <div className="mx-auto max-w-[820px] bg-white p-8 rounded-xl border border-structure/10 shadow-lg">
-        {/* Header */}
-        <header className="text-center mb-6">
-          <div className="text-4xl font-extrabold tracking-tight text-text-primary">AUSTIN CARSON</div>
-          <div className="font-satoshi text-lg text-text-muted mt-1">Creative Technologist &amp; AI Trainer</div>
-          <div className="font-satoshi text-sm text-text-muted mt-2">
-            Missoula, MT • <a href="https://austincarson.dev" className="underline">austincarson.dev</a> • <a href="https://linkedin.com/in/austin-carson-4b059731a" className="underline">linkedin.com/in/austin-carson</a>
-            <br />austincarson@gmail.com • (206) 620-4803
-          </div>
-        </header>
-
-          <hr className="my-6 border-structure/30" />
-
-        {/* Summary */}
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Summary</h2>
-          <p className="font-satoshi text-[15px] leading-[1.7] text-text-primary">Creative technologist bridging design, code, and machine learning. Combines expertise in interactive development, AI training (RLHF), and UX systems to build intelligent tools and refine model behavior. Proven in rapid prototyping, prompt engineering, bias detection, and crafting human-aligned AI experiences. Drives clarity through both technical precision and visual refinement.</p>
-        </section>
-
-        {/* Core Competencies */}
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Core Competencies</h2>
-
-          <div className="mb-4">
-            <div className="font-satoshi font-semibold">AI Training &amp; Evaluation</div>
-            <ul className="list-disc list-inside text-text-muted mt-2">
-              <li>Reinforcement Learning from Human Feedback (RLHF)</li>
-              <li>Prompt Engineering &amp; Instruction Design</li>
-              <li>Model Output Evaluation (Accuracy, Reasoning, Bias, Hallucination)</li>
-              <li>Data Annotation &amp; Quality Scoring</li>
-              <li>Task Compliance &amp; Instruction Refinement</li>
-            </ul>
-          </div>
-
-          <div className="mb-4">
-            <div className="font-satoshi font-semibold">Frontend Development</div>
-            <ul className="list-disc list-inside text-text-muted mt-2">
-              <li>React | Next.js | TypeScript | Tailwind CSS</li>
-              <li>Responsive UIs | Component Libraries | Theme Systems</li>
-              <li>Accessibility (WCAG) | Performance Optimization</li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="font-satoshi font-semibold">Design &amp; Prototyping</div>
-            <ul className="list-disc list-inside text-text-muted mt-2">
-              <li>Figma | Design Systems | UI/UX Prototyping</li>
-              <li>SVG Tooling | Visual Asset Automation</li>
-              <li>Interactive Storytelling | Editorial Design</li>
-            </ul>
-          </div>
-        </section>
-
-        {/* Experience Sections */}
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">AI Training &amp; Evaluation Experience</h2>
-          <div className="mb-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="font-satoshi font-semibold">AI Evaluator</div>
-                <div className="text-text-muted">Various Platforms (Contract)</div>
-              </div>
-              <div className="text-text-muted">2023–Present</div>
+    <div className="min-h-screen bg-bg py-12 px-4">
+      <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-[8.5in] bg-surface rounded-xl border border-line p-8 md:p-12 shadow-lg">
+          {/* Header Section */}
+          <div className="mb-8">
+            <div className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900 mb-2">AUSTIN CARSON</div>
+            <div className="text-lg text-neutral-700 mb-4">Product Designer &amp; Front-End Developer</div>
+            
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-neutral-600">
+              <span>Seattle, Washington</span>
+              <a className="text-accent hover:underline" href="mailto:austinscarson@gmail.com">austinscarson@gmail.com</a>
+              <a className="text-accent hover:underline" href="https://linkedin.com/in/austin-carson" target="_blank" rel="noopener noreferrer">linkedin.com/in/austin-carson</a>
+              <span>(206) 620-4803</span>
             </div>
-            <ul className="list-disc list-inside mt-3 text-text-muted">
-              <li>Scored LLM outputs for coherence, reasoning, alignment, and safety across diverse tasks.</li>
-              <li>Detected hallucination patterns and bias signals; provided structured feedback to improve model reliability.</li>
-              <li>Refined prompts and annotation guidelines to increase consistency and reduce ambiguity.</li>
-              <li>Annotated multimodal datasets with high precision, supporting cleaner training pipelines.</li>
-            </ul>
           </div>
-        </section>
 
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Professional Experience</h2>
-          <div className="mb-4">
-            <div className="flex justify-between items-start">
+          <div className="border-t border-line my-8" />
+
+          {/* Summary Section */}
+          <section className="mb-8">
+            <SectionHeader title="Summary" />
+            <p className="text-sm text-neutral-700 leading-relaxed">
+              Product designer and front-end developer specializing in design systems, component architecture, and user-centered interfaces. Expertise spans Figma-to-code workflows, React development, and systematic design thinking. Creates cohesive digital experiences through thoughtful interaction design, accessible components, and performance-optimized front-end implementation. Bridges design and engineering to deliver polished, scalable products.
+            </p>
+          </section>
+
+          {/* Core Competencies Section */}
+          <section className="mb-8">
+            <SectionHeader title="Core Competencies" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <div className="font-satoshi font-semibold">Client &amp; Product Specialist</div>
-                <div className="text-text-muted">Swarovski Crystal — Seattle, WA</div>
+                <SkillCard
+                  title="Product Design"
+                  skills={[
+                    'User Interface & Experience Design',
+                    'Design Systems & Component Libraries',
+                    'Prototyping & User Flow Mapping',
+                    'Responsive & Mobile-First Design',
+                    'Accessibility (WCAG) & Inclusive Design',
+                  ]}
+                />
               </div>
-              <div className="text-text-muted">2024–Present</div>
+
+              <div>
+                <SkillCard
+                  title="Frontend Development"
+                  skills={[
+                    'React, Next.js, TypeScript, Tailwind CSS',
+                    'Component Architecture & State Management',
+                    'Theme Systems & Design Tokens',
+                    'Performance Optimization & Web Vitals',
+                  ]}
+                />
+              </div>
+
+              <div>
+                <SkillCard
+                  title="Design Tools & Workflow"
+                  skills={[
+                    'Figma, Adobe Creative Suite, Sketch',
+                    'Version Control (Git) & Collaboration',
+                    'SVG Optimization & Icon Systems',
+                    'Design-to-Development Handoff',
+                  ]}
+                />
+              </div>
             </div>
-            <ul className="list-disc list-inside mt-3 text-text-muted">
-              <li>Exceeded monthly sales targets by ~20% through tailored client education and experience design.</li>
-              <li>Optimized display layouts using behavioral insights, boosting engagement and conversion.</li>
-              <li>Trained team members in client-first communication, knowledge retention, and brand storytelling.</li>
-            </ul>
-          </div>
-        </section>
+          </section>
 
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Key Projects &amp; Creative Work</h2>
-          <div className="mb-4">
-            <div className="font-satoshi font-semibold">Floral Design SVG — AI-Powered Web App</div>
-            <ul className="list-disc list-inside mt-2 text-text-muted">
-              <li>Built a generative tool allowing creators to produce, preview, and export scalable floral illustrations as SVGs.</li>
-              <li>Integrated image-to-vector workflows and AI-assisted styling for rapid creative iteration.</li>
-            </ul>
-          </div>
-          <div className="mb-4">
-            <div className="font-satoshi font-semibold">AI Prompt Studio: Vehicles</div>
-            <ul className="list-disc list-inside mt-2 text-text-muted">
-              <li>Designed a focused interface for engineering and testing vehicle design prompts.</li>
-              <li>Improved output consistency by standardizing prompt structures and evaluation criteria.</li>
-            </ul>
-          </div>
-          <p className="mt-3 italic text-text-muted">Tech Stack: React, Next.js, TypeScript, Tailwind CSS, Figma, Git, Canvas API, SVG Optimization</p>
-        </section>
+          {/* AI Training Experience Section */}
+          <section className="mb-8">
+            <SectionHeader title="AI Training & Evaluation Experience" />
+            {aiTrainingExperience.map((exp, index) => (
+              <JobCard key={index} {...exp} />
+            ))}
+          </section>
 
-        <section className="mb-6">
-          <h2 className="font-satoshi text-sm uppercase tracking-widest mb-2">Education</h2>
-          <p className="font-satoshi font-semibold">B.S. in Biological Sciences — Southern Methodist University <span className="text-text-muted">2020</span></p>
-        </section>
+          {/* Professional Experience Section */}
+          <section className="mb-8">
+            <SectionHeader title="Professional Experience" />
+            {professionalExperience.map((job, index) => (
+              <JobCard key={index} {...job} />
+            ))}
+          </section>
 
-        <div className="mt-8 text-center no-print">
-          <p className="text-sm text-text-muted">To save as PDF: Press <strong>Cmd+P</strong> → Choose "Save as PDF" → Click Save.</p>
-          <button
-            type="button"
-            onClick={() => window.print()}
-            className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-md"
-          >
-            Print / Save PDF
-          </button>
+          {/* Projects Section */}
+          <section className="mb-8">
+            <SectionHeader title="Key Projects & Creative Work" />
+            {projects.map((project, index) => (
+              <ProjectCard key={index} {...project} />
+            ))}
+          </section>
+
+          {/* Education Section */}
+          <section className="mb-8">
+            <SectionHeader title="Education" />
+            <p className="text-sm text-neutral-700">
+              <span className="font-semibold text-neutral-900">B.S. in Biological Sciences</span><br />
+              Southern Methodist University · 2020
+            </p>
+          </section>
+
+          {/* Print/download button */}
+          <div className="text-center mt-10 print:hidden border-t border-line pt-8">
+            <p className="text-sm text-neutral-600 mb-4">To save as PDF: Press <strong>Cmd+P</strong> → Choose "Save as PDF" → Click Save.</p>
+            <Button
+              onClick={() => window.print()}
+              variant="primary"
+              size="md"
+              iconBefore={<Download />}
+              aria-label="Download resume as PDF"
+            >
+              Download PDF
+            </Button>
+          </div>
         </div>
       </div>
     </div>

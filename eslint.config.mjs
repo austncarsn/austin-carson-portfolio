@@ -54,7 +54,9 @@ export default [
         'error',
         {
           argsIgnorePattern: '^_',
-          ignoreRestSiblings: true
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          args: 'after-used'
         }
       ],
       '@typescript-eslint/explicit-function-return-type': [

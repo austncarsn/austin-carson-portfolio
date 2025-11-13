@@ -332,54 +332,9 @@
   --color-status-info-bg: var(--color-info-light);
 }
 
-/* ============================================================================
-   SEMANTIC TOKENS - Dark Mode - DISABLED (using light mode only with new palette)
-   ============================================================================ */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: var(--ink);
-    --surface: #1a1410;
-    --surface-2: #23201c;
-    --text: var(--bone);
-    --muted: var(--silver);
-    --line: #2e2a26;
-    --accent: var(--coquelicot);
-    --accent-600: color-mix(in oklab, var(--accent) 85%, black);
-    --accent-300: color-mix(in oklab, var(--accent) 55%, white);
-    
-    --color-bg-canvas: var(--bg);
-    --color-bg-surface: var(--surface);
-    --color-bg-elevated: var(--surface-2);
-    --color-bg-overlay: rgba(0, 0, 0, 0.9);
-    --color-bg-muted: var(--surface);
-
-    --color-text-primary: var(--text);
-    --color-text-secondary: var(--muted);
-    --color-text-muted: var(--muted);
-    --color-text-subtle: var(--muted);
-    --color-text-on-brand: var(--text);
-    --color-text-inverse: var(--bg);
-
-    --color-border-subtle: var(--line);
-    --color-border-default: var(--line);
-    --color-border-strong: var(--muted);
-
-    --color-interactive-primary: var(--accent);
-    --color-interactive-primary-hover: var(--accent-600);
-    --color-interactive-primary-active: var(--accent-600);
-
-    --color-interactive-ghost-hover: var(--surface);
-    --color-interactive-ghost-active: var(--surface-2);
-
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
-    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.8);
-  }
-} */
+/* Dark-mode/theme blocks removed per user request to keep the site on the light palette.
+   If you want a scoped dark theme later, add a separate selector such as
+   [data-theme="dark"] { ... } or use a non-destructive media query. */
 
 /* ============================================================================
    SEMANTIC TOKENS - High Contrast Mode
@@ -566,15 +521,8 @@
   --neu-press-inset-light: rgba(255, 255, 255, 0.92);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Slightly different field of light/dark for dark mode */
-    --neu-shadow-dark: rgba(0, 0, 0, 0.55);
-    --neu-shadow-light: rgba(255, 255, 255, 0.06);
-    --neu-press-inset-dark: rgba(0, 0, 0, 0.65);
-    --neu-press-inset-light: rgba(255, 255, 255, 0.08);
-  }
-}
+/* Removed prefers-color-scheme: dark overrides to avoid active dark-theme rules.
+   Keep the default neumorphic tokens tuned for the light palette above. */
 
 /* ============================================================================
    ACCENT UTILITY CLASSES - NEW COLOR SYSTEM

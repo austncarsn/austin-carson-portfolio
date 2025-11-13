@@ -1,19 +1,19 @@
-import React, { useRef, useMemo, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useReducedMotion, useInView } from "motion/react";
+import React, { useRef, useMemo, useState, useEffect, useCallback } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { ImageWithFallback } from "../../common/media/ImageWithFallback";
+import astroNature from "../../../assets/astro_nature.jpg";
+// floralWall was previously used in the gallery; no longer needed after reordering
+// keep import commented for now in case you want to re-enable it later
+// import floralWall from "../../../assets/flowal_wall.jpeg";
+import wallArt from "../../../assets/wall_art.png";
+import cowboys from "../../../assets/Cowboys.jpg";
 
-interface FloatingBadge {
-  id: number;
-  label: string;
-  value: string;
-  delay: number;
-}
 
 export function Hero(): React.ReactElement {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const isInView = useInView(containerRef, { once: false, amount: 0.3 });
+  
   
   const [cursorPosition, setCursorPosition] = useState({ x: 0.5, y: 0.5 });
   const [isHovering, setIsHovering] = useState(false);
@@ -22,7 +22,7 @@ export function Hero(): React.ReactElement {
   useEffect(() => {
     if (reduce) return;
     
-    const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent): void => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
         setCursorPosition({
@@ -49,30 +49,42 @@ export function Hero(): React.ReactElement {
 
   const gallery = useMemo(() => [
     {
-      src: "https://images.unsplash.com/photo-1572457598110-2e060c4588ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmUlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NjI5NTIyMTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      alt: "Modern architecture interior"
+      // leftmost tile: Cowboys image provided
+      src: cowboys,
+      alt: "Cowboys",
+      className: "w-full h-full object-cover object-left contrast-[1.15] brightness-[1.02]",
     },
     {
-      src: "https://images.unsplash.com/photo-1704428381485-fbdc84a7e58c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwd29ya3NwYWNlJTIwZGVzaWdufGVufDF8fHx8MTc2Mjk4MjkxMHww&ixlib=rb-4.1.0&q=80&w=1080",
-      alt: "Minimalist workspace design"
+      // center tile: previously left (wall art)
+      src: wallArt,
+      alt: "Wall art",
+      className: "w-full h-full object-cover object-center contrast-[1.25] brightness-[1.05]",
     },
     {
-      src: "https://images.unsplash.com/photo-1758627506826-0658170e5cf6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHN0dWRpbyUyMHNwYWNlfGVufDF8fHx8MTc2Mjg4NjE0MHww&ixlib=rb-4.1.0&q=80&w=1080",
-      alt: "Creative studio space"
+      // right tile: previously center (astro nature)
+      src: astroNature,
+      alt: "Astro nature",
+      className: "w-full h-full object-cover object-right contrast-[1.1] brightness-[0.98]",
     },
   ], []);
 
-  const floatingBadges: FloatingBadge[] = useMemo(() => [
-    { id: 1, label: "Projects", value: "50+", delay: 0.6 },
-    { id: 2, label: "Years", value: "8+", delay: 0.7 },
-    { id: 3, label: "Clients", value: "30+", delay: 0.8 },
-  ], []);
+
+  const handleExploreClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById('work');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // fallback to hash navigation
+      window.location.hash = '#work';
+    }
+  }, []);
 
   return (
     <section
       ref={containerRef}
       aria-label="Intro"
-      className="relative min-h-screen isolate overflow-hidden bg-[#fafaf8]"
+      className="relative min-h-screen isolate overflow-hidden bg-token-canvas"
     >
       {/* Interactive cursor gradient */}
       {!reduce && (
@@ -101,12 +113,12 @@ export function Hero(): React.ReactElement {
 
       {/* Gallery parallax with optimized rendering */}
       <div className="absolute inset-0">
-        <motion.div 
+          <motion.div 
           style={{ 
             y: y, 
             scale: scale,
           }} 
-          className="relative w-full h-[110vh]"
+          className="relative w-full h-[150vh]"
         >
           <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 p-4 md:p-8 lg:p-12">
             {gallery.map((image, i) => (
@@ -120,7 +132,7 @@ export function Hero(): React.ReactElement {
                 onMouseLeave={() => setIsHovering(false)}
               >
                 <motion.div
-                  className="relative w-full h-[56vh] md:h-[64vh] overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-100"
+                  className="relative w-full h-[84vh] md:h-[96vh] overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-100"
                   whileHover={reduce ? undefined : { 
                     scale: 1.02,
                     transition: { duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }
@@ -134,7 +146,7 @@ export function Hero(): React.ReactElement {
                     <ImageWithFallback
                       src={image.src}
                       alt={image.alt}
-                      className="w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"
+                      className={image.className ?? "w-full h-full object-cover grayscale-[60%] contrast-[1.1] brightness-[0.95]"}
                     />
                   </motion.div>
                   
@@ -171,22 +183,7 @@ export function Hero(): React.ReactElement {
         className="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 py-24 md:py-32"
       >
         <div className="text-center max-w-6xl">
-          {/* Floating badges - new feature */}
-          <div className="absolute top-12 md:top-20 left-1/2 -translate-x-1/2 flex gap-3 md:gap-4">
-            {floatingBadges.map((badge) => (
-              <motion.div
-                key={badge.id}
-                initial={reduce ? false : { opacity: 0, y: -20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: badge.delay, duration: 0.6 }}
-                whileHover={reduce ? undefined : { y: -4, scale: 1.05 }}
-                className="backdrop-blur-md bg-white/40 border border-neutral-200/50 rounded-xl px-4 py-2 shadow-sm"
-              >
-                <div className="text-xs text-neutral-500 uppercase tracking-wider">{badge.label}</div>
-                <div className="text-lg text-neutral-900 mt-0.5">{badge.value}</div>
-              </motion.div>
-            ))}
-          </div>
+          
 
           {/* Eyebrow */}
           <motion.div
@@ -196,7 +193,7 @@ export function Hero(): React.ReactElement {
             className="mb-8 md:mb-16"
           >
             <div className="inline-flex items-center gap-6">
-              <span className="uppercase text-neutral-800 text-xs md:text-sm tracking-[0.2em]">
+              <span className="uppercase text-token-muted text-xs md:text-sm tracking-[0.2em]">
                 Designer & Developer — Austin Carson
               </span>
             </div>
@@ -207,7 +204,7 @@ export function Hero(): React.ReactElement {
             initial={reduce ? false : { y: 28, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.25, duration: 0.6 }}
-            className="text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 text-neutral-900 tracking-tight"
+            className="text-6xl md:text-7xl lg:text-8xl mb-6 md:mb-8 text-token-primary tracking-tight"
           >
             Interfaces With Intent
           </motion.h1>
@@ -217,7 +214,7 @@ export function Hero(): React.ReactElement {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-10 md:mb-20 px-4 text-neutral-600 leading-relaxed"
+            className="text-lg md:text-xl lg:text-2xl max-w-3xl mx-auto mb-10 md:mb-20 px-4 text-token-muted leading-relaxed"
           >
             Design systems that scale. Experiences that connect. Impact you can measure.
           </motion.p>
@@ -234,7 +231,8 @@ export function Hero(): React.ReactElement {
               aria-label="Explore the work section"
               whileHover={reduce ? undefined : { scale: 1.04, y: -3 }}
               whileTap={reduce ? undefined : { scale: 0.98 }}
-              className="group relative overflow-hidden inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 shadow-lg shadow-neutral-900/20"
+              className="group relative overflow-hidden inline-flex items-center gap-3 md:gap-4 px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-token-accent text-on-accent border border-token shadow-lg"
+              onClick={handleExploreClick}
               onFocus={(e) => e.currentTarget.setAttribute('data-focused', 'true')}
               onBlur={(e) => e.currentTarget.removeAttribute('data-focused')}
             >
@@ -251,13 +249,20 @@ export function Hero(): React.ReactElement {
               {/* Optimized hover wash with initial state */}
               <motion.div
                 aria-hidden="true"
-                className="absolute inset-0 bg-neutral-800"
+                className="absolute inset-0 bg-token-overlay-accent"
                 initial={{ opacity: 0 }}
                 whileHover={reduce ? undefined : { opacity: 1 }}
                 transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
               />
             </motion.a>
-          </motion.div>
+              <a
+                href="#/resume"
+                aria-label="View resume"
+                className="ml-4 inline-flex items-center px-4 py-3 rounded-lg bg-token-surface border border-token text-token-primary font-medium"
+              >
+                Resume
+              </a>
+            </motion.div>
 
           {/* Enhanced scroll indicator with better animation */}
           <div className="absolute bottom-8 md:bottom-16 left-1/2 -translate-x-1/2">
@@ -266,11 +271,12 @@ export function Hero(): React.ReactElement {
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               className="flex flex-col items-center gap-3"
             >
-              <span className="text-[10px] tracking-[0.3em] uppercase text-neutral-400">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-token-muted">
                 Scroll
               </span>
               <motion.div
-                className="w-[1px] h-16 bg-gradient-to-b from-neutral-400 to-transparent"
+                className="w-[1px] h-16"
+                style={{ background: 'linear-gradient(to bottom, rgba(107,114,128,1), transparent)' }}
                 initial={{ scaleY: 0, originY: 0 }}
                 animate={{ scaleY: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}

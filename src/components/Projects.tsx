@@ -228,7 +228,7 @@ export default function Projects(): React.JSX.Element {
   return (
     <Section 
       id="work" 
-      bgClass="bg-[#0E1013] text-white" 
+      bgClass="bg-token-surface text-token-primary" 
       labelNumber="02" 
       labelTitle="WORK" 
       labelDelay={0} 

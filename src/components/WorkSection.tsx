@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { JSX } from "react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./common/media/ImageWithFallback";
@@ -24,10 +23,9 @@ export type Project = {
 type Props = {
   projects: Project[];
   initialFilter?: string;
-  onProjectClick?: OnProjectClick;
+  onProjectClick?: (project: Project, index: number) => void;
   filters?: string[];
 };
-type OnProjectClick = (a: Project, b: number) => void;
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -83,7 +81,7 @@ function ProjectCard({
 }: { 
   project: Project; 
   index: number; 
-  onClick?: (project: Project, index: number) => void; // eslint-disable-line @typescript-eslint/no-unused-vars
+  onClick?: (_project: Project, _index: number) => void;
 }): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
 

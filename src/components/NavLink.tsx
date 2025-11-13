@@ -20,8 +20,8 @@ export function NavLink({
 }: NavLinkProps): ReactElement {
   const baseClasses = "block px-4 py-3 rounded-lg transition-all duration-200";
   const activeClasses = isActive 
-    ? "bg-accent text-white font-medium" 
-    : "text-text hover:bg-surface-hover";
+    ? "bg-token-accent text-on-accent font-medium" 
+    : "text-token-primary hover:bg-token-surface-weak";
   const sizeClasses = size === 'mobile' 
     ? "text-lg" 
     : "text-base";
