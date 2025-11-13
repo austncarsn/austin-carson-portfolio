@@ -102,6 +102,8 @@ export default function App(): ReactElement {
         className="flex flex-col min-h-screen bg-background text-foreground"
         data-theme="light"
       >
+        {/* Global subtle noise overlay for cohesive texture */}
+        <div className="page-noise" aria-hidden="true" />
         
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
