@@ -4,6 +4,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop';
 import { WorkSection } from './components/WorkSection';
+import { SiteHeader } from './components/SiteHeader';
 import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
 import type { Project } from './components/WorkSection';
@@ -118,6 +119,9 @@ export default function App(): ReactElement {
       >
         {/* Global subtle noise overlay for cohesive texture */}
         <div className="page-noise" aria-hidden="true" />
+
+        {/* Primary site header / navigation */}
+        <SiteHeader />
 
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
