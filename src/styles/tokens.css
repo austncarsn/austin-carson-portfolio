@@ -161,6 +161,18 @@
   --color-brand-900: #040404;
   --color-brand-950: #020202;
 
+  /* Hero frame accent color (semantic) - used for the hero outline/depth
+    Default is a subtle muted tint on light backgrounds. Can be overridden
+    by theme-specific rules (data-theme="dark") in the app styles. */
+  --color-hero-frame: color-mix(in oklab, var(--muted) 12%, transparent);
+
+/* Theme-specific overrides for semantic tokens (applied when the app root
+   sets data-theme="dark" on the wrapper). These are intentionally placed
+   here so designers can update token defaults in one place. */
+[data-theme="dark"] {
+  --color-hero-frame: color-mix(in oklab, var(--color-text-inverse) 10%, transparent);
+}
+
   /* === SPACING PRIMITIVES === */
   /* Refined spacing scale: 8px base unit */
   --space-0: 0;
