@@ -122,10 +122,26 @@ export const SiteHeader = memo(function SiteHeader({
         Skip to main content
       </a>
       <div
-        className={`${compact ? 'py-3' : 'py-4 md:py-6'} px-4 md:px-8 lg:px-12 transition-[padding] duration-300`}
+        className={`${compact ? 'py-3' : 'py-4 md:py-6'} px-4 md:px-8 lg:px-12 transition-[padding] duration-300 site-header`}
       >
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-          <nav className="navbar-nav" aria-label="Primary navigation">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between site-header-inner">
+          <div className="brand flex items-center gap-3">
+            <a
+              href="/"
+              aria-label={
+                'Home - ' +
+                (typeof window !== 'undefined' ? document.title || 'Site' : 'Site')
+              }
+              className="brand-link"
+              style={{ color: 'white' }}
+            >
+              <span className="brand-title" style={{ fontWeight: 700 }}>
+                Austin Carson
+              </span>
+            </a>
+          </div>
+
+          <nav className="navbar-nav nav-center" aria-label="Primary navigation">
             {items.map((item, index) => (
               <button
                 key={item.href || item.label}
@@ -138,20 +154,20 @@ export const SiteHeader = memo(function SiteHeader({
                 aria-current={activeIndex === index ? 'page' : undefined}
               >
                 <span
-                  className={`${compact ? 'text-lg md:text-xl' : 'text-xl md:text-2xl lg:text-3xl'} font-medium`}
+                  className={`${compact ? 'text-lg md:text-base' : 'text-base md:text-lg lg:text-xl'} font-medium`}
                 >
                   {item.label}
                 </span>
+                <span className="nav-underline" aria-hidden />
               </button>
             ))}
           </nav>
-          {/* simple CTA / brand area (keeps header balanced) */}
-          <div className="hidden md:block">
-            {/** preserve space for possible CTA or logo; intentionally small to avoid layout shifts */}
+
+          <div className="actions flex items-center gap-4">
             <a
               href="#contact"
-              className="inline-block text-sm font-medium"
-              style={{ color: tokens.textMuted }}
+              className="cta button--accent"
+              style={{ fontSize: '0.95rem' }}
             >
               Get in touch
             </a>
