@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowRight, ExternalLink, Github, X } from "lucide-react";
+import { ImageWithFallback } from "./common/media/ImageWithFallback";
 
 /*************************************************************
  * Project Cards Scroll FX
@@ -26,7 +27,7 @@ import { ArrowRight, ExternalLink, Github, X } from "lucide-react";
 // -----------------------------
 // Types
 // -----------------------------
-export type ProjectCardProps = {
+export type ProjectCardProps = Readonly<{
   id?: string;
   title: string;
   category: string;
@@ -37,7 +38,7 @@ export type ProjectCardProps = {
   liveUrl?: string;
   githubUrl?: string;
   previewImage?: string;
-};
+}>;
 
 // -----------------------------
 // Utils
@@ -156,15 +157,16 @@ export const ProjectCard = memo(
             className="card-front absolute inset-0 overflow-hidden rounded-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_16px_50px_rgba(0,0,0,0.45)] active:translate-y-[-1px]"
             style={{ backfaceVisibility: "hidden" }}
           >
-            {previewImage && (
-              <img
+            {previewImage ? (
+              <ImageWithFallback
                 src={previewImage}
                 alt={`${title} preview`}
                 className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-                width={640}
-                height={420}
               />
+            ) : (
+              <div className="absolute inset-0 w-full h-full bg-token-surface-weak flex items-center justify-center">
+                <span className="text-sm text-token-muted">No preview</span>
+              </div>
             )}
             <div
               className="absolute inset-0"
@@ -175,7 +177,7 @@ export const ProjectCard = memo(
             />
             <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
               <h3
-                className="text-white text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
+                className="text-on-dark text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
                 style={{ letterSpacing: "-0.5px" }}
               >
                 {title}
@@ -199,17 +201,23 @@ export const ProjectCard = memo(
               <X className="w-5 h-5" />
             </button>
 
-            <div className="space-y-4 pr-8">
-              <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
-                {category} • {year}
-              </p>
+            <div className="space-y-3 pr-8">
+              <div className="flex items-center justify-between">
+                <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
+                  {category}
+                </p>
+                <p className="text-xs text-[var(--muted)]">{year}</p>
+              </div>
+
               <h3 className="text-2xl sm:text-3xl font-bold leading-tight">{title}</h3>
+
               {role && (
                 <p className="text-sm text-[var(--muted)]">
                   <span className="font-medium">Role:</span> {role}
                 </p>
               )}
-              <p className="text-[var(--muted)] leading-relaxed">{description}</p>
+
+              <p className="text-[var(--muted)] leading-relaxed whitespace-pre-line">{description}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-4">
@@ -217,7 +225,7 @@ export const ProjectCard = memo(
                 <Link
                   to={`/project/${id}`}
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
                 >
                   Details
                   <ArrowRight className="w-4 h-4" />
@@ -229,7 +237,7 @@ export const ProjectCard = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
                 >
                   Live Demo
                   <ExternalLink className="w-4 h-4" />
@@ -241,7 +249,7 @@ export const ProjectCard = memo(
                   target="_blank"
                   rel="noopener noreferrer"
                   tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-token-white-10 hover:bg-token-white-15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
                 >
                   Repo
                   <Github className="w-4 h-4" />
@@ -299,7 +307,12 @@ function CardScrollItem({
       boxShadow,
       transformStyle: "preserve-3d" as const,
       willChange: "transform",
-    } as any;
+    } as React.CSSProperties & {
+      scale: typeof scale;
+      y: typeof y;
+      rotateX: typeof tilt;
+      boxShadow: typeof boxShadow;
+    };
   }, [reduceMotion, scale, y, tilt, boxShadow]);
 
   return (
@@ -334,7 +347,7 @@ function ScrollGradientMask(): JSX.Element {
 // -----------------------------
 // ProjectReel — horizontal scroller + snap + FX
 // -----------------------------
-export function ProjectReel({ projects, title }: { projects: ProjectCardProps[]; title?: string }): JSX.Element {
+export function ProjectReel({ projects, title }: { projects: readonly ProjectCardProps[]; title?: string }): JSX.Element {
   const scrollerRef = useRef<HTMLElement>(null);
   const reduceMotion = usePrefersReducedMotion();
 
@@ -359,14 +372,17 @@ export function ProjectReel({ projects, title }: { projects: ProjectCardProps[];
               "radial-gradient(600px 160px at 40% 20%, rgba(0,160,255,0.15), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(255,64,0,0.12), transparent 60%)",
             x: bgX,
             opacity: bgOpacity,
-          } as any}
+          } as React.CSSProperties & {
+            x: typeof bgX;
+            opacity: typeof bgOpacity;
+          }}
         />
       )}
 
       <ScrollGradientMask />
 
       <motion.div
-        ref={scrollerRef as any}
+        ref={scrollerRef as React.RefObject<HTMLDivElement>}
         className="relative overflow-x-auto overflow-y-visible snap-x snap-mandatory no-scrollbar px-6 sm:px-8"
         style={{
           scrollSnapType: "x mandatory",
@@ -376,7 +392,7 @@ export function ProjectReel({ projects, title }: { projects: ProjectCardProps[];
       >
         <ul className="flex gap-6 sm:gap-8 py-2">
           {projects.map((p, i) => (
-            <CardScrollItem key={p.id ?? p.title} container={scrollerRef as any} index={i}>
+            <CardScrollItem key={p.id ?? p.title} container={scrollerRef as React.RefObject<HTMLDivElement>} index={i}>
               <ProjectCard {...p} />
             </CardScrollItem>
           ))}

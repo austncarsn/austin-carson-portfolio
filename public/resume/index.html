@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Austin Carson - Resume</title>
+  <!-- Load Satoshi from Bramble's free font CDN -->
+  <link href="https://cdn.brainsson.com/font/satoshi.css" rel="stylesheet">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11pt;
+      line-height: 1.55;
+      color: #111827;
+      background-color: #fffaf0;
+      background-image: radial-gradient(circle at 10% 10%, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.00) 18%), linear-gradient(180deg, #fffaf0 0%, #fff4e8 100%);
+      background-attachment: fixed;
+      padding: 0;
+      margin: 0;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #ffffff 0%, #fffdfb 100%);
+      color: #111827;
+      padding: 0.75in;
+      max-width: 8.5in;
+      margin: 36px auto;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 24, 40, 0.04);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+      background-image: radial-gradient(circle at 20% 30%, rgba(0,0,0,0.015) 0.5px, rgba(0,0,0,0) 0.6px), linear-gradient(180deg, #ffffff 0%, #fffdfb 100%);
+      background-size: 6px 6px, auto;
+    }
+
+    @media print {
+      body { padding: 0.5in; margin: 0; background: #fff; }
+      .no-print { display: none !important; }
+      @page { margin: 0.5in; }
+    }
+
+    h1, h2, h3, h4 { font-family: 'Satoshi', sans-serif; font-weight: 700; line-height: 1.3; margin-bottom: 0.25em; }
+    h1 { font-size: 20pt; letter-spacing: -0.5px; margin-bottom: 4px; }
+    h2 { font-size: 12pt; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 1.4em; margin-bottom: 0.55em; }
+    p { margin-bottom: 0.5em; }
+    .header { text-align: center; margin-bottom: 1em; }
+    .name { font-size: 24pt; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+    .title { font-size: 13pt; color: #444; font-weight: 500; margin-bottom: 8px; }
+    .contact { font-size: 10.5pt; color: #444; margin-bottom: 8px; }
+    .contact a { color: #444; text-decoration: none; border-bottom: 1px dotted #888; }
+    .separator { height: 1px; background: #ccc; margin: 1.3em 0; border: none; }
+    .section { margin-bottom: 1.2em; }
+    .subsection { margin-bottom: 0.8em; }
+    .job-title { font-weight: 600; font-size: 11.5pt; }
+    .company { font-weight: 500; }
+    .date { float: right; font-weight: 500; color: #444; font-size: 11pt; }
+    ul { padding-left: 1.2em; margin-bottom: 0.5em; }
+    li { margin-bottom: 0.3em; }
+    .competency-group { margin-bottom: 0.9em; }
+    .competency-title { font-weight: 600; color: #000; }
+    .project-title { font-weight: 600; }
+    .tech { font-size: 10.8pt; color: #555; font-style: italic; margin-top: 0.4em; }
+    .no-print { text-align: center; margin-top: 2em; font-size: 12pt; color: #6b7280; }
+    .no-print button { padding: 10px 20px; font-size: 14px; font-family: 'Satoshi', sans-serif; background: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+    .no-print button:hover { background: #222; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="name">AUSTIN CARSON</div>
+    <div class="title">Creative Technologist &amp; AI Trainer</div>
+    <div class="contact">
+      Missoula, MT | <a href="https://austincarson.dev">austincarson.dev</a> | 
+      <a href="https://linkedin.com/in/austin-carson-4b059731a">linkedin.com/in/austin-carson</a><br>
+      austincarson@gmail.com | (206) 620-4803
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <h2>Summary</h2>
+    <p>Creative technologist bridging design, code, and machine learning. Combines expertise in interactive development, AI training (RLHF), and UX systems to build intelligent tools and refine model behavior. Proven in rapid prototyping, prompt engineering, bias detection, and crafting human-aligned AI experiences. Drives clarity through both technical precision and visual refinement.</p>
+  </div>
+
+  <!-- CORE COMPETENCIES -->
+  <div class="section">
+    <h2>Core Competencies</h2>
+
+    <div class="competency-group">
+      <div class="competency-title">AI Training &amp; Evaluation</div>
+      <ul>
+        <li>Reinforcement Learning from Human Feedback (RLHF)</li>
+        <li>Prompt Engineering &amp; Instruction Design</li>
+        <li>Model Output Evaluation (Accuracy, Reasoning, Bias, Hallucination)</li>
+        <li>Data Annotation &amp; Quality Scoring</li>
+        <li>Task Compliance &amp; Instruction Refinement</li>
+      </ul>
+    </div>
+
+    <div class="competency-group">
+      <div class="competency-title">Frontend Development</div>
+      <ul>
+        <li>React | Next.js | TypeScript | Tailwind CSS</li>
+        <li>Responsive UIs | Component Libraries | Theme Systems</li>
+        <li>Accessibility (WCAG) | Performance Optimization</li>
+      </ul>
+    </div>
+
+    <div class="competency-group">
+      <div class="competency-title">Design &amp; Prototyping</div>
+      <ul>
+        <li>Figma | Design Systems | UI/UX Prototyping</li>
+        <li>SVG Tooling | Visual Asset Automation</li>
+        <li>Interactive Storytelling | Editorial Design</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- AI EXPERIENCE -->
+  <div class="section">
+    <h2>AI Training &amp; Evaluation Experience</h2>
+
+    <div class="subsection">
+      <p><span class="job-title">AI Evaluator</span> | <span class="company">Various Platforms (Contract)</span> <span class="date">2023–Present</span></p>
+      <ul>
+        <li>Scored LLM outputs for coherence, reasoning, alignment, and safety across diverse tasks.</li>
+        <li>Detected hallucination patterns and bias signals; provided structured feedback to improve model reliability.</li>
+        <li>Refined prompts and annotation guidelines to increase consistency and reduce ambiguity.</li>
+        <li>Annotated multimodal datasets with high precision, supporting cleaner training pipelines.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL EXPERIENCE -->
+  <div class="section">
+    <h2>Professional Experience</h2>
+
+    <div class="subsection">
+      <p><span class="job-title">Client &amp; Product Specialist</span> | <span class="company">Swarovski Crystal</span> — Seattle, WA <span class="date">July 2024–July 2025</span></p>
+      <ul>
+        <li>Exceeded monthly sales targets by ~20% through tailored client education and experience design.</li>
+        <li>Optimized display layouts using behavioral insights, boosting engagement and conversion.</li>
+        <li>Trained team members in client-first communication, knowledge retention, and brand storytelling.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <h2>Key Projects &amp; Creative Work</h2>
+
+    <div class="subsection">
+      <p><span class="project-title">Floral Design SVG — AI-Powered Web App</span></p>
+      <ul>
+        <li>Built a generative tool allowing creators to produce, preview, and export scalable floral illustrations as SVGs.</li>
+        <li>Integrated image-to-vector workflows and AI-assisted styling for rapid creative iteration.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <p><span class="project-title">AI Prompt Studio: Vehicles</span></p>
+      <ul>
+        <li>Designed a focused interface for engineering and testing vehicle design prompts.</li>
+        <li>Improved output consistency by standardizing prompt structures and evaluation criteria.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <p><span class="project-title">Cameo Store — Minimal E-Commerce Demo</span></p>
+      <ul>
+        <li>Developed a clean, performant browsing experience showcasing attention to detail and micro-interactions.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <p><span class="project-title">American Heritage Icon Library</span></p>
+      <ul>
+        <li>Created a scalable icon system with consistent stroke geometry, naming conventions, and export tooling.</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <p><span class="project-title">Graphic Design Gallery</span></p>
+      <ul>
+        <li>Engineered a dynamic portfolio site with responsive grids, subtle animations, and editorial typography.</li>
+      </ul>
+    </div>
+
+    <p class="tech">Tech Stack: React, Next.js, TypeScript, Tailwind CSS, Figma, Git, Canvas API, SVG Optimization</p>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <h2>Education</h2>
+    <p><span class="job-title">B.S. in Biological Sciences</span><br>
+       Southern Methodist University <span class="date">2020</span></p>
+  </div>
+
+  <!-- PRINT INSTRUCTIONS -->
+  <div class="no-print">
+    <p>To save as PDF: Press <strong>Ctrl+P</strong> (or Cmd+P) → Choose "Save as PDF" → Click Save.</p>
+    <button onclick="window.print()">Generate PDF</button>
+  </div>
+
+  </div> <!-- /.card -->
+
+</body>
+</html>

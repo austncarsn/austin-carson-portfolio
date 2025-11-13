@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { JSX } from "react";
 import { motion } from "motion/react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./common/media/ImageWithFallback";
 
 export type Project = {
   id: string;
@@ -81,7 +81,7 @@ function ProjectCard({
 }: { 
   project: Project; 
   index: number; 
-  onClick: () => void;
+  onClick?: (_project: Project, _index: number) => void;
 }): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -93,7 +93,7 @@ function ProjectCard({
       viewport={{ once: true, amount: 0.2 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      onClick={onClick}
+      onClick={() => onClick?.(project, index)}
       className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center py-8 md:py-12 border-b cursor-pointer group"
       style={{ borderColor: 'var(--line)' }}
     >
@@ -311,7 +311,7 @@ export function WorkSection({
               key={project.id || project.title}
               project={project}
               index={index}
-              onClick={() => handleProjectClick(project, index)}
+              onClick={handleProjectClick}
             />
           ))}
         </motion.div>

@@ -42,7 +42,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const sizeStyles: Record<ButtonSize, string> = {
   xs: 'h-7 px-2.5 text-caption gap-1.5',
   sm: 'h-9 px-3.5 text-body-sm gap-2',
-  md: 'h-11 px-5 text-body-md gap-2.5',
+  // md is used for primary CTAs (hero/resume). Use auto height and larger padding so
+  // variant="primary" + size="md" visually matches the hero CTA (rounded pill, roomy padding)
+  md: 'h-auto px-8 py-3 text-body-md gap-2.5',
   lg: 'h-12 px-6 text-body-lg gap-3',
   xl: 'h-14 px-8 text-body-xl gap-3',
 };
@@ -63,45 +65,47 @@ const iconOnlySizeStyles: Record<ButtonSize, string> = {
  */
 const variantStyles: Record<ButtonVariant, string> = {
   primary: `
-    bg-brand text-white
-    hover:bg-brand-hover active:bg-brand-active
-    disabled:bg-neutral-200 disabled:text-neutral-400
-    shadow-sm hover:shadow-md
-    focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2
+    bg-token-accent text-on-accent
+    border border-token
+    rounded-2xl
+    hover:opacity-90 active:opacity-80
+    disabled:opacity-50
+    shadow-lg hover:shadow-xl
+    focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2
   `,
   secondary: `
-    bg-neutral-100 text-text-primary
-    hover:bg-neutral-200 active:bg-neutral-300
-    disabled:bg-neutral-50 disabled:text-neutral-300
+    bg-token-surface text-token-primary
+    hover:brightness-95
+    disabled:opacity-50
     shadow-sm hover:shadow
-    focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-offset-2
   `,
   ghost: `
-    bg-transparent text-text-primary
-    hover:bg-neutral-100 active:bg-neutral-200
-    disabled:text-neutral-300
-    focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:ring-offset-2
+    bg-transparent text-token-primary
+    hover:bg-token-surface-weak active:bg-token-surface-weak
+    disabled:opacity-50
+    focus-visible:ring-2 focus-visible:ring-offset-2
   `,
   outline: `
-    bg-transparent text-text-primary border-2 border-neutral-300
-    hover:bg-neutral-50 hover:border-neutral-400
-    active:bg-neutral-100 active:border-neutral-500
-    disabled:border-neutral-200 disabled:text-neutral-300
-    focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2
+    bg-transparent text-token-primary border-2 border-token
+    hover:bg-token-surface-weak
+    active:bg-token-surface-weak
+    disabled:opacity-50
+    focus-visible:ring-2 focus-visible:ring-offset-2
   `,
   danger: `
-    bg-error text-white
-    hover:bg-error-hover active:bg-error-active
-    disabled:bg-error-subtle disabled:text-error-muted
+    bg-token-error text-on-error
+    hover:opacity-90 active:opacity-80
+    disabled:opacity-50
     shadow-sm hover:shadow-md
-    focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-[var(--color-error)] focus-visible:ring-offset-2
   `,
   success: `
-    bg-success text-white
-    hover:bg-success-hover active:bg-success-active
-    disabled:bg-success-subtle disabled:text-success-muted
+    bg-token-success text-on-accent
+    hover:opacity-90 active:opacity-80
+    disabled:opacity-50
     shadow-sm hover:shadow-md
-    focus-visible:ring-2 focus-visible:ring-success focus-visible:ring-offset-2
+    focus-visible:ring-2 focus-visible:ring-[var(--color-success)] focus-visible:ring-offset-2
   `,
 };
 
@@ -160,7 +164,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const isDisabled = disabled || loading;
 
-    // Base classes
     const baseClasses = `
       inline-flex items-center justify-center
       font-satoshi font-semibold
@@ -173,12 +176,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled:opacity-60
     `;
 
-    // Combine all classes
     const classes = [
       baseClasses,
       iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
       variantStyles[variant],
-      fullWidth ? 'w-full' : '',
+      // Make primary CTAs (variant='primary', size='md') full-width on small screens
+      // while keeping them inline on larger screens. This mirrors the hero CTA behavior.
+      variant === 'primary' && size === 'md' ? 'w-full sm:w-auto justify-center' : (fullWidth ? 'w-full' : ''),
       className,
     ]
       .join(' ')
@@ -193,22 +197,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={classes}
         {...props}
       >
-        {/* Loading spinner */}
         {loading && (
           <Loader2 className="animate-spin" size={size === 'xs' ? 12 : size === 'sm' ? 14 : 16} />
         )}
 
-        {/* Icon before */}
-        {!loading && iconBefore && <span className="inline-flex">{iconBefore}</span>}
-
-        {/* Text content */}
+        {!loading && iconBefore && <span className="flex-shrink-0">{iconBefore}</span>}
+        
         {!iconOnly && children && <span>{children}</span>}
-
-        {/* Icon only content */}
-        {iconOnly && !loading && children}
-
-        {/* Icon after */}
-        {!loading && iconAfter && <span className="inline-flex">{iconAfter}</span>}
+        
+        {!loading && iconAfter && <span className="flex-shrink-0">{iconAfter}</span>}
       </button>
     );
   }

@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./common/media/ImageWithFallback";
 import { useEffect } from "react";
 import type React from "react";
 

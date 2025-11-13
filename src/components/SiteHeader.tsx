@@ -1,7 +1,6 @@
-import React from "react";
+import React, { memo, useState, useEffect } from "react";
 import type { JSX } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useScrollDir } from "@/hooks/useScrollDir";
 import { useCompactHeader } from "@/hooks/useCompactHeader";
@@ -32,17 +31,12 @@ type Props = {
   className?: string;
 };
 
-export function SiteHeader({
-  brandTitle: _brandTitle = "AUSTIN CARSON",
-  since: _since = "Since 2025",
+export const SiteHeader = memo(function SiteHeader({
   items = [
     { label: "Index", href: "/" },
     { label: "Work", href: "/#work" },
     { label: "Contact", href: "/#contact" }
   ],
-  statusText: _statusText = "Production Ready",
-  statusIndicatorColor: _statusIndicatorColor = "var(--accent)",
-  cta: _cta = { label: "Get Started", href: "/#work" },
   tickerText = "Available for projects",
   tickerRepeat = 8,
   tickerSpeedSec = 25,
@@ -166,4 +160,4 @@ export function SiteHeader({
       </div>
     </header>
   );
-}
+});

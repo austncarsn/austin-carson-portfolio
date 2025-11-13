@@ -76,10 +76,10 @@ const FORTUNES = [
 
 /* ------------------- Helpers ------------------- */
 
-function useRandomFortune() {
+function useRandomFortune(): { pick: () => string } {
   const [lastIndex, setLastIndex] = useState<number | null>(null);
   
-  const pick = () => {
+  const pick = (): string => {
     let newIndex: number;
     
     // Ensure we don't repeat the same fortune twice in a row
@@ -125,7 +125,7 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
   const prefersReducedMotion = usePrefersReducedMotion();
   const { pick } = useRandomFortune();
 
-  const reveal = () => {
+  const reveal = (): void => {
     if (prefersReducedMotion) {
       setFortune(pick());
       setIsAnimating(true);
@@ -140,7 +140,7 @@ const FortuneBox = memo(function FortuneBox(): ReactElement {
     }
   };
 
-  const onAnimationEnd = () => setIsAnimating(false);
+  const onAnimationEnd = (): void => setIsAnimating(false);
 
   return (
     <div className="inline-block mx-auto w-[640px] max-w-[92vw]">
