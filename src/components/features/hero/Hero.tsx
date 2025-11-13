@@ -155,17 +155,24 @@ export function Hero(): React.ReactElement {
                   className={`relative ${i === 2 ? "hidden lg:block" : ""}`}
                   onMouseEnter={() => !isMobile && setIsHovering(true)}
                   onMouseLeave={() => !isMobile && setIsHovering(false)}
-                  whileHover={reduce || isMobile ? undefined : { y: -4 }}
+                  whileHover={reduce || isMobile ? undefined : isCenter ? { y: -6, boxShadow: '0 36px 84px rgba(0,0,0,0.24)', scale: 1.01 } : { y: -4, boxShadow: '0 12px 36px rgba(0,0,0,0.12)' }}
+                  style={{
+                    // base shadow gives depth even when not hovered
+                    boxShadow: isCenter ? '0 24px 64px rgba(0,0,0,0.18)' : '0 8px 24px rgba(0,0,0,0.08)',
+                    zIndex: isCenter ? 30 : 10,
+                    transition: 'box-shadow .35s ease, transform .28s ease',
+                    transform: 'translateZ(0)'
+                  }}
                 >
                   <motion.div
                     className={`relative w-full overflow-hidden ${isCenter ? 'rounded-xl md:rounded-3xl bg-surface' : 'rounded-lg bg-surface'} ${isMobile ? 'h-[48vh]' : 'h-[70vh] md:h-[96vh]'}`}
                     whileTap={isMobile ? { scale: 0.985 } : undefined}
-                    style={isCenter ? { boxShadow: '0 18px 48px rgba(0,0,0,0.12)' } : {}}
                   >
                     <motion.div
-                      whileHover={reduce || isMobile ? undefined : { y: isCenter ? -8 : -6, scale: isCenter ? 1.03 : 1.01 }}
+                      whileHover={reduce || isMobile ? undefined : { y: isCenter ? -10 : -6, scale: isCenter ? 1.04 : 1.02 }}
                       transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-                      className={`w-full h-full ${isCenter ? '' : 'filter blur-sm opacity-60'}`}
+                      className={`w-full h-full ${isCenter ? '' : 'opacity-80'}`}
+                      style={{ transition: 'filter .28s ease, opacity .28s ease, transform .28s ease' }}
                     >
                       <ImageWithFallback
                         src={image.src}
