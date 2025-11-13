@@ -9,8 +9,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
-    }
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   build: {
     target: 'esnext',
@@ -28,18 +28,18 @@ export default defineConfig({
         // Optimize chunk file names for caching
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
-      }
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      },
     },
     // Enable source maps for production debugging
     sourcemap: false,
     // Optimize CSS
     cssMinify: true,
     // Reduce bundle size by removing unused code
-    reportCompressedSize: true
+    reportCompressedSize: true,
   },
   server: {
     port: 3000,
-    open: true
-  }
+    open: true,
+  },
 });

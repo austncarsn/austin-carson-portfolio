@@ -15,7 +15,7 @@ export class ErrorBoundary extends React.Component<Props, { hasError: boolean }>
   componentDidCatch(error: unknown, info: unknown): void {
     // Keep this minimal; could integrate Sentry/logging later
     // Log to console in development
-  console.error('ErrorBoundary caught', error, info);
+    console.error('ErrorBoundary caught', error, info);
   }
 
   render(): React.ReactNode {
@@ -24,7 +24,9 @@ export class ErrorBoundary extends React.Component<Props, { hasError: boolean }>
         <div className="min-h-screen flex items-center justify-center p-8">
           <div className="max-w-lg text-center">
             <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
-            <p className="text-sm text-muted">We're sorry — the component failed to load. Try refreshing the page.</p>
+            <p className="text-sm text-muted">
+              We're sorry — the component failed to load. Try refreshing the page.
+            </p>
           </div>
         </div>
       );

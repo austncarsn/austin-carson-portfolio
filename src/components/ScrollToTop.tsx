@@ -20,7 +20,7 @@ export function ScrollToTop(): ReactElement | null {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
     });
   }, [pathname, prefersReducedMotion]);
 

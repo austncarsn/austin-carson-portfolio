@@ -1,20 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}'
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     // Override default breakpoints to match our design system
     screens: {
-      'xs': '360px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
+      xs: '360px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
       '2xl': '1536px',
     },
-    
+
     extend: {
       /* ================================================================
          DESIGN TOKEN INTEGRATION
@@ -31,7 +28,7 @@ module.exports = {
         muted: 'var(--muted)',
         line: 'var(--line)',
         accent: 'var(--accent)',
-        
+
         // Neutral scale
         neutral: {
           0: 'var(--color-neutral-0)',
@@ -48,14 +45,14 @@ module.exports = {
           950: 'var(--color-neutral-950)',
           1000: 'var(--color-neutral-1000)',
         },
-        
+
         // Refined palette
         cream: 'var(--color-cream-bg)',
         ink: 'var(--color-ink)',
         muted: 'var(--color-muted)',
         'accent-mint': 'var(--color-accent-mint)',
         shadow: 'var(--color-shadow)',
-        
+
         // Brand colors
         brand: {
           50: 'var(--color-brand-50)',
@@ -71,7 +68,7 @@ module.exports = {
           950: 'var(--color-brand-950)',
           DEFAULT: 'var(--color-interactive-primary)',
         },
-        
+
         // Accent colors
         accent: {
           50: 'var(--color-accent-50)',
@@ -85,7 +82,7 @@ module.exports = {
           800: 'var(--color-accent-800)',
           900: 'var(--color-accent-900)',
         },
-        
+
         // Semantic background colors
         bg: {
           canvas: 'var(--color-bg-canvas)',
@@ -96,7 +93,7 @@ module.exports = {
           glass: 'var(--color-bg-glass)',
           panel: 'var(--color-bg-panel)',
         },
-        
+
         // Semantic text colors
         text: {
           primary: 'var(--color-text-primary)',
@@ -108,7 +105,7 @@ module.exports = {
           'on-brand': 'var(--color-text-on-brand)',
           inverse: 'var(--color-text-inverse)',
         },
-        
+
         // Semantic border colors
         border: {
           subtle: 'var(--color-border-subtle)',
@@ -117,7 +114,7 @@ module.exports = {
           brand: 'var(--color-border-brand)',
           error: 'var(--color-border-error)',
         },
-        
+
         // Interactive colors
         interactive: {
           primary: {
@@ -138,7 +135,7 @@ module.exports = {
           disabled: 'var(--color-interactive-disabled)',
           focus: 'var(--color-interactive-focus)',
         },
-        
+
         // Status colors
         success: {
           light: 'var(--color-success-light)',
@@ -189,16 +186,37 @@ module.exports = {
       // === TYPOGRAPHY ===
       fontSize: {
         // Utility sizes
-        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-normal)' }],  // 13px
-        small: ['var(--font-size-small)', { lineHeight: 'var(--line-height-normal)' }],      // 14px
-        base: ['var(--font-size-base)', { lineHeight: 'var(--line-height-normal)' }],        // 16px
-        lg: ['var(--font-size-lg)', { lineHeight: 'var(--line-height-normal)' }],            // 18px
-        
+        caption: [
+          'var(--font-size-caption)',
+          { lineHeight: 'var(--line-height-normal)' },
+        ], // 13px
+        small: ['var(--font-size-small)', { lineHeight: 'var(--line-height-normal)' }], // 14px
+        base: ['var(--font-size-base)', { lineHeight: 'var(--line-height-normal)' }], // 16px
+        lg: ['var(--font-size-lg)', { lineHeight: 'var(--line-height-normal)' }], // 18px
+
         // 2025 Spec-Compliant Semantic Headings
-        h1: ['var(--font-size-h1)', { lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-tight)' }],  // 22-32px
-        h2: ['var(--font-size-h2)', { lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-tight)' }],  // 20-28px
-        h3: ['var(--font-size-h3)', { lineHeight: 'var(--line-height-snug)', letterSpacing: 'var(--letter-spacing-normal)' }], // 18-24px
-        
+        h1: [
+          'var(--font-size-h1)',
+          {
+            lineHeight: 'var(--line-height-tight)',
+            letterSpacing: 'var(--letter-spacing-tight)',
+          },
+        ], // 22-32px
+        h2: [
+          'var(--font-size-h2)',
+          {
+            lineHeight: 'var(--line-height-tight)',
+            letterSpacing: 'var(--letter-spacing-tight)',
+          },
+        ], // 20-28px
+        h3: [
+          'var(--font-size-h3)',
+          {
+            lineHeight: 'var(--line-height-snug)',
+            letterSpacing: 'var(--letter-spacing-normal)',
+          },
+        ], // 18-24px
+
         // Legacy sizes (for backwards compatibility)
         xl: ['var(--font-size-xl)', { lineHeight: 'var(--line-height-snug)' }],
         '2xl': ['var(--font-size-2xl)', { lineHeight: 'var(--line-height-snug)' }],
@@ -297,16 +315,16 @@ module.exports = {
         content: 'var(--content-max-width)',
         'content-narrow': 'var(--content-max-width-narrow)',
         'content-wide': 'var(--content-max-width-wide)',
-        'line': 'var(--content-max-line-length)',
+        line: 'var(--content-max-line-length)',
       },
 
       height: {
         nav: 'var(--nav-height)',
         'nav-mobile': 'var(--nav-height-mobile)',
       },
-      
+
       backdropBlur: {
-        '16': '16px',
+        16: '16px',
       },
 
       // === ASPECT RATIOS ===
@@ -362,7 +380,7 @@ module.exports = {
       },
     },
   },
-  
+
   plugins: [
     // Container queries plugin
     require('@tailwindcss/container-queries'),

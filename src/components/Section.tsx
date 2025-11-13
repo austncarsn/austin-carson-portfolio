@@ -35,10 +35,15 @@ export default function Section({
   // Centralized spacing rhythm — professional vertical rhythm with generous breathing room
   // Responsive padding scales: mobile → tablet → desktop → wide screens
   // Ensures perfect layout at all viewport sizes
-  const baseSpacing = 'px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-16 lg:py-28 xl:px-20 xl:py-32 2xl:px-24 2xl:py-36';
+  const baseSpacing =
+    'px-4 py-16 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-16 lg:py-28 xl:px-20 xl:py-32 2xl:px-24 2xl:py-36';
 
   return (
-  <section id={id} className={`relative w-full overflow-hidden ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`} style={{ scrollMarginTop: '4rem' }}>
+    <section
+      id={id}
+      className={`relative w-full overflow-hidden ${bgClass || 'bg-paper'} ${ptClass || baseSpacing} ${className}`}
+      style={{ scrollMarginTop: '4rem' }}
+    >
       {noContainer ? (
         children
       ) : (
@@ -48,14 +53,23 @@ export default function Section({
             <FadeInSection delay={labelDelay}>
               <div className="mb-12 sm:mb-14 md:mb-16">
                 <div className={`flex items-center gap-3 sm:gap-4 ${labelClassName}`}>
-                  <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-neutral-400" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                  <span
+                    className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-neutral-400"
+                    style={{ fontVariantNumeric: 'tabular-nums' }}
+                  >
                     {labelNumber}
                   </span>
-                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
+                  <div
+                    className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3"
+                    style={{ width: '20px', minWidth: '20px', flexGrow: 0 }}
+                  />
                   <span className="font-satoshi font-bold text-xs sm:text-sm tracking-[0.15em] uppercase text-text-secondary">
                     {labelTitle}
                   </span>
-                  <div className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3" style={{ width: '20px', minWidth: '20px', flexGrow: 0 }} />
+                  <div
+                    className="flex-1 h-[1px] bg-brand ml-2 sm:ml-3"
+                    style={{ width: '20px', minWidth: '20px', flexGrow: 0 }}
+                  />
                 </div>
               </div>
             </FadeInSection>

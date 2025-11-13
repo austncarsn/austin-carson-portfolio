@@ -16,7 +16,9 @@ if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
     const svgBuffer = fs.readFileSync(svgPath);
 
     // Convert to monochrome by desaturating and setting a threshold
-    const base = sharp(svgBuffer).resize(1200, 630, { fit: 'contain', background: '#ffffff' }).grayscale();
+    const base = sharp(svgBuffer)
+      .resize(1200, 630, { fit: 'contain', background: '#ffffff' })
+      .grayscale();
 
     // Variant 1: High-contrast monochrome
     const monoBuffer = await base.clone().threshold(200).png().toBuffer();

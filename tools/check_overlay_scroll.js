@@ -20,25 +20,28 @@ const { chromium } = require('playwright');
         opacity: s.opacity,
         zIndex: s.zIndex,
         bg: s.backgroundColor,
-        bounds: el.getBoundingClientRect ? {
-          x: el.getBoundingClientRect().x,
-          y: el.getBoundingClientRect().y,
-          width: el.getBoundingClientRect().width,
-          height: el.getBoundingClientRect().height
-        } : null,
+        bounds: el.getBoundingClientRect
+          ? {
+              x: el.getBoundingClientRect().x,
+              y: el.getBoundingClientRect().y,
+              width: el.getBoundingClientRect().width,
+              height: el.getBoundingClientRect().height,
+            }
+          : null,
       };
     }
 
     const article = document.querySelector('article.group');
     if (!article) return { error: 'No article.group found on page' };
 
-    const candidates = Array.from(article.querySelectorAll('a, button')).filter(el => {
+    const candidates = Array.from(article.querySelectorAll('a, button')).filter((el) => {
       const r = el.getBoundingClientRect();
       return r.width > 10 && r.height > 10;
     });
 
     const firstAction = candidates[0] || null;
-    if (!firstAction) return { error: 'No action link/button found inside first article' };
+    if (!firstAction)
+      return { error: 'No action link/button found inside first article' };
 
     firstAction.scrollIntoView({ block: 'center', inline: 'center', behavior: 'auto' });
 
@@ -51,7 +54,10 @@ const { chromium } = require('playwright');
     let cur = topEl;
     let isActionCovered = true;
     while (cur && cur !== document.body) {
-      if (cur === firstAction) { isActionCovered = false; break; }
+      if (cur === firstAction) {
+        isActionCovered = false;
+        break;
+      }
       cur = cur.parentElement;
     }
 
@@ -60,23 +66,33 @@ const { chromium } = require('playwright');
       firstAction: clean(firstAction),
       pointTop: clean(topEl),
       isActionCovered: isActionCovered,
-      topElPath: (function buildPath(el){
+      topElPath: (function buildPath(el) {
         if (!el) return null;
         const parts = [];
         let node = el;
         while (node && node !== document.body) {
           let part = node.tagName.toLowerCase();
           if (node.id) part += `#${node.id}`;
-          else if (node.className) part += `.${node.className.split(' ').slice(0,2).join('.')}`;
+          else if (node.className)
+            part += `.${node.className.split(' ').slice(0, 2).join('.')}`;
           parts.unshift(part);
           node = node.parentElement;
         }
         return parts.join(' > ');
       })(topEl),
-      overlays: Array.from(article.querySelectorAll('*')).filter(el => {
-        const s = window.getComputedStyle(el);
-        return (s.position === 'absolute' || s.position === 'fixed') && s.opacity && parseFloat(s.opacity) > 0 && el.getBoundingClientRect().width > 20 && el.getBoundingClientRect().height > 20;
-      }).slice(0,10).map(clean),
+      overlays: Array.from(article.querySelectorAll('*'))
+        .filter((el) => {
+          const s = window.getComputedStyle(el);
+          return (
+            (s.position === 'absolute' || s.position === 'fixed') &&
+            s.opacity &&
+            parseFloat(s.opacity) > 0 &&
+            el.getBoundingClientRect().width > 20 &&
+            el.getBoundingClientRect().height > 20
+          );
+        })
+        .slice(0, 10)
+        .map(clean),
     };
   });
 

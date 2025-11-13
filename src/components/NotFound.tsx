@@ -8,17 +8,17 @@ import React from 'react';
 
 export default function NotFound(): React.JSX.Element {
   return (
-  <div className="flex min-h-screen items-center justify-center bg-paper px-6 py-16 sm:px-10">
+    <div className="flex min-h-screen items-center justify-center bg-paper px-6 py-16 sm:px-10">
       <div className="text-center space-y-8 max-w-2xl">
         {/* Error Code */}
         <div className="space-y-4">
           <div className="text-brand text-h2 md:text-h1 tracking-tighter opacity-20">
             404
           </div>
-          
+
           {/* Title */}
           <div className="space-y-2">
-              <span className="font-satoshi text-h3 md:text-h2 leading-[1.1] tracking-[-0.02em] text-text-primary block">
+            <span className="font-satoshi text-h3 md:text-h2 leading-[1.1] tracking-[-0.02em] text-text-primary block">
               Page Not Found
             </span>
           </div>
@@ -52,7 +52,7 @@ export default function NotFound(): React.JSX.Element {
         </div>
 
         {/* Decorative Element */}
-          <div className="pt-16 opacity-50">
+        <div className="pt-16 opacity-50">
           <div className="w-16 h-16 mx-auto bg-brand opacity-10 rounded-full blur-2xl" />
         </div>
       </div>

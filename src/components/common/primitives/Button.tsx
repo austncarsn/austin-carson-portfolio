@@ -9,13 +9,13 @@ export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 /**
  * Button emphasis variants (visual hierarchy)
  */
-export type ButtonVariant = 
-  | 'primary'    // High emphasis - main CTAs
-  | 'secondary'  // Medium emphasis - secondary actions
-  | 'ghost'      // Low emphasis - tertiary actions
-  | 'outline'    // Medium emphasis - alternative style
-  | 'danger'     // Destructive actions
-  | 'success';   // Positive actions
+export type ButtonVariant =
+  | 'primary' // High emphasis - main CTAs
+  | 'secondary' // Medium emphasis - secondary actions
+  | 'ghost' // Low emphasis - tertiary actions
+  | 'outline' // Medium emphasis - alternative style
+  | 'danger' // Destructive actions
+  | 'success'; // Positive actions
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant */
@@ -111,7 +111,7 @@ const variantStyles: Record<ButtonVariant, string> = {
 
 /**
  * Button - Accessible, token-based button component
- * 
+ *
  * Features:
  * - 6 visual variants (primary, secondary, ghost, outline, danger, success)
  * - 5 size presets (xs, sm, md, lg, xl)
@@ -120,51 +120,50 @@ const variantStyles: Record<ButtonVariant, string> = {
  * - Full keyboard accessibility
  * - Design token integration
  * - Responsive touch targets
- * 
+ *
  * @example
  * ```tsx
  * // Primary CTA button
  * <Button variant="primary" size="lg">
  *   Get Started
  * </Button>
- * 
+ *
  * // Button with icon
  * <Button variant="secondary" iconAfter={<ArrowRight />}>
  *   Continue
  * </Button>
- * 
+ *
  * // Loading state
  * <Button variant="primary" loading disabled>
  *   Saving...
  * </Button>
- * 
+ *
  * // Icon-only button
  * <Button variant="ghost" iconOnly aria-label="Close">
  *   <X />
  * </Button>
  * ```
  */
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(
-    {
-      variant = 'primary',
-      size = 'md',
-      fullWidth = false,
-      loading = false,
-      iconBefore,
-      iconAfter,
-      iconOnly = false,
-      disabled,
-      className = '',
-      children,
-      type = 'button',
-      ...props
-    },
-    ref
-  ) {
-    const isDisabled = disabled || loading;
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    variant = 'primary',
+    size = 'md',
+    fullWidth = false,
+    loading = false,
+    iconBefore,
+    iconAfter,
+    iconOnly = false,
+    disabled,
+    className = '',
+    children,
+    type = 'button',
+    ...props
+  },
+  ref
+) {
+  const isDisabled = disabled || loading;
 
-    const baseClasses = `
+  const baseClasses = `
       inline-flex items-center justify-center
       font-satoshi font-semibold
       rounded-lg
@@ -176,39 +175,39 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled:opacity-60
     `;
 
-    const classes = [
-      baseClasses,
-      iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
-      variantStyles[variant],
-      // Make primary CTAs (variant='primary', size='md') full-width on small screens
-      // while keeping them inline on larger screens. This mirrors the hero CTA behavior.
-      variant === 'primary' && size === 'md' ? 'w-full sm:w-auto justify-center' : (fullWidth ? 'w-full' : ''),
-      className,
-    ]
-      .join(' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+  const classes = [
+    baseClasses,
+    iconOnly ? iconOnlySizeStyles[size] : sizeStyles[size],
+    variantStyles[variant],
+    // Make primary CTAs (variant='primary', size='md') full-width on small screens
+    // while keeping them inline on larger screens. This mirrors the hero CTA behavior.
+    variant === 'primary' && size === 'md'
+      ? 'w-full sm:w-auto justify-center'
+      : fullWidth
+        ? 'w-full'
+        : '',
+    className,
+  ]
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-    return (
-      <button
-        ref={ref}
-        type={type}
-        disabled={isDisabled}
-        className={classes}
-        {...props}
-      >
-        {loading && (
-          <Loader2 className="animate-spin" size={size === 'xs' ? 12 : size === 'sm' ? 14 : 16} />
-        )}
+  return (
+    <button ref={ref} type={type} disabled={isDisabled} className={classes} {...props}>
+      {loading && (
+        <Loader2
+          className="animate-spin"
+          size={size === 'xs' ? 12 : size === 'sm' ? 14 : 16}
+        />
+      )}
 
-        {!loading && iconBefore && <span className="flex-shrink-0">{iconBefore}</span>}
-        
-        {!iconOnly && children && <span>{children}</span>}
-        
-        {!loading && iconAfter && <span className="flex-shrink-0">{iconAfter}</span>}
-      </button>
-    );
-  }
-);
+      {!loading && iconBefore && <span className="flex-shrink-0">{iconBefore}</span>}
+
+      {!iconOnly && children && <span>{children}</span>}
+
+      {!loading && iconAfter && <span className="flex-shrink-0">{iconAfter}</span>}
+    </button>
+  );
+});
 
 Button.displayName = 'Button';

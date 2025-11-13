@@ -8,7 +8,6 @@ type NavLinkProps = {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   children: React.ReactNode;
 };
- 
 
 export function NavLink({
   href,
@@ -16,15 +15,13 @@ export function NavLink({
   isActive = false,
   isExternal = false,
   onClick,
-  children
+  children,
 }: NavLinkProps): ReactElement {
-  const baseClasses = "block px-4 py-3 rounded-lg transition-all duration-200";
-  const activeClasses = isActive 
-    ? "bg-accent text-white font-medium" 
-    : "text-text hover:bg-surface-hover";
-  const sizeClasses = size === 'mobile' 
-    ? "text-lg" 
-    : "text-base";
+  const baseClasses = 'block px-4 py-3 rounded-lg transition-all duration-200';
+  const activeClasses = isActive
+    ? 'bg-accent text-white font-medium'
+    : 'text-text hover:bg-surface-hover';
+  const sizeClasses = size === 'mobile' ? 'text-lg' : 'text-base';
 
   return (
     <a

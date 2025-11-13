@@ -19,14 +19,14 @@ const transformMap = {
   down: 'translateY(-30px)',
   left: 'translateX(30px)',
   right: 'translateX(-30px)',
-  none: 'translateY(0)'
+  none: 'translateY(0)',
 };
 
 export default memo(function FadeInSection({
   children,
   delay = 0,
   direction = 'up',
-  className = ''
+  className = '',
 }: FadeInSectionProps): ReactElement {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export default memo(function FadeInSection({
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
@@ -63,7 +63,11 @@ export default memo(function FadeInSection({
 
   const shouldAnimate = !prefersReducedMotion;
   const baseOpacity = shouldAnimate ? (isVisible ? 1 : 0) : 1;
-  const baseTransform = shouldAnimate ? (isVisible ? 'translate(0)' : transformMap[direction]) : 'translate(0)';
+  const baseTransform = shouldAnimate
+    ? isVisible
+      ? 'translate(0)'
+      : transformMap[direction]
+    : 'translate(0)';
   const transition = shouldAnimate
     ? `opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`
     : 'none';
@@ -76,7 +80,7 @@ export default memo(function FadeInSection({
         opacity: baseOpacity,
         transform: baseTransform,
         transition,
-        willChange: shouldAnimate && !isVisible ? 'opacity, transform' : 'auto'
+        willChange: shouldAnimate && !isVisible ? 'opacity, transform' : 'auto',
       }}
     >
       {children}

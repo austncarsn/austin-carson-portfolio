@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
       return {
         tag: el.tagName.toLowerCase(),
         className: el.className || null,
-        text: (el.textContent || '').trim().slice(0,120),
+        text: (el.textContent || '').trim().slice(0, 120),
         fontSize: s.fontSize,
         lineHeight: s.lineHeight,
         fontWeight: s.fontWeight,
@@ -35,20 +35,30 @@ const { chromium } = require('playwright');
 
     const title = article.querySelector('h1,h2,h3,h4,h5,h6');
     const desc = article.querySelector('p');
-    const spans = Array.from(article.querySelectorAll('span')).slice(0,6);
+    const spans = Array.from(article.querySelectorAll('span')).slice(0, 6);
 
     let contentDiv = null;
     const divs = article.querySelectorAll('div');
     for (const d of divs) {
       const cs = window.getComputedStyle(d);
-      if (parseFloat(cs.paddingTop) > 0 || parseFloat(cs.paddingLeft) > 0) { contentDiv = d; break; }
+      if (parseFloat(cs.paddingTop) > 0 || parseFloat(cs.paddingLeft) > 0) {
+        contentDiv = d;
+        break;
+      }
     }
 
     return {
       title: stats(title),
       description: stats(desc),
       spans: spans.map(stats),
-      contentPadding: contentDiv ? { paddingTop: window.getComputedStyle(contentDiv).paddingTop, paddingBottom: window.getComputedStyle(contentDiv).paddingBottom, paddingLeft: window.getComputedStyle(contentDiv).paddingLeft, paddingRight: window.getComputedStyle(contentDiv).paddingRight } : null
+      contentPadding: contentDiv
+        ? {
+            paddingTop: window.getComputedStyle(contentDiv).paddingTop,
+            paddingBottom: window.getComputedStyle(contentDiv).paddingBottom,
+            paddingLeft: window.getComputedStyle(contentDiv).paddingLeft,
+            paddingRight: window.getComputedStyle(contentDiv).paddingRight,
+          }
+        : null,
     };
   });
 

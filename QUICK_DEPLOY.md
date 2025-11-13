@@ -3,10 +3,12 @@
 ## 1-Minute Setup
 
 ### Prerequisites
+
 - Vercel account (free tier works)
 - Resend account (free tier: 100 emails/day)
 
 ### Step 1: Get Resend API Key
+
 ```bash
 # 1. Go to https://resend.com/api-keys
 # 2. Click "Create API Key"
@@ -14,6 +16,7 @@
 ```
 
 ### Step 2: Deploy to Vercel
+
 ```bash
 # Option A: Via GitHub (Recommended)
 1. Push code to GitHub
@@ -36,6 +39,7 @@ vercel env add CONTACT_TO_EMAIL
 ### Step 3: Update Email "From" Address
 
 **In `api/contact.ts`, change line 42:**
+
 ```ts
 // Before (uses Resend test domain)
 from: "Portfolio Contact <onboarding@resend.dev>",
@@ -45,6 +49,7 @@ from: "Portfolio Contact <contact@yourdomain.com>",
 ```
 
 **Verify domain in Resend:**
+
 1. Go to https://resend.com/domains
 2. Click "Add Domain"
 3. Add DNS records (they'll show you exactly what to add)
@@ -63,16 +68,19 @@ from: "Portfolio Contact <contact@yourdomain.com>",
 ## Using Test Mode (Skip Domain Verification)
 
 **Keep this line in `api/contact.ts`:**
+
 ```ts
 from: "Portfolio Contact <onboarding@resend.dev>",
 ```
 
 **Limitations:**
+
 - Emails only sent to the verified email on your Resend account
 - Cannot send to arbitrary addresses
 - Perfect for testing before domain verification
 
 **To test:**
+
 1. Verify your email in Resend dashboard
 2. Set `CONTACT_TO_EMAIL` to that verified email
 3. Submit form - email should arrive immediately
@@ -80,6 +88,7 @@ from: "Portfolio Contact <onboarding@resend.dev>",
 ## Troubleshooting
 
 ### Email Not Arriving
+
 ```bash
 # Check Vercel function logs
 vercel logs
@@ -94,6 +103,7 @@ https://resend.com/emails
 ```
 
 ### CORS Errors
+
 ```bash
 # The API route has CORS headers built-in
 # If you still see CORS errors:
@@ -103,6 +113,7 @@ https://resend.com/emails
 ```
 
 ### Form Not Submitting
+
 ```bash
 # Check browser console for errors
 # Common issues:
@@ -125,6 +136,7 @@ NODE_ENV=production
 ## Vercel Configuration (Automatic)
 
 Vercel automatically detects:
+
 - `/api` directory as serverless functions
 - Vite build command (`npm run build`)
 - Output directory (`dist`)
@@ -134,22 +146,26 @@ Vercel automatically detects:
 ## Cost Breakdown
 
 ### Free Tier (Perfect for Portfolio)
+
 - **Vercel:** 100 GB bandwidth, unlimited deployments
 - **Resend:** 3,000 emails/month, 100 emails/day
 - **Total:** $0/month
 
 ### If You Exceed Free Tier
+
 - **Vercel Pro:** $20/month (1 TB bandwidth)
 - **Resend Pro:** $20/month (50,000 emails/month)
 
 ## Next Steps After Deployment
 
 1. **Add Analytics:**
+
    ```bash
    npm install @vercel/analytics
    ```
 
 2. **Add Spam Protection:**
+
    ```bash
    npm install @hcaptcha/react-hcaptcha
    ```

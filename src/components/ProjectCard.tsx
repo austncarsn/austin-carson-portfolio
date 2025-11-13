@@ -1,9 +1,17 @@
-import React, { memo, useEffect, useMemo, useRef, useState, KeyboardEvent, ForwardedRef } from "react";
-import type { JSX } from "react";
-import { Link } from "react-router-dom";
-import { motion, useScroll, useSpring, useTransform } from "motion/react";
-import { ArrowRight, ExternalLink, Github, X } from "lucide-react";
-import { ImageWithFallback } from "./common/media/ImageWithFallback";
+import React, {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  KeyboardEvent,
+  ForwardedRef,
+} from 'react';
+import type { JSX } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { ArrowRight, ExternalLink, Github, X } from 'lucide-react';
+import { ImageWithFallback } from './common/media/ImageWithFallback';
 
 /*************************************************************
  * Project Cards Scroll FX
@@ -47,7 +55,7 @@ function assignRefs<T>(...refs: (ForwardedRef<T> | null | undefined)[]) {
   return (value: T | null) => {
     for (const ref of refs) {
       if (!ref) continue;
-      if (typeof ref === "function") ref(value);
+      if (typeof ref === 'function') ref(value);
       else (ref as React.MutableRefObject<T | null>).current = value;
     }
   };
@@ -56,12 +64,12 @@ function assignRefs<T>(...refs: (ForwardedRef<T> | null | undefined)[]) {
 function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
-    if (typeof window === "undefined" || !("matchMedia" in window)) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (typeof window === 'undefined' || !('matchMedia' in window)) return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const l = (): void => setReduced(mq.matches);
     l();
-    mq.addEventListener?.("change", l);
-    return () => mq.removeEventListener?.("change", l);
+    mq.addEventListener?.('change', l);
+    return () => mq.removeEventListener?.('change', l);
   }, []);
   return reduced;
 }
@@ -71,17 +79,7 @@ function usePrefersReducedMotion(): boolean {
 // -----------------------------
 export const ProjectCard = memo(
   React.forwardRef<HTMLElement, ProjectCardProps>(function ProjectCard(
-    {
-      id,
-      title,
-      category,
-      year,
-      role,
-      description,
-      liveUrl,
-      githubUrl,
-      previewImage,
-    },
+    { id, title, category, year, role, description, liveUrl, githubUrl, previewImage },
     forwardedRef
   ) {
     const [flipped, setFlipped] = useState(false);
@@ -113,18 +111,18 @@ export const ProjectCard = memo(
     const handleClose = (): void => setFlipped(false);
 
     const handleKeyDown = (e: KeyboardEvent): void => {
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         if (!flipped) handleFlip();
       }
-      if (e.key === "Escape" && flipped) handleClose();
+      if (e.key === 'Escape' && flipped) handleClose();
     };
 
     // Focus first actionable element when flipped
     useEffect(() => {
       if (flipped && localRef.current) {
         const firstLink = localRef.current.querySelector(
-          ".card-back a, .card-back button"
+          '.card-back a, .card-back button'
         ) as HTMLElement | null;
         firstLink?.focus();
       }
@@ -134,17 +132,17 @@ export const ProjectCard = memo(
       <article
         ref={assignRefs(localRef, forwardedRef)}
         className="group relative"
-        style={{ perspective: "1200px" }}
-        data-state={flipped ? "back" : "front"}
+        style={{ perspective: '1200px' }}
+        data-state={flipped ? 'back' : 'front'}
         onKeyDown={handleKeyDown}
       >
         <div
           className="card relative h-[420px] sm:h-[480px] rounded-[24px] transition-transform duration-500 will-change-transform"
           style={{
-            transformStyle: "preserve-3d",
-            transform: flipped && !reduceMotion ? "rotateY(180deg)" : "none",
+            transformStyle: 'preserve-3d',
+            transform: flipped && !reduceMotion ? 'rotateY(180deg)' : 'none',
             opacity: hasBeenInView ? 1 : 0,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+            boxShadow: 'var(--shadow-card-strong)',
           }}
         >
           {/* FRONT */}
@@ -155,7 +153,7 @@ export const ProjectCard = memo(
             aria-hidden={flipped}
             tabIndex={flipped ? -1 : 0}
             className="card-front absolute inset-0 overflow-hidden rounded-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_16px_50px_rgba(0,0,0,0.45)] active:translate-y-[-1px]"
-            style={{ backfaceVisibility: "hidden" }}
+            style={{ backfaceVisibility: 'hidden' }}
           >
             {previewImage ? (
               <ImageWithFallback
@@ -172,13 +170,13 @@ export const ProjectCard = memo(
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0) 62%)",
+                  'linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0) 62%)',
               }}
             />
             <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
               <h3
                 className="text-white text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
-                style={{ letterSpacing: "-0.5px" }}
+                style={{ letterSpacing: '-0.5px' }}
               >
                 {title}
               </h3>
@@ -188,7 +186,7 @@ export const ProjectCard = memo(
           {/* BACK */}
           <div
             className="card-back absolute inset-0 rounded-[24px] bg-[var(--surface)] text-[var(--text)] p-6 sm:p-7 flex flex-col justify-between overflow-y-auto"
-            style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
+            style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
             aria-hidden={!flipped}
           >
             <button
@@ -217,7 +215,9 @@ export const ProjectCard = memo(
                 </p>
               )}
 
-              <p className="text-[var(--muted)] leading-relaxed whitespace-pre-line">{description}</p>
+              <p className="text-[var(--muted)] leading-relaxed whitespace-pre-line">
+                {description}
+              </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 pt-4">
@@ -231,7 +231,7 @@ export const ProjectCard = memo(
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               )}
-              {liveUrl && liveUrl !== "#" && (
+              {liveUrl && liveUrl !== '#' && (
                 <a
                   href={liveUrl}
                   target="_blank"
@@ -243,7 +243,7 @@ export const ProjectCard = memo(
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}
-              {githubUrl && githubUrl !== "#" && (
+              {githubUrl && githubUrl !== '#' && (
                 <a
                   href={githubUrl}
                   target="_blank"
@@ -279,7 +279,7 @@ function CardScrollItem({
   const reduceMotion = usePrefersReducedMotion();
 
   // Per-card scroll progress relative to the scroller container
-  const { scrollXProgress } = useScroll({ target: container, axis: "x" });
+  const { scrollXProgress } = useScroll({ target: container, axis: 'x' });
 
   // Stagger each card's response slightly by index
   const start = Math.max(0, 0.05 * index);
@@ -296,7 +296,10 @@ function CardScrollItem({
   const shadowAlpha = useSpring(rawShadow, { stiffness: 220, damping: 28, mass: 0.3 });
 
   // Derive boxShadow string reactively using useTransform instead of .to()
-  const boxShadow = useTransform(shadowAlpha, (a: number) => `0 16px 50px rgba(0,0,0,${a})`);
+  const boxShadow = useTransform(
+    shadowAlpha,
+    (a: number) => `0 16px 50px rgba(0,0,0,${a})`
+  );
 
   const style = useMemo(() => {
     if (reduceMotion) return {} as React.CSSProperties;
@@ -305,8 +308,8 @@ function CardScrollItem({
       y,
       rotateX: tilt,
       boxShadow,
-      transformStyle: "preserve-3d" as const,
-      willChange: "transform",
+      transformStyle: 'preserve-3d' as const,
+      willChange: 'transform',
     } as React.CSSProperties & {
       scale: typeof scale;
       y: typeof y;
@@ -336,9 +339,9 @@ function ScrollGradientMask(): JSX.Element {
       className="pointer-events-none absolute inset-y-0 left-0 right-0"
       style={{
         maskImage:
-          "linear-gradient(90deg, rgba(0,0,0,1) 6%, rgba(0,0,0,0) 16%), linear-gradient(90deg, rgba(0,0,0,0) 84%, rgba(0,0,0,1) 94%)",
-        WebkitMaskComposite: "destination-in",
-        maskComposite: "intersect",
+          'linear-gradient(90deg, rgba(0,0,0,1) 6%, rgba(0,0,0,0) 16%), linear-gradient(90deg, rgba(0,0,0,0) 84%, rgba(0,0,0,1) 94%)',
+        WebkitMaskComposite: 'destination-in',
+        maskComposite: 'intersect',
       }}
     />
   );
@@ -347,19 +350,27 @@ function ScrollGradientMask(): JSX.Element {
 // -----------------------------
 // ProjectReel — horizontal scroller + snap + FX
 // -----------------------------
-export function ProjectReel({ projects, title }: { projects: readonly ProjectCardProps[]; title?: string }): JSX.Element {
+export function ProjectReel({
+  projects,
+  title,
+}: {
+  projects: readonly ProjectCardProps[];
+  title?: string;
+}): JSX.Element {
   const scrollerRef = useRef<HTMLElement>(null);
   const reduceMotion = usePrefersReducedMotion();
 
   // Global affordance: subtle background parallax as the reel scrolls
-  const { scrollXProgress } = useScroll({ target: scrollerRef, axis: "x" });
+  const { scrollXProgress } = useScroll({ target: scrollerRef, axis: 'x' });
   const bgX = useTransform(scrollXProgress, [0, 1], [0, -120]);
   const bgOpacity = useTransform(scrollXProgress, [0, 1], [0.25, 0.35]);
 
   return (
     <section className="relative py-14">
       {title && (
-        <h2 className="px-6 sm:px-8 text-xl sm:text-2xl font-semibold tracking-tight mb-4">{title}</h2>
+        <h2 className="px-6 sm:px-8 text-xl sm:text-2xl font-semibold tracking-tight mb-4">
+          {title}
+        </h2>
       )}
 
       {/* Background glow */}
@@ -367,16 +378,18 @@ export function ProjectReel({ projects, title }: { projects: readonly ProjectCar
         <motion.div
           aria-hidden
           className="absolute -z-10 top-0 left-0 right-0 h-[200%] blur-3xl"
-          style={{
-            // warm accent-based glow (avoid cool blue tones)
-            background:
-              "radial-gradient(600px 160px at 40% 20%, rgba(255,56,0,0.08), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(255,200,150,0.06), transparent 60%)",
-            x: bgX,
-            opacity: bgOpacity,
-          } as React.CSSProperties & {
-            x: typeof bgX;
-            opacity: typeof bgOpacity;
-          }}
+          style={
+            {
+              // accent-based glow (uses primary blue)
+              background:
+                'radial-gradient(600px 160px at 40% 20%, rgba(46,136,255,0.08), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(150,200,255,0.06), transparent 60%)',
+              x: bgX,
+              opacity: bgOpacity,
+            } as React.CSSProperties & {
+              x: typeof bgX;
+              opacity: typeof bgOpacity;
+            }
+          }
         />
       )}
 
@@ -386,14 +399,18 @@ export function ProjectReel({ projects, title }: { projects: readonly ProjectCar
         ref={scrollerRef as React.RefObject<HTMLDivElement>}
         className="relative overflow-x-auto overflow-y-visible snap-x snap-mandatory no-scrollbar px-6 sm:px-8"
         style={{
-          scrollSnapType: "x mandatory",
-          scrollPaddingLeft: "24px",
-          scrollPaddingRight: "24px",
+          scrollSnapType: 'x mandatory',
+          scrollPaddingLeft: '24px',
+          scrollPaddingRight: '24px',
         }}
       >
         <ul className="flex gap-6 sm:gap-8 py-2">
           {projects.map((p, i) => (
-            <CardScrollItem key={p.id ?? p.title} container={scrollerRef as React.RefObject<HTMLDivElement>} index={i}>
+            <CardScrollItem
+              key={p.id ?? p.title}
+              container={scrollerRef as React.RefObject<HTMLDivElement>}
+              index={i}
+            >
               <ProjectCard {...p} />
             </CardScrollItem>
           ))}

@@ -1,7 +1,7 @@
 /**
  * Design Tokens - New Color System
  * 
- * Base colors: Chinese White, Powder Blue, Platinum, Orange, Pitch Black, White Chocolate
+ * Base colors: Chinese White, Powder Blue, Platinum, Blue, Pitch Black, White Chocolate
  * Semantic layer: bg (primary/secondary/tertiary/surface), text, action
  */
 
@@ -11,53 +11,68 @@
 
 :root {
   /* === BASE COLORS === */
-  --chinese-white: #E2E5DE;
-  --powder-blue: #F4FAFF;
-  --platinum: #E5E4E2;
-  --orange: #FF3800;
-  --pitch-black: #000000;              /* pure black for text */
-  --white-chocolate: #EDE6D6;
+  --chinese-white: #e2e5de;
+  --powder-blue: #f4faff;
+  --platinum: #e5e4e2;
+  /* legacy warm accent kept as alias for compatibility — now points to primary blue */
+  --orange: var(--blue);
+  /* Primary brand blue (replaces previous warm accent) */
+  --blue: #2e88ff; /* primary blue */
+  --pitch-black: #000000; /* pure black for text */
+  --white-chocolate: #ede6d6;
 
   /* === SEMANTIC TOKENS - BACKGROUND === */
-  --bg: var(--powder-blue);           /* primary background */
+  --bg: var(--powder-blue); /* primary background */
   --bg-secondary: var(--chinese-white);
   --bg-tertiary: var(--white-chocolate);
-  --surface: #FFFFFF;                  /* card/panel surface */
-  --surface-2: var(--chinese-white);   /* alternative surface */
+  --surface: #ffffff; /* card/panel surface */
+  --surface-2: var(--chinese-white); /* alternative surface */
 
   /* === SEMANTIC TOKENS - TEXT === */
-  --text: var(--pitch-black);          /* primary text */
-  --ink: var(--pitch-black);           /* alias for compatibility */
-  --muted: color-mix(in oklab, var(--pitch-black) 60%, var(--powder-blue));  /* muted text */
-  --link: #D63000;                     /* link color */
+  --text: var(--pitch-black); /* primary text */
+  --ink: var(--pitch-black); /* alias for compatibility */
+  --muted: color-mix(
+    in oklab,
+    var(--pitch-black) 60%,
+    var(--powder-blue)
+  ); /* muted text */
+  --link: var(--accent); /* link color */
 
   /* === SEMANTIC TOKENS - ACTION === */
-  --accent: var(--orange);             /* primary action color */
-  --accent-hover: #FF571A;             /* action hover state */
-  --accent-pressed: #FF6F33;           /* action pressed state */
+  --accent: var(--blue); /* primary action color (blue) */
+  --accent-hover: #1f6ae6; /* action hover state */
+  --accent-pressed: #145fd0; /* action pressed state */
 
   /* === DERIVED TOKENS === */
   --accent-600: color-mix(in oklab, var(--accent) 88%, black);
   --accent-300: color-mix(in oklab, var(--accent) 60%, white);
-  --line: var(--platinum);             /* borders/dividers */
+  --line: var(--platinum); /* borders/dividers */
   --focus: var(--accent);
 
   /* === SHADOWS === */
   --shadow-1: 0 10px 30px color-mix(in oklab, black 22%, transparent);
   --elev-1: var(--shadow-1);
 
+  /* Card and elevation tokens for consistent depth */
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-card-strong: 0 24px 64px rgba(0, 0, 0, 0.18);
+  --shadow-card-hover: 0 36px 84px rgba(0, 0, 0, 0.24);
+  --glow-accent-inner:
+    inset 0 0 40px rgba(255, 255, 255, 0.06), inset 0 0 18px rgba(46, 136, 255, 0.04);
+  --card-bg: var(--color-bg-surface);
+
   /* === LEGACY COMPATIBILITY === */
   --primary: var(--text);
   --bg-muted: var(--surface);
-  --bone: var(--chinese-white);        /* legacy bone → chinese-white */
-  --pearl: var(--white-chocolate);     /* legacy pearl → white-chocolate */
-  
+  --bone: var(--chinese-white); /* legacy bone → chinese-white */
+  --pearl: var(--white-chocolate); /* legacy pearl → white-chocolate */
+
   /* Legacy bridges so nothing breaks */
   --warm-lightest: var(--bg);
   --warm-medium: var(--surface);
   --warm-stone: var(--muted);
   --warm-tan: var(--bg-secondary);
-  
+
   /* Legacy color mappings for gradual migration */
   --color-neutral-0: #ffffff;
   --color-neutral-50: var(--surface);
@@ -82,7 +97,7 @@
   --color-brand-500: var(--accent);
   --color-brand-600: var(--accent-600);
   --color-brand-300: var(--accent-300);
-  
+
   /* === TAILWIND SEMANTIC TOKENS === */
   /* Background tokens */
   --color-bg-canvas: var(--bg);
@@ -92,7 +107,7 @@
   --color-bg-muted: var(--surface-2);
   --color-bg-glass: color-mix(in oklab, var(--surface) 92%, transparent);
   --color-bg-panel: var(--surface-2);
-  
+
   /* Text tokens */
   --color-text-primary: var(--text);
   --color-text-primary-80: color-mix(in oklab, var(--text) 80%, transparent);
@@ -100,64 +115,72 @@
   --color-text-secondary: color-mix(in oklab, var(--text) 70%, var(--bg));
   --color-text-muted: var(--muted);
   --color-text-subtle: color-mix(in oklab, var(--muted) 70%, var(--bg));
-  --color-text-on-brand: #FFFFFF;
-  --color-text-inverse: #FFFFFF;
-  
+  --color-text-on-brand: #ffffff;
+  --color-text-inverse: #ffffff;
+
   /* Border tokens */
   --color-border-subtle: var(--line);
   --color-border-default: var(--line);
   --color-border-strong: color-mix(in oklab, var(--text) 30%, var(--bg));
   --color-border-brand: var(--accent);
-  --color-border-error: #DC2626;
-  
+  --color-border-error: #dc2626;
+
   /* Interactive tokens */
   --color-interactive-primary: var(--accent);
   --color-interactive-primary-hover: var(--accent-hover);
   --color-interactive-primary-active: var(--accent-pressed);
   --color-interactive-secondary: var(--surface-2);
-  --color-interactive-secondary-hover: color-mix(in oklab, var(--surface-2) 90%, var(--text));
-  --color-interactive-secondary-active: color-mix(in oklab, var(--surface-2) 85%, var(--text));
+  --color-interactive-secondary-hover: color-mix(
+    in oklab,
+    var(--surface-2) 90%,
+    var(--text)
+  );
+  --color-interactive-secondary-active: color-mix(
+    in oklab,
+    var(--surface-2) 85%,
+    var(--text)
+  );
   --color-interactive-ghost: transparent;
   --color-interactive-ghost-hover: color-mix(in oklab, var(--surface) 50%, transparent);
   --color-interactive-ghost-active: color-mix(in oklab, var(--surface) 70%, transparent);
   --color-interactive-disabled: var(--muted);
   --color-interactive-focus: var(--accent);
-  
+
   /* Status colors */
-  --color-success-light: #DCFCE7;
-  --color-success: #16A34A;
-  --color-success-dark: #15803D;
-  --color-warning-light: #FEF3C7;
-  --color-warning: #F59E0B;
-  --color-warning-dark: #D97706;
-  --color-error-light: #FEE2E2;
-  --color-error: #DC2626;
-  --color-error-dark: #B91C1C;
+  --color-success-light: #dcfce7;
+  --color-success: #16a34a;
+  --color-success-dark: #15803d;
+  --color-warning-light: #fef3c7;
+  --color-warning: #f59e0b;
+  --color-warning-dark: #d97706;
+  --color-error-light: #fee2e2;
+  --color-error: #dc2626;
+  --color-error-dark: #b91c1c;
   /* Align info to warm accent to avoid cool-blue clashes and keep palette unified */
   --color-info-light: var(--color-accent-100);
   --color-info: var(--color-accent-400);
   --color-info-dark: var(--color-accent-600);
-  
+
   /* Accent scale (for Tailwind classes like bg-accent-100) */
-  --color-accent-50: #FFF4F0;
-  --color-accent-100: #FFE8DD;
-  --color-accent-200: #FFCFBB;
-  --color-accent-300: #FFB599;
-  --color-accent-400: #FF8C66;
-  --color-accent-500: var(--orange);
-  --color-accent-600: #D63000;
-  --color-accent-700: #B32800;
-  --color-accent-800: #901F00;
-  --color-accent-900: #6D1700;
-  
+  --color-accent-50: #f0f6ff;
+  --color-accent-100: #e1eeff;
+  --color-accent-200: #c9e0ff;
+  --color-accent-300: #9fccff;
+  --color-accent-400: #71afff;
+  --color-accent-500: var(--blue);
+  --color-accent-600: #1f6ae6;
+  --color-accent-700: #145fd0;
+  --color-accent-800: #11449a;
+  --color-accent-900: #0b2f66;
+
   /* Brand scale (pitch-black) */
-  --color-brand-50: #FAFAFA;
-  --color-brand-100: #F5F5F5;
-  --color-brand-200: #E5E5E5;
-  --color-brand-400: #9E9E9E;
+  --color-brand-50: #fafafa;
+  --color-brand-100: #f5f5f5;
+  --color-brand-200: #e5e5e5;
+  --color-brand-400: #9e9e9e;
   --color-brand-500: var(--pitch-black);
-  --color-brand-600: #0D0D0D;
-  --color-brand-700: #0A0A0A;
+  --color-brand-600: #0d0d0d;
+  --color-brand-700: #0a0a0a;
   --color-brand-800: #070707;
   --color-brand-900: #040404;
   --color-brand-950: #020202;
@@ -167,57 +190,57 @@
     by theme-specific rules (data-theme="dark") in the app styles. */
   --color-hero-frame: color-mix(in oklab, var(--muted) 12%, transparent);
 
-/* Theme-specific overrides for semantic tokens (applied when the app root
+  /* Theme-specific overrides for semantic tokens (applied when the app root
    sets data-theme="dark" on the wrapper). These are intentionally placed
    here so designers can update token defaults in one place. */
-[data-theme="dark"] {
-  --color-hero-frame: color-mix(in oklab, var(--color-text-inverse) 10%, transparent);
-}
+  [data-theme='dark'] {
+    --color-hero-frame: color-mix(in oklab, var(--color-text-inverse) 10%, transparent);
+  }
 
   /* === SPACING PRIMITIVES === */
   /* Refined spacing scale: 8px base unit */
   --space-0: 0;
-  --space-1: 0.25rem;   /* 4px - legacy support */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px - legacy support */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px - legacy support */
-  --space-14: 3.5rem;   /* 56px */
-  --space-16: 4rem;     /* 64px - legacy support */
-  --space-18: 4.5rem;   /* 72px */
-  --space-20: 5rem;     /* 80px - legacy support */
-  --space-24: 6rem;     /* 96px - legacy support */
-  --space-32: 8rem;     /* 128px - legacy support */
-  --space-40: 10rem;    /* 160px - legacy support */
-  --space-48: 12rem;    /* 192px - legacy support */
-  --space-56: 14rem;    /* 224px - legacy support */
-  --space-64: 16rem;    /* 256px - legacy support */
+  --space-1: 0.25rem; /* 4px - legacy support */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px - legacy support */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px - legacy support */
+  --space-14: 3.5rem; /* 56px */
+  --space-16: 4rem; /* 64px - legacy support */
+  --space-18: 4.5rem; /* 72px */
+  --space-20: 5rem; /* 80px - legacy support */
+  --space-24: 6rem; /* 96px - legacy support */
+  --space-32: 8rem; /* 128px - legacy support */
+  --space-40: 10rem; /* 160px - legacy support */
+  --space-48: 12rem; /* 192px - legacy support */
+  --space-56: 14rem; /* 224px - legacy support */
+  --space-64: 16rem; /* 256px - legacy support */
 
   /* === TYPOGRAPHY PRIMITIVES === */
   /* Refined type scale: base 16px - WCAG 2.2 AA Compliant */
-  --font-size-xs: 0.75rem;          /* 12px - extra small text */
-  --font-size-sm: 0.875rem;         /* 14px - small text */
-  --font-size-caption: 0.8125rem;   /* 13px - captions, helper text */
-  --font-size-small: 0.875rem;      /* 14px - small text (legacy) */
-  --font-size-base: 1rem;           /* 16px - body text, REQUIRED for inputs */
-  --font-size-lg: 1.125rem;         /* 18px - emphasized body */
-  
+  --font-size-xs: 0.75rem; /* 12px - extra small text */
+  --font-size-sm: 0.875rem; /* 14px - small text */
+  --font-size-caption: 0.8125rem; /* 13px - captions, helper text */
+  --font-size-small: 0.875rem; /* 14px - small text (legacy) */
+  --font-size-base: 1rem; /* 16px - body text, REQUIRED for inputs */
+  --font-size-lg: 1.125rem; /* 18px - emphasized body */
+
   /* 2025 Spec-Compliant Fluid Typography */
-  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem);      /* 22-32px - Main headlines */
-  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem);      /* 20-28px - Section headings */
-  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem);    /* 18-24px - Subsection headings */
-  
+  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem); /* 22-32px - Main headlines */
+  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem); /* 20-28px - Section headings */
+  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem); /* 18-24px - Subsection headings */
+
   /* Legacy fluid sizes (for decorative/hero elements only) */
-  --font-size-xl: 1.5rem;       /* 24px - static large text */
-  --font-size-2xl: 2rem;        /* 32px - static XL text */
-  --font-size-3xl: 2.75rem;     /* 44px - decorative */
-  --font-size-4xl: 3.5rem;      /* 56px - decorative */
-  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);    /* 48-60px - hero decorative */
-  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);   /* 60-72px - hero decorative */
+  --font-size-xl: 1.5rem; /* 24px - static large text */
+  --font-size-2xl: 2rem; /* 32px - static XL text */
+  --font-size-3xl: 2.75rem; /* 44px - decorative */
+  --font-size-4xl: 3.5rem; /* 56px - decorative */
+  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem); /* 48-60px - hero decorative */
+  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem); /* 60-72px - hero decorative */
 
   /* Font weights */
   --font-weight-light: 300;
@@ -244,16 +267,16 @@
   --letter-spacing-widest: 0.1em;
 
   /* === BORDER RADIUS PRIMITIVES === */
-  --radius-xs: 0.125rem;    /* 2px */
-  --radius-sm: 0.25rem;     /* 4px */
-  --radius-md: 0.375rem;    /* 6px */
-  --radius-lg: 0.5rem;      /* 8px */
-  --radius-xl: 0.75rem;     /* 12px */
-  --radius-soft: 1rem;      /* 16px - soft corners */
-  --radius-2xl: 1rem;       /* 16px */
-  --radius-3xl: 1.5rem;     /* 24px */
-  --radius-pill: 999px;     /* pill shape */
-  --radius-full: 9999px;    /* full circle */
+  --radius-xs: 0.125rem; /* 2px */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.375rem; /* 6px */
+  --radius-lg: 0.5rem; /* 8px */
+  --radius-xl: 0.75rem; /* 12px */
+  --radius-soft: 1rem; /* 16px - soft corners */
+  --radius-2xl: 1rem; /* 16px */
+  --radius-3xl: 1.5rem; /* 24px */
+  --radius-pill: 999px; /* pill shape */
+  --radius-full: 9999px; /* full circle */
 
   /* === SHADOW PRIMITIVES === */
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -262,10 +285,10 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  
+
   /* Refined shadow presets */
-  --shadow-low: 0 2px 8px var(--color-shadow);           /* Subtle elevation */
-  --shadow-elev: 0 12px 36px var(--color-shadow);        /* Floating elements */
+  --shadow-low: 0 2px 8px var(--color-shadow); /* Subtle elevation */
+  --shadow-elev: 0 12px 36px var(--color-shadow); /* Floating elements */
 
   /* === MOTION PRIMITIVES === */
   --duration-instant: 0ms;
@@ -291,32 +314,32 @@
 
 :root {
   /* === BACKGROUND COLORS === */
-  --color-bg-canvas: var(--color-cream-bg);      /* Warm cream background */
-  --color-bg-surface: var(--color-neutral-0);    /* White */
-  --color-bg-elevated: var(--color-neutral-50);  /* Subtle elevation */
-  --color-bg-overlay: rgba(0, 0, 0, 0.8);        /* Modal/drawer overlay */
-  --color-bg-muted: var(--color-neutral-100);    /* Disabled, secondary areas */
-  
+  --color-bg-canvas: var(--color-cream-bg); /* Warm cream background */
+  --color-bg-surface: var(--color-neutral-0); /* White */
+  --color-bg-elevated: var(--color-neutral-50); /* Subtle elevation */
+  --color-bg-overlay: rgba(0, 0, 0, 0.8); /* Modal/drawer overlay */
+  --color-bg-muted: var(--color-neutral-100); /* Disabled, secondary areas */
+
   /* Glass effect backgrounds */
-  --color-bg-glass: rgba(255, 255, 255, 0.8);    /* Glass with 80% opacity */
-  --color-bg-panel: rgba(255, 255, 255, 0.6);    /* Subtle panel */
+  --color-bg-glass: rgba(255, 255, 255, 0.8); /* Glass with 80% opacity */
+  --color-bg-panel: rgba(255, 255, 255, 0.6); /* Subtle panel */
 
   /* === TEXT COLORS === */
-  --color-text-primary: var(--color-ink);           /* Deep ink text */
-  --color-text-primary-80: oklch(25% 0.03 250 / 0.8);  /* 80% opacity ink */
+  --color-text-primary: var(--color-ink); /* Deep ink text */
+  --color-text-primary-80: oklch(25% 0.03 250 / 0.8); /* 80% opacity ink */
   --color-text-primary-88: oklch(25% 0.03 250 / 0.88); /* 88% opacity ink */
-  --color-text-secondary: var(--color-muted);       /* Muted text */
-  --color-text-muted: var(--color-neutral-600);     /* Muted, helper text */
-  --color-text-subtle: var(--color-neutral-500);    /* Placeholder, captions */
-  --color-text-on-brand: var(--color-neutral-0);    /* Text on brand backgrounds */
-  --color-text-inverse: var(--color-neutral-0);     /* Text on dark backgrounds */
+  --color-text-secondary: var(--color-muted); /* Muted text */
+  --color-text-muted: var(--color-neutral-600); /* Muted, helper text */
+  --color-text-subtle: var(--color-neutral-500); /* Placeholder, captions */
+  --color-text-on-brand: var(--color-neutral-0); /* Text on brand backgrounds */
+  --color-text-inverse: var(--color-neutral-0); /* Text on dark backgrounds */
 
   /* === BORDER COLORS === */
-  --color-border-subtle: var(--color-neutral-200);  /* Subtle borders */
+  --color-border-subtle: var(--color-neutral-200); /* Subtle borders */
   --color-border-default: var(--color-neutral-300); /* Default borders */
-  --color-border-strong: var(--color-neutral-400);  /* Emphasized borders */
-  --color-border-brand: var(--color-brand-500);     /* Brand borders */
-  --color-border-error: var(--color-error);         /* Error state borders */
+  --color-border-strong: var(--color-neutral-400); /* Emphasized borders */
+  --color-border-brand: var(--color-brand-500); /* Brand borders */
+  --color-border-error: var(--color-error); /* Error state borders */
 
   /* === INTERACTIVE COLORS === */
   --color-interactive-primary: var(--color-brand-500);
@@ -360,7 +383,7 @@
     --color-text-secondary: var(--color-neutral-800);
     --color-border-default: var(--color-neutral-400);
     --color-border-strong: var(--color-neutral-600);
-    
+
     /* Make interactive elements more visible */
     --color-interactive-focus: var(--color-brand-700);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
@@ -411,23 +434,23 @@
   --card-border-width: 1px;
 
   /* === LAYOUT TOKENS === */
-  --content-max-width: 80rem;      /* 1280px */
+  --content-max-width: 80rem; /* 1280px */
   --content-max-width-narrow: 48rem; /* 768px */
-  --content-max-width-wide: 96rem;   /* 1536px */
-  --content-max-line-length: 75ch;   /* Optimal reading line length */
+  --content-max-width-wide: 96rem; /* 1536px */
+  --content-max-line-length: 75ch; /* Optimal reading line length */
 
-  --nav-height: var(--space-16);    /* 64px */
+  --nav-height: var(--space-16); /* 64px */
   --nav-height-mobile: var(--space-14); /* 56px */
 
   --section-spacing-sm: var(--space-12); /* 48px */
   --section-spacing-md: var(--space-16); /* 64px */
   --section-spacing-lg: var(--space-24); /* 96px */
   --section-spacing-xl: var(--space-32); /* 128px */
-  
+
   /* Grid system */
   --grid-columns: 12;
-  --grid-gutter: 1.5rem;     /* 24px */
-  --grid-margin: 5.5rem;     /* 88px at desktop */
+  --grid-gutter: 1.5rem; /* 24px */
+  --grid-margin: 5.5rem; /* 88px at desktop */
   --grid-margin-mobile: 1rem; /* 16px at mobile */
 
   /* === INTERACTIVE TOKENS === */
@@ -439,7 +462,7 @@
 }
 
 /* ============================================================================
-   NOIR GLASS THEME - DISABLED (using new powder-blue/orange palette)
+  NOIR GLASS THEME - DISABLED (using new powder-blue/blue palette)
    OKLCH-based dark glass aesthetic with high contrast
    ============================================================================ */
 
@@ -543,22 +566,22 @@
 
 /* Accent button */
 .btn-accent {
-  color: #FFFFFF;
+  color: #ffffff;
   background: var(--accent);
   border: 2px solid var(--accent-600);
   transition: background 150ms ease;
 }
-.btn-accent:hover { 
-  background: var(--accent-hover); 
+.btn-accent:hover {
+  background: var(--accent-hover);
 }
 
 /* Accent focus ring */
-.ring-accent { 
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent); 
+.ring-accent {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent);
 }
 
 /* ============================================================================
-   STATUS INDICATORS - Orange accent
+  STATUS INDICATORS - Blue accent
    ============================================================================ */
 
 :root {
@@ -568,7 +591,7 @@
 }
 
 .status-dot,
-[data-status="live"],
+[data-status='live'],
 .badge--online,
 #collabs-dot {
   background: var(--accent) !important;
@@ -576,6 +599,6 @@
 }
 
 /* Text halo for small accent text on light backgrounds */
-.accent-halo { 
-  text-shadow: 0 1px 0 color-mix(in oklch, white 65%, transparent); 
+.accent-halo {
+  text-shadow: 0 1px 0 color-mix(in oklch, white 65%, transparent);
 }

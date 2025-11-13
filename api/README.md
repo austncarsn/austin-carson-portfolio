@@ -7,6 +7,7 @@ Serverless function that handles contact form submissions.
 ### Setup
 
 1. **Install Resend** (when ready to enable email):
+
    ```bash
    npm install resend
    ```
@@ -32,6 +33,7 @@ Serverless function that handles contact form submissions.
 ### Testing
 
 **Local development:**
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -41,6 +43,7 @@ vercel dev
 ```
 
 **Manual test:**
+
 ```bash
 curl -X POST http://localhost:3000/api/contact \
   -H "Content-Type: application/json" \

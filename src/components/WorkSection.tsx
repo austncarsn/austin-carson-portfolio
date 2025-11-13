@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 /* eslint-disable no-unused-vars -- Some type-only parameter names (project/index) are used for clarity in callback types */
-import type { JSX } from "react";
-import { motion } from "motion/react";
-import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import { ImageWithFallback } from "./common/media/ImageWithFallback";
+import type { JSX } from 'react';
+import { motion } from 'motion/react';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { ImageWithFallback } from './common/media/ImageWithFallback';
 
 export type Project = {
   id: string;
@@ -31,19 +31,19 @@ type Props = {
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 }
+  animate: { opacity: 1, y: 0 },
 };
 
 // Filter Button Component
-function FilterButton({ 
-  filter, 
-  isActive, 
-  index, 
-  onClick 
-}: { 
-  filter: string; 
-  isActive: boolean; 
-  index: number; 
+function FilterButton({
+  filter,
+  isActive,
+  index,
+  onClick,
+}: {
+  filter: string;
+  isActive: boolean;
+  index: number;
   onClick: () => void;
 }): JSX.Element {
   const reduce = usePrefersReducedMotion();
@@ -52,7 +52,11 @@ function FilterButton({
     <motion.button
       initial={reduce ? undefined : fadeInUp.initial}
       whileInView={reduce ? undefined : fadeInUp.animate}
-      transition={reduce ? undefined : { delay: index * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      transition={
+        reduce
+          ? undefined
+          : { delay: index * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }
+      }
       viewport={{ once: true }}
       onClick={onClick}
       whileHover={{ y: -2 }}
@@ -61,10 +65,12 @@ function FilterButton({
       style={{
         backgroundColor: isActive ? 'var(--accent)' : 'transparent',
         color: isActive ? 'var(--bg)' : 'var(--ink)',
-        border: `1px solid ${isActive ? 'var(--accent)' : 'var(--line)'}`
+        border: `1px solid ${isActive ? 'var(--accent)' : 'var(--line)'}`,
       }}
     >
-      <span className="relative z-10 text-[10px] md:text-xs tracking-[0.2em] uppercase font-medium">{filter}</span>
+      <span className="relative z-10 text-[10px] md:text-xs tracking-[0.2em] uppercase font-medium">
+        {filter}
+      </span>
       {!isActive && (
         <motion.div
           className="absolute inset-0"
@@ -78,13 +84,13 @@ function FilterButton({
 }
 
 // Project Card Component
-function ProjectCard({ 
-  project, 
-  index, 
-  onClick 
-}: { 
-  project: Project; 
-  index: number; 
+function ProjectCard({
+  project,
+  index,
+  onClick,
+}: {
+  project: Project;
+  index: number;
   onClick?: (_project: Project, _index: number) => void;
 }): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
@@ -103,12 +109,12 @@ function ProjectCard({
     >
       {/* Index Number */}
       <div className="hidden md:block md:col-span-1">
-        <motion.span 
+        <motion.span
           className="text-3xl md:text-4xl tabular-nums"
-          style={{ 
-            color: 'var(--muted)', 
+          style={{
+            color: 'var(--muted)',
             opacity: isHovered ? 1 : 0.4,
-            fontWeight: 300
+            fontWeight: 300,
           }}
           animate={{ opacity: isHovered ? 1 : 0.4 }}
           transition={{ duration: 0.3 }}
@@ -119,15 +125,15 @@ function ProjectCard({
 
       {/* Project Title - First on mobile */}
       <div className="col-span-1 md:col-span-3 order-1 md:order-none">
-        <motion.h3 
+        <motion.h3
           className="text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-2 leading-[0.95]"
-          style={{ 
+          style={{
             color: 'var(--ink)',
-            fontWeight: 600
+            fontWeight: 600,
           }}
-          animate={{ 
+          animate={{
             x: isHovered ? 8 : 0,
-            color: isHovered ? 'var(--accent)' : 'var(--ink)'
+            color: isHovered ? 'var(--accent)' : 'var(--ink)',
           }}
           transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
         >
@@ -154,16 +160,16 @@ function ProjectCard({
               className="w-full h-full object-cover"
             />
           </motion.div>
-          
+
           {/* Overlay with description */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: isHovered ? 1 : 0 }}
             transition={{ duration: 0.4 }}
             className="absolute inset-0 flex items-center justify-center p-6"
-            style={{ backgroundColor: 'rgba(255, 66, 0, 0.95)' }}
+            style={{ backgroundColor: 'rgba(46,136,255,0.95)' }}
           >
-            <span 
+            <span
               className="text-xs md:text-sm tracking-[0.25em] uppercase text-center leading-relaxed"
               style={{ color: 'var(--bg)', fontWeight: 600 }}
             >
@@ -182,15 +188,15 @@ function ProjectCard({
       {/* Arrow Indicator */}
       <div className="hidden md:flex col-span-1 justify-end">
         <motion.div
-          animate={{ 
+          animate={{
             x: isHovered ? 4 : 0,
-            scale: isHovered ? 1.1 : 1
+            scale: isHovered ? 1.1 : 1,
           }}
           transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
           className="w-14 h-14 rounded-full border flex items-center justify-center"
           style={{ borderColor: isHovered ? 'var(--accent)' : 'var(--line)' }}
         >
-          <motion.span 
+          <motion.span
             className="text-xl"
             style={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
             animate={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
@@ -207,16 +213,13 @@ function ProjectCard({
 function MetaField({ label, value }: { label: string; value: string }): JSX.Element {
   return (
     <div>
-      <div 
+      <div
         className="text-[10px] tracking-[0.3em] uppercase mb-2 font-medium"
         style={{ color: 'var(--muted)', opacity: 0.6 }}
       >
         {label}
       </div>
-      <div 
-        className="text-base"
-        style={{ color: 'var(--ink)', fontWeight: 500 }}
-      >
+      <div className="text-base" style={{ color: 'var(--ink)', fontWeight: 500 }}>
         {value}
       </div>
     </div>
@@ -225,21 +228,21 @@ function MetaField({ label, value }: { label: string; value: string }): JSX.Elem
 
 export function WorkSection({
   projects,
-  initialFilter = "All",
+  initialFilter = 'All',
   onProjectClick,
   filters,
 }: Props): JSX.Element {
   const [activeFilter, setActiveFilter] = useState(initialFilter);
 
   const FILTERS = useMemo(() => {
-    if (filters) return ["All", ...filters];
+    if (filters) return ['All', ...filters];
     const cats = Array.from(new Set(projects.map((p: Project) => p.category))).sort();
-    return ["All", ...cats];
+    return ['All', ...cats];
   }, [projects, filters]);
 
   const filteredProjects = useMemo(
     () =>
-      activeFilter === "All"
+      activeFilter === 'All'
         ? projects
         : projects.filter((p: Project) => p.category === activeFilter),
     [projects, activeFilter]
@@ -252,30 +255,37 @@ export function WorkSection({
   return (
     <section
       className="relative min-h-screen px-8 md:px-16 py-24"
-      style={{ background: "var(--surface)", color: "var(--text)" }}
+      style={{ background: 'var(--surface)', color: 'var(--text)' }}
       aria-labelledby="work-heading"
     >
       <div
         className="pointer-events-none absolute inset-x-0 -top-8 h-8"
-        style={{ background: 'linear-gradient(180deg, transparent, color-mix(in oklab, white 6%, transparent))' }}
+        style={{
+          background:
+            'linear-gradient(180deg, transparent, color-mix(in oklab, white 6%, transparent))',
+        }}
       />
-      
+
       <div className="max-w-[1800px] mx-auto">
-  {/* Header Section */}
-  <header className="mb-16 md:mb-24 relative overflow-visible">
+        {/* Header Section */}
+        <header className="mb-16 md:mb-24 relative overflow-visible">
           <motion.div
             initial={usePrefersReducedMotion() ? undefined : { opacity: 0, y: 40 }}
             whileInView={usePrefersReducedMotion() ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={usePrefersReducedMotion() ? undefined : { duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            transition={
+              usePrefersReducedMotion()
+                ? undefined
+                : { duration: 0.8, ease: [0.19, 1, 0.22, 1] }
+            }
             className="mb-8"
           >
             <div className="flex items-center gap-4 mb-6">
-              <div 
+              <div
                 className="w-12 md:w-16 h-[1px]"
                 style={{ backgroundColor: 'var(--accent)' }}
               />
-              <span 
+              <span
                 className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
                 style={{ color: 'var(--muted)' }}
               >
@@ -289,7 +299,11 @@ export function WorkSection({
             initial={usePrefersReducedMotion() ? undefined : { opacity: 0, y: 40 }}
             whileInView={usePrefersReducedMotion() ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={usePrefersReducedMotion() ? undefined : { duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
+            transition={
+              usePrefersReducedMotion()
+                ? undefined
+                : { duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }
+            }
             className="text-4xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-12 md:mb-16"
             style={{ color: 'var(--ink)', fontWeight: 600 }}
           >
@@ -297,7 +311,10 @@ export function WorkSection({
           </motion.h2>
 
           {/* Perforated decorative rail beneath the projects header */}
-          <div aria-hidden="true" className="perforated-rail absolute left-0 right-0 -bottom-6 md:-bottom-8" />
+          <div
+            aria-hidden="true"
+            className="perforated-rail absolute left-0 right-0 -bottom-6 md:-bottom-8"
+          />
 
           <nav className="flex flex-wrap gap-3 md:gap-4" aria-label="Project filters">
             {FILTERS.map((filter, i) => (
@@ -324,9 +341,9 @@ export function WorkSection({
         </motion.div>
 
         {filteredProjects.length === 0 && (
-          <div 
-            className="py-20 text-center text-xl md:text-2xl" 
-            style={{ color: "var(--muted)" }}
+          <div
+            className="py-20 text-center text-xl md:text-2xl"
+            style={{ color: 'var(--muted)' }}
             role="status"
           >
             No projects found. Try another filter.

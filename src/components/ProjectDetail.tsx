@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from "motion/react";
-import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import { X, ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
-import { ImageWithFallback } from "./common/media/ImageWithFallback";
-import { useEffect } from "react";
-import type React from "react";
+import { motion, AnimatePresence } from 'motion/react';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { X, ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+import { ImageWithFallback } from './common/media/ImageWithFallback';
+import { useEffect } from 'react';
+import type React from 'react';
 
 interface Project {
   title: string;
@@ -29,7 +29,13 @@ interface ProjectDetailProps {
   onPrev?: () => void;
 }
 
-export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: ProjectDetailProps): React.JSX.Element | null {
+export function ProjectDetail({
+  project,
+  isOpen,
+  onClose,
+  onNext,
+  onPrev,
+}: ProjectDetailProps): React.JSX.Element | null {
   const reduce = usePrefersReducedMotion();
   useEffect(() => {
     if (isOpen) {
@@ -45,7 +51,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (!isOpen) return;
-      
+
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft' && onPrev) onPrev();
       if (e.key === 'ArrowRight' && onNext) onNext();
@@ -62,7 +68,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
   const defaultResults = project.results || [
     '300% increase in user engagement',
     'Award-winning design recognition',
-    'Successfully launched in 3 months'
+    'Successfully launched in 3 months',
   ];
 
   return (
@@ -77,9 +83,9 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
             transition={reduce ? undefined : { duration: 0.3 }}
             onClick={onClose}
             className="fixed inset-0 z-50"
-            style={{ 
+            style={{
               backgroundColor: 'rgba(39, 37, 31, 0.95)',
-              backdropFilter: 'blur(10px)'
+              backdropFilter: 'blur(10px)',
             }}
           />
 
@@ -96,14 +102,17 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                 initial={reduce ? undefined : { y: 60, scale: 0.95 }}
                 animate={reduce ? undefined : { y: 0, scale: 1 }}
                 exit={reduce ? undefined : { y: 60, scale: 0.95 }}
-                transition={reduce ? undefined : { duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                transition={
+                  reduce ? undefined : { duration: 0.5, ease: [0.19, 1, 0.22, 1] }
+                }
                 className="max-w-7xl mx-auto rounded-3xl overflow-hidden"
                 style={{ backgroundColor: 'var(--bg)' }}
               >
-                <div className="sticky top-0 z-10 px-6 md:px-12 py-6 md:py-8 border-b backdrop-blur-md"
-                  style={{ 
+                <div
+                  className="sticky top-0 z-10 px-6 md:px-12 py-6 md:py-8 border-b backdrop-blur-md"
+                  style={{
                     backgroundColor: 'rgba(244, 250, 255, 0.95)',
-                    borderColor: 'var(--line)'
+                    borderColor: 'var(--line)',
                   }}
                 >
                   <div className="flex items-center justify-between">
@@ -147,11 +156,11 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                 <div className="px-6 md:px-12 py-8 md:py-12">
                   <div className="mb-12 md:mb-20">
                     <div className="flex items-center gap-4 mb-6">
-                      <div 
+                      <div
                         className="w-12 md:w-16 h-[1px]"
                         style={{ backgroundColor: 'var(--accent)' }}
                       />
-                      <span 
+                      <span
                         className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
                         style={{ color: 'var(--muted)' }}
                       >
@@ -176,13 +185,13 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8"
                     >
                       <div>
-                        <div 
+                        <div
                           className="text-[10px] tracking-[0.3em] uppercase mb-2"
                           style={{ color: 'var(--muted)', opacity: 0.6 }}
                         >
                           Client
                         </div>
-                        <div 
+                        <div
                           className="text-lg md:text-xl"
                           style={{ color: 'var(--ink)', fontWeight: 500 }}
                         >
@@ -190,13 +199,13 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                         </div>
                       </div>
                       <div>
-                        <div 
+                        <div
                           className="text-[10px] tracking-[0.3em] uppercase mb-2"
                           style={{ color: 'var(--muted)', opacity: 0.6 }}
                         >
                           Year
                         </div>
-                        <div 
+                        <div
                           className="text-lg md:text-xl"
                           style={{ color: 'var(--ink)', fontWeight: 500 }}
                         >
@@ -204,13 +213,13 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                         </div>
                       </div>
                       <div>
-                        <div 
+                        <div
                           className="text-[10px] tracking-[0.3em] uppercase mb-2"
                           style={{ color: 'var(--muted)', opacity: 0.6 }}
                         >
                           Category
                         </div>
-                        <div 
+                        <div
                           className="text-lg md:text-xl"
                           style={{ color: 'var(--ink)', fontWeight: 500 }}
                         >
@@ -228,7 +237,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                             className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl"
                             style={{ backgroundColor: 'var(--accent)' }}
                           >
-                            <span 
+                            <span
                               className="text-xs tracking-[0.25em] uppercase"
                               style={{ color: 'white', fontWeight: 600 }}
                             >
@@ -250,10 +259,10 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                         <span
                           key={i}
                           className="px-4 py-2 rounded-full text-xs tracking-[0.2em] uppercase"
-                          style={{ 
-                            backgroundColor: 'rgba(255, 66, 0, 0.1)',
+                          style={{
+                            backgroundColor: 'rgba(46,136,255,0.08)',
                             color: 'var(--accent)',
-                            fontWeight: 500
+                            fontWeight: 500,
                           }}
                         >
                           {tag}
@@ -283,17 +292,18 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
                     >
-                      <h3 
+                      <h3
                         className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
                         style={{ color: 'var(--ink)', fontWeight: 600 }}
                       >
                         Overview
                       </h3>
-                      <p 
+                      <p
                         className="text-lg leading-relaxed"
                         style={{ color: 'var(--muted)' }}
                       >
-                        {project.fullDescription || `${project.description}. This project showcased our ability to blend creativity with strategic thinking, delivering a solution that not only met the client's needs but exceeded their expectations. Through careful planning and innovative design, we created an experience that resonates with users and drives meaningful engagement.`}
+                        {project.fullDescription ||
+                          `${project.description}. This project showcased our ability to blend creativity with strategic thinking, delivering a solution that not only met the client's needs but exceeded their expectations. Through careful planning and innovative design, we created an experience that resonates with users and drives meaningful engagement.`}
                       </p>
                     </motion.div>
 
@@ -302,17 +312,18 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
                     >
-                      <h3 
+                      <h3
                         className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
                         style={{ color: 'var(--ink)', fontWeight: 600 }}
                       >
                         The Challenge
                       </h3>
-                      <p 
+                      <p
                         className="text-lg leading-relaxed"
                         style={{ color: 'var(--muted)' }}
                       >
-                        {project.challenge || `${project.client} needed a comprehensive solution that would help them stand out in a competitive market. The challenge was to create something that felt fresh and innovative while remaining true to their brand identity and core values.`}
+                        {project.challenge ||
+                          `${project.client} needed a comprehensive solution that would help them stand out in a competitive market. The challenge was to create something that felt fresh and innovative while remaining true to their brand identity and core values.`}
                       </p>
                     </motion.div>
 
@@ -321,17 +332,18 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.8 }}
                     >
-                      <h3 
+                      <h3
                         className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
                         style={{ color: 'var(--ink)', fontWeight: 600 }}
                       >
                         Our Solution
                       </h3>
-                      <p 
+                      <p
                         className="text-lg leading-relaxed"
                         style={{ color: 'var(--muted)' }}
                       >
-                        {project.solution || `We approached this project with a user-first mindset, conducting extensive research and testing to ensure every decision was informed by real data. Our team developed a comprehensive strategy that addressed both immediate needs and long-term goals.`}
+                        {project.solution ||
+                          `We approached this project with a user-first mindset, conducting extensive research and testing to ensure every decision was informed by real data. Our team developed a comprehensive strategy that addressed both immediate needs and long-term goals.`}
                       </p>
                     </motion.div>
 
@@ -340,7 +352,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.9 }}
                     >
-                      <h3 
+                      <h3
                         className="text-3xl md:text-4xl mb-6 tracking-[-0.01em]"
                         style={{ color: 'var(--ink)', fontWeight: 600 }}
                       >
@@ -348,15 +360,12 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       </h3>
                       <ul className="space-y-4">
                         {defaultResults.map((result, i) => (
-                          <li 
-                            key={i}
-                            className="flex items-start gap-3"
-                          >
-                            <div 
+                          <li key={i} className="flex items-start gap-3">
+                            <div
                               className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
                               style={{ backgroundColor: 'var(--accent)' }}
                             />
-                            <span 
+                            <span
                               className="text-lg leading-relaxed"
                               style={{ color: 'var(--muted)' }}
                             >
@@ -375,7 +384,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       transition={{ delay: 1 }}
                       className="mb-12 md:mb-20"
                     >
-                      <h3 
+                      <h3
                         className="text-3xl md:text-4xl mb-8 tracking-[-0.01em]"
                         style={{ color: 'var(--ink)', fontWeight: 600 }}
                       >
@@ -383,7 +392,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
                         {defaultGallery.slice(1).map((img, i) => (
-                          <div 
+                          <div
                             key={i}
                             className="aspect-[4/3] rounded-2xl overflow-hidden"
                           >
@@ -405,7 +414,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                     transition={{ delay: 1.1 }}
                     className="text-center py-12 md:py-16"
                   >
-                    <p 
+                    <p
                       className="text-xl md:text-2xl mb-8"
                       style={{ color: 'var(--muted)' }}
                     >
@@ -418,7 +427,7 @@ export function ProjectDetail({ project, isOpen, onClose, onNext, onPrev }: Proj
                       style={{ backgroundColor: 'var(--accent)' }}
                       onClick={onClose}
                     >
-                      <span 
+                      <span
                         className="text-xs tracking-[0.25em] uppercase"
                         style={{ color: 'white', fontWeight: 600 }}
                       >

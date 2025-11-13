@@ -18,13 +18,20 @@ interface ImageWithFallbackProps {
  * (e.g. image.png -> image.webp). If that's not true for some imports, the <source>
  * will point to a non-existent file and the browser will fall back to the <img> src.
  */
-export function ImageWithFallback({ src, alt, className = '', loading = 'lazy' }: ImageWithFallbackProps): React.ReactElement {
+export function ImageWithFallback({
+  src,
+  alt,
+  className = '',
+  loading = 'lazy',
+}: ImageWithFallbackProps): React.ReactElement {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // Derive a .webp sibling URL for automatic WebP delivery when available.
   // Only replace common raster extensions; leave SVGs, data: URLs, and others untouched.
-  const webpCandidate = /\.(png|jpe?g|gif)$/i.test(src) ? src.replace(/\.(png|jpe?g|gif)$/i, '.webp') : src;
+  const webpCandidate = /\.(png|jpe?g|gif)$/i.test(src)
+    ? src.replace(/\.(png|jpe?g|gif)$/i, '.webp')
+    : src;
   const hasWebpCandidate = webpCandidate !== src;
 
   if (error) {
@@ -37,9 +44,7 @@ export function ImageWithFallback({ src, alt, className = '', loading = 'lazy' }
 
   return (
     <>
-      {isLoading && (
-        <div className={`${className} bg-neutral-200 animate-pulse`} />
-      )}
+      {isLoading && <div className={`${className} bg-neutral-200 animate-pulse`} />}
 
       <picture>
         {hasWebpCandidate && <source srcSet={webpCandidate} type="image/webp" />}

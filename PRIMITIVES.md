@@ -7,6 +7,7 @@ The Primitive UI library provides production-ready, accessible, and design token
 ## Philosophy
 
 **Primitives** are foundational building blocks that:
+
 - ✅ Use design tokens exclusively (no hardcoded colors/sizes)
 - ✅ Support multiple variants and sizes
 - ✅ Include comprehensive TypeScript types
@@ -21,6 +22,7 @@ The Primitive UI library provides production-ready, accessible, and design token
 Versatile button component with 6 visual variants and 5 size presets.
 
 #### Features
+
 - **Variants**: primary, secondary, ghost, outline, danger, success
 - **Sizes**: xs, sm, md, lg, xl
 - **States**: loading, disabled
@@ -105,24 +107,24 @@ interface ButtonProps {
 
 #### Size Guide
 
-| Size | Height | Padding | Font Size | Use Case |
-|------|--------|---------|-----------|----------|
-| `xs` | 28px | 10px | caption | Compact UIs, table actions |
-| `sm` | 36px | 14px | body-sm | Form inputs, toolbars |
-| `md` | 44px | 20px | body-md | Default buttons, dialogs |
-| `lg` | 48px | 24px | body-lg | Hero CTAs, marketing |
-| `xl` | 56px | 32px | body-xl | Large hero sections |
+| Size | Height | Padding | Font Size | Use Case                   |
+| ---- | ------ | ------- | --------- | -------------------------- |
+| `xs` | 28px   | 10px    | caption   | Compact UIs, table actions |
+| `sm` | 36px   | 14px    | body-sm   | Form inputs, toolbars      |
+| `md` | 44px   | 20px    | body-md   | Default buttons, dialogs   |
+| `lg` | 48px   | 24px    | body-lg   | Hero CTAs, marketing       |
+| `xl` | 56px   | 32px    | body-xl   | Large hero sections        |
 
 #### Variant Guide
 
-| Variant | Purpose | Example Use Case |
-|---------|---------|------------------|
-| `primary` | Highest emphasis | Main CTAs, form submissions |
-| `secondary` | Medium emphasis | Secondary actions, cancel buttons |
-| `ghost` | Lowest emphasis | Tertiary actions, menu items |
-| `outline` | Alternative medium | Filters, toggles, alternatives |
-| `danger` | Destructive actions | Delete, remove, clear |
-| `success` | Positive actions | Confirm, approve, save |
+| Variant     | Purpose             | Example Use Case                  |
+| ----------- | ------------------- | --------------------------------- |
+| `primary`   | Highest emphasis    | Main CTAs, form submissions       |
+| `secondary` | Medium emphasis     | Secondary actions, cancel buttons |
+| `ghost`     | Lowest emphasis     | Tertiary actions, menu items      |
+| `outline`   | Alternative medium  | Filters, toggles, alternatives    |
+| `danger`    | Destructive actions | Delete, remove, clear             |
+| `success`   | Positive actions    | Confirm, approve, save            |
 
 ---
 
@@ -131,6 +133,7 @@ interface ButtonProps {
 Flexible container component with 4 visual variants and semantic sub-components.
 
 #### Features
+
 - **Variants**: elevated, outlined, filled, ghost
 - **Padding**: none, sm, md, lg, xl
 - **Interactive**: Clickable cards with hover states
@@ -145,49 +148,43 @@ import { Card } from '@/components/primitives';
 <Card variant="elevated" padding="md">
   <h3>Card Title</h3>
   <p>Card content goes here.</p>
-</Card>
+</Card>;
 ```
 
 #### With Semantic Sub-components
 
 ```tsx
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
 } from '@/components/primitives';
 
 <Card variant="elevated" padding="lg">
   <CardHeader>
     <CardTitle>Project Showcase</CardTitle>
-    <CardDescription>
-      A collection of my recent work and experiments
-    </CardDescription>
+    <CardDescription>A collection of my recent work and experiments</CardDescription>
   </CardHeader>
-  
+
   <CardContent>
     <img src="/preview.jpg" alt="Preview" />
     <p>Detailed project information...</p>
   </CardContent>
-  
+
   <CardFooter>
     <Button variant="primary">View Project</Button>
     <Button variant="ghost">Learn More</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
 #### Interactive Cards
 
 ```tsx
-<Card 
-  variant="elevated" 
-  interactive 
-  onClick={() => navigate('/project/1')}
->
+<Card variant="elevated" interactive onClick={() => navigate('/project/1')}>
   <CardTitle>Clickable Project Card</CardTitle>
   <CardDescription>Click anywhere to view details</CardDescription>
 </Card>
@@ -208,22 +205,22 @@ interface CardProps {
 
 #### Variant Guide
 
-| Variant | Description | Use Case |
-|---------|-------------|----------|
-| `elevated` | Floating card with shadow | Default cards, important content |
-| `outlined` | Card with visible border | Grouped content, form sections |
-| `filled` | Subtle background fill | Less emphasis, secondary content |
-| `ghost` | Minimal styling | Very low emphasis, inline content |
+| Variant    | Description               | Use Case                          |
+| ---------- | ------------------------- | --------------------------------- |
+| `elevated` | Floating card with shadow | Default cards, important content  |
+| `outlined` | Card with visible border  | Grouped content, form sections    |
+| `filled`   | Subtle background fill    | Less emphasis, secondary content  |
+| `ghost`    | Minimal styling           | Very low emphasis, inline content |
 
 #### Padding Guide
 
-| Padding | Size | Responsive |
-|---------|------|------------|
-| `none` | 0px | Static |
-| `sm` | 12px → 16px | Mobile → Desktop |
-| `md` | 16px → 24px | Mobile → Desktop |
-| `lg` | 24px → 32px | Mobile → Desktop |
-| `xl` | 32px → 40px | Mobile → Desktop |
+| Padding | Size        | Responsive       |
+| ------- | ----------- | ---------------- |
+| `none`  | 0px         | Static           |
+| `sm`    | 12px → 16px | Mobile → Desktop |
+| `md`    | 16px → 24px | Mobile → Desktop |
+| `lg`    | 24px → 32px | Mobile → Desktop |
+| `xl`    | 32px → 40px | Mobile → Desktop |
 
 ---
 
@@ -235,37 +232,20 @@ All primitive components use design tokens from `src/styles/tokens.css`:
 
 ```css
 /* Button/Card backgrounds */
---color-bg-canvas: Base canvas color
---color-bg-surface: Elevated surface color
---color-bg-subtle: Subtle background
-
-/* Text colors */
---color-text-primary: Primary text
---color-text-secondary: Secondary text
---color-text-muted: Muted text
-
-/* Brand colors */
---brand: Primary brand color
---brand-hover: Hover state
---brand-active: Active state
-
-/* Semantic colors */
---error: Error/danger state
---success: Success/positive state
---warning: Warning state
---info: Information state
+--color-bg-canvas: Base canvas color --color-bg-surface: Elevated surface color
+  --color-bg-subtle: Subtle background /* Text colors */ --color-text-primary: Primary
+  text --color-text-secondary: Secondary text --color-text-muted: Muted text
+  /* Brand colors */ --brand: Primary brand color --brand-hover: Hover state
+  --brand-active: Active state /* Semantic colors */ --error: Error/danger state
+  --success: Success/positive state --warning: Warning state --info: Information state;
 ```
 
 ### Typography
 
 ```css
 /* Font sizes (fluid scaling) */
---font-size-caption: 12-13px
---font-size-body-xs: 12-14px
---font-size-body-sm: 14-16px
---font-size-body-md: 16-18px
---font-size-body-lg: 18-20px
---font-size-body-xl: 20-22px
+--font-size-caption: 12-13px --font-size-body-xs: 12-14px --font-size-body-sm: 14-16px
+  --font-size-body-md: 16-18px --font-size-body-lg: 18-20px --font-size-body-xl: 20-22px;
 ```
 
 ---
@@ -275,6 +255,7 @@ All primitive components use design tokens from `src/styles/tokens.css`:
 All primitive components follow WCAG 2.2 AA guidelines:
 
 ### Button Accessibility
+
 - ✅ Keyboard navigation (Tab, Enter, Space)
 - ✅ Focus visible indicators (ring-2)
 - ✅ Proper ARIA attributes
@@ -283,6 +264,7 @@ All primitive components follow WCAG 2.2 AA guidelines:
 - ✅ Disabled state prevents interaction
 
 ### Card Accessibility
+
 - ✅ Interactive cards have role="button"
 - ✅ Keyboard navigation (Tab, Enter)
 - ✅ Focus indicators on interactive cards
@@ -299,7 +281,7 @@ All primitive components follow WCAG 2.2 AA guidelines:
 <section className="py-20">
   <h1 className="text-display-2xl mb-6">Welcome to My Portfolio</h1>
   <p className="text-body-lg mb-8">Discover my latest work and projects</p>
-  
+
   <div className="flex gap-4">
     <Button variant="primary" size="xl" iconAfter={<ArrowRight />}>
       View Projects
@@ -321,16 +303,18 @@ All primitive components follow WCAG 2.2 AA guidelines:
         <CardTitle>{project.title}</CardTitle>
         <CardDescription>{project.category}</CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         <AspectVideo>
           <img src={project.image} alt={project.title} />
         </AspectVideo>
         <p className="mt-4 text-body-sm">{project.description}</p>
       </CardContent>
-      
+
       <CardFooter>
-        <Button variant="primary" fullWidth>View Details</Button>
+        <Button variant="primary" fullWidth>
+          View Details
+        </Button>
       </CardFooter>
     </Card>
   ))}
@@ -345,17 +329,17 @@ All primitive components follow WCAG 2.2 AA guidelines:
     <CardTitle>Contact Form</CardTitle>
     <CardDescription>Get in touch with me</CardDescription>
   </CardHeader>
-  
+
   <CardContent>
     <form onSubmit={handleSubmit}>
       <input type="email" required />
       <textarea required />
     </form>
   </CardContent>
-  
+
   <CardFooter>
-    <Button 
-      variant="primary" 
+    <Button
+      variant="primary"
       type="submit"
       loading={isSubmitting}
       disabled={isSubmitting}
@@ -387,7 +371,7 @@ All primitive components follow WCAG 2.2 AA guidelines:
 ### Before (Inline Styles)
 
 ```tsx
-<button 
+<button
   className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-lg"
   onClick={handleClick}
 >
@@ -404,6 +388,7 @@ All primitive components follow WCAG 2.2 AA guidelines:
 ```
 
 ### Benefits
+
 - ✅ Consistent styling across application
 - ✅ Type-safe props with IntelliSense
 - ✅ Built-in accessibility

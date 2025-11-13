@@ -27,6 +27,7 @@ Primitive Tokens → Semantic Tokens → Component Tokens
 ### Primitive Colors
 
 #### Neutral Scale
+
 Pure gray scale from white to black:
 
 ```css
@@ -46,6 +47,7 @@ Pure gray scale from white to black:
 ```
 
 #### Brand Colors (Emerald)
+
 Primary brand identity:
 
 ```css
@@ -53,6 +55,7 @@ Primary brand identity:
 ```
 
 #### Accent Colors (Amber)
+
 Secondary/complementary colors:
 
 ```css
@@ -62,6 +65,7 @@ Secondary/complementary colors:
 ### Semantic Colors
 
 #### Backgrounds
+
 ```css
 --color-bg-canvas    /* Main page background */
 --color-bg-surface   /* Card, panel backgrounds */
@@ -71,6 +75,7 @@ Secondary/complementary colors:
 ```
 
 **Tailwind Usage:**
+
 ```tsx
 <div className="bg-bg-canvas">
 <div className="bg-bg-surface">
@@ -78,6 +83,7 @@ Secondary/complementary colors:
 ```
 
 #### Text Colors
+
 ```css
 --color-text-primary    /* Main body text */
 --color-text-secondary  /* Secondary text */
@@ -88,6 +94,7 @@ Secondary/complementary colors:
 ```
 
 **Tailwind Usage:**
+
 ```tsx
 <h1 className="text-text-primary">
 <p className="text-text-secondary">
@@ -95,6 +102,7 @@ Secondary/complementary colors:
 ```
 
 #### Border Colors
+
 ```css
 --color-border-subtle   /* Subtle dividers */
 --color-border-default  /* Standard borders */
@@ -104,12 +112,14 @@ Secondary/complementary colors:
 ```
 
 **Tailwind Usage:**
+
 ```tsx
 <div className="border border-border-default">
 <div className="border-2 border-border-brand">
 ```
 
 #### Interactive Colors
+
 ```css
 /* Primary actions */
 --color-interactive-primary
@@ -132,11 +142,13 @@ Secondary/complementary colors:
 ```
 
 **Tailwind Usage:**
+
 ```tsx
 <button className="bg-interactive-primary hover:bg-interactive-primary-hover">
 ```
 
 #### Status Colors
+
 ```css
 /* Success */
 --color-status-success
@@ -158,9 +170,11 @@ Secondary/complementary colors:
 ### Color Modes
 
 #### Light Mode (Default)
+
 Optimized for readability in bright environments.
 
 #### Dark Mode
+
 ```css
 @media (prefers-color-scheme: dark) {
   /* Automatically applies dark variants */
@@ -168,6 +182,7 @@ Optimized for readability in bright environments.
 ```
 
 #### High Contrast Mode
+
 ```css
 @media (prefers-contrast: high) {
   /* Increases contrast ratios for accessibility */
@@ -177,6 +192,7 @@ Optimized for readability in bright environments.
 ## Spacing System
 
 ### Scale
+
 0.25rem (4px) step scale:
 
 ```css
@@ -201,6 +217,7 @@ Optimized for readability in bright environments.
 ```
 
 ### Tailwind Usage
+
 ```tsx
 <div className="p-4">      {/* 16px padding */}
 <div className="mt-8">     {/* 32px margin-top */}
@@ -210,17 +227,20 @@ Optimized for readability in bright environments.
 ### Common Patterns
 
 **Component Padding:**
+
 ```tsx
 <Card className="p-6">           {/* 24px - Default */}
 <Card className="p-4 md:p-8">    {/* Responsive */}
 ```
 
 **Section Spacing:**
+
 ```tsx
 <section className="py-16 md:py-24 lg:py-32">
 ```
 
 **Inline Spacing:**
+
 ```tsx
 <div className="space-x-4">  {/* 16px between children */}
 ```
@@ -245,10 +265,12 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Type Scale Ratio
+
 - **Mobile**: 1.25 (Major Third)
 - **Desktop**: 1.333 (Perfect Fourth)
 
 ### Font Weights
+
 ```css
 --font-weight-light     /* 300 */
 --font-weight-normal    /* 400 */
@@ -259,6 +281,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Line Heights
+
 ```css
 --line-height-none     /* 1 */
 --line-height-tight    /* 1.1 */
@@ -269,6 +292,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Letter Spacing
+
 ```css
 --letter-spacing-tighter  /* -0.03em */
 --letter-spacing-tight    /* -0.02em */
@@ -281,6 +305,7 @@ Uses `clamp()` for responsive sizing:
 ### Typography Patterns
 
 **Headings:**
+
 ```tsx
 <h1 className="text-6xl font-bold leading-tight tracking-tight">
 <h2 className="text-4xl font-semibold leading-snug">
@@ -288,6 +313,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 **Body Text:**
+
 ```tsx
 <p className="text-base leading-relaxed">
 <p className="text-lg leading-relaxed">  {/* Lead text */}
@@ -295,6 +321,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 **Utility Text:**
+
 ```tsx
 <span className="text-xs uppercase tracking-wider">LABEL</span>
 <code className="text-sm font-medium">Code snippet</code>
@@ -303,6 +330,7 @@ Uses `clamp()` for responsive sizing:
 ## Border Radius
 
 ### Scale
+
 ```css
 --radius-xs    /* 2px */
 --radius-sm    /* 4px */
@@ -315,6 +343,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Common Uses
+
 - **Button**: `rounded-lg` (8px)
 - **Input**: `rounded-md` (6px)
 - **Card**: `rounded-xl` (12px)
@@ -323,6 +352,7 @@ Uses `clamp()` for responsive sizing:
 ## Shadows
 
 ### Scale
+
 ```css
 --shadow-xs   /* Subtle */
 --shadow-sm   /* Small */
@@ -333,6 +363,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Usage by Context
+
 - **Card (rest)**: `shadow-md`
 - **Card (hover)**: `shadow-lg`
 - **Floating**: `shadow-xl`
@@ -341,6 +372,7 @@ Uses `clamp()` for responsive sizing:
 ## Motion & Transitions
 
 ### Duration
+
 ```css
 --duration-instant  /* 0ms */
 --duration-fast     /* 100ms */
@@ -352,6 +384,7 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Easing
+
 ```css
 --ease-linear   /* linear */
 --ease-in       /* cubic-bezier(0.4, 0, 1, 1) */
@@ -361,12 +394,14 @@ Uses `clamp()` for responsive sizing:
 ```
 
 ### Common Patterns
+
 ```tsx
 <button className="transition-colors duration-normal">
 <div className="transition-all duration-moderate ease-smooth">
 ```
 
 ### Animations
+
 ```tsx
 <div className="animate-fade-in">
 <div className="animate-slide-in-up">
@@ -376,6 +411,7 @@ Uses `clamp()` for responsive sizing:
 ## Responsive Design
 
 ### Breakpoints
+
 ```
 xs:  360px  (Small mobile)
 sm:  640px  (Mobile)
@@ -386,12 +422,14 @@ xl:  1280px (Desktop)
 ```
 
 ### Mobile-First Approach
+
 ```tsx
 <div className="text-sm md:text-base lg:text-lg">
 <div className="p-4 md:p-6 lg:p-8">
 ```
 
 ### Container Queries
+
 ```tsx
 <div className="@container">
   <div className="@md:flex @lg:grid">
@@ -403,6 +441,7 @@ xl:  1280px (Desktop)
 ## Accessibility
 
 ### Interactive Targets
+
 **Minimum touch target: 44x44px**
 
 ```tsx
@@ -410,11 +449,13 @@ xl:  1280px (Desktop)
 ```
 
 ### Focus Indicators
+
 ```tsx
 <button className="focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus focus-visible:ring-offset-2">
 ```
 
 ### Reduced Motion
+
 Automatically respects `prefers-reduced-motion`:
 
 ```css
@@ -427,12 +468,14 @@ Automatically respects `prefers-reduced-motion`:
 ```
 
 ### Color Contrast
+
 - **AA Standard**: 4.5:1 for text, 3:1 for UI components
 - All semantic colors meet WCAG 2.2 AA requirements
 
 ## Component Tokens
 
 ### Button
+
 ```css
 --button-height-xs  /* 24px */
 --button-height-sm  /* 32px */
@@ -448,6 +491,7 @@ Automatically respects `prefers-reduced-motion`:
 ```
 
 ### Input
+
 ```css
 --input-height-sm      /* 32px */
 --input-height-md      /* 40px - Default */
@@ -459,6 +503,7 @@ Automatically respects `prefers-reduced-motion`:
 ```
 
 ### Card
+
 ```css
 --card-padding         /* 24px - Default */
 --card-padding-sm      /* 16px */
@@ -470,6 +515,7 @@ Automatically respects `prefers-reduced-motion`:
 ```
 
 ### Layout
+
 ```css
 --content-max-width        /* 1280px */
 --content-max-width-narrow /* 768px */
@@ -487,6 +533,7 @@ Automatically respects `prefers-reduced-motion`:
 ## Best Practices
 
 ### DO ✅
+
 - Use semantic tokens (e.g., `bg-bg-canvas`, not `bg-neutral-50`)
 - Respect the spacing scale (4px steps)
 - Use fluid typography for better responsiveness
@@ -495,6 +542,7 @@ Automatically respects `prefers-reduced-motion`:
 - Use `transition-colors` for simple state changes
 
 ### DON'T ❌
+
 - Hardcode color values (e.g., `#ffffff`)
 - Use arbitrary spacing values (e.g., `p-[17px]`)
 - Skip accessibility considerations
@@ -506,11 +554,13 @@ Automatically respects `prefers-reduced-motion`:
 ### From Hardcoded to Tokens
 
 **Before:**
+
 ```tsx
 <div className="bg-white text-gray-900 border-gray-300 rounded-lg p-6">
 ```
 
 **After:**
+
 ```tsx
 <div className="bg-bg-surface text-text-primary border-border-default rounded-xl p-6">
 ```
@@ -518,11 +568,13 @@ Automatically respects `prefers-reduced-motion`:
 ### From Fixed to Fluid Typography
 
 **Before:**
+
 ```tsx
 <h1 className="text-5xl md:text-6xl lg:text-7xl">
 ```
 
 **After:**
+
 ```tsx
 <h1 className="text-6xl"> {/* Automatically fluid */}
 ```

@@ -9,13 +9,15 @@
 ## Changes Made
 
 ### 1. WorkSection → React Router Navigation
+
 **File**: `src/components/WorkSection.tsx`
 
 - Added `import { useNavigate } from "react-router-dom"`
 - Updated `open()` function to use React Router for internal navigation:
+
   ```ts
   const navigate = useNavigate();
-  
+
   const open = (p: Project): void => {
     if (p.onClick) {
       p.onClick(p);
@@ -26,7 +28,7 @@
       if (p.href.startsWith('http')) {
         window.location.href = p.href;
       } else {
-        navigate(p.href);  // ← React Router navigation
+        navigate(p.href); // ← React Router navigation
       }
       return;
     }
@@ -39,9 +41,11 @@
 ---
 
 ### 2. Removed Duplicate Components
+
 **File**: `src/App.tsx`
 
 **Removed Imports**:
+
 ```diff
 - import { BaddieGallery } from './components/BaddieGallery';
 - import { ProjectGallery } from './components/ProjectGallery';
@@ -49,6 +53,7 @@
 ```
 
 **Removed Sections**:
+
 ```diff
 - <section id="gallery" className="my-12 md:my-16 px-6">
 -   <BaddieGallery images={[...GALLERY_IMAGES]} className="mx-auto max-w-[1600px]" />
@@ -59,16 +64,18 @@
 ```
 
 **Kept**:
+
 ```tsx
 <section id="work" className="my-16">
-  <WorkSection 
-    projects={adaptGalleryProjects(GALLERY_PROJECTS)} 
+  <WorkSection
+    projects={adaptGalleryProjects(GALLERY_PROJECTS)}
     ImageWithFallback={ImageWithFallback}
   />
 </section>
 ```
 
-**Why**: 
+**Why**:
+
 - BaddieGallery was just showing images (no project links)
 - ProjectGallery duplicated WorkSection functionality
 - WorkSection is the single source of truth for project navigation
@@ -76,6 +83,7 @@
 ---
 
 ### 3. Updated Navigation Menu
+
 **File**: `src/App.tsx`
 
 ```diff
@@ -94,15 +102,16 @@ items={[
 ## Current Project Flow
 
 ### 1. Data Source
+
 **File**: `src/data/projectsGallery.ts`
 
 ```ts
 export const GALLERY_PROJECTS: Project[] = [
   {
-    id: "floral-design-svg",
-    title: "Floral Design SVG",
-    tag: "Web App",
-    href: "/project/floral-design-svg",  // ← Routes to ProjectDetail
+    id: 'floral-design-svg',
+    title: 'Floral Design SVG',
+    tag: 'Web App',
+    href: '/project/floral-design-svg', // ← Routes to ProjectDetail
     cover: floralFiftyNine,
     // ...
   },
@@ -111,6 +120,7 @@ export const GALLERY_PROJECTS: Project[] = [
 ```
 
 ### 2. Data Adapter
+
 **File**: `src/data/workAdapter.ts`
 
 ```ts
@@ -120,14 +130,15 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
     id: p.id,
     title: p.title,
     image: p.cover,
-    category: p.tag,          // "Web App" → filter category
-    client: extractClient(p.tag),  // "Web App" → "Product"
-    href: p.href,             // "/project/floral-design-svg"
+    category: p.tag, // "Web App" → filter category
+    client: extractClient(p.tag), // "Web App" → "Product"
+    href: p.href, // "/project/floral-design-svg"
   };
 }
 ```
 
 ### 3. WorkSection Display
+
 **Component**: `<WorkSection />`
 
 - Displays projects in filterable list
@@ -136,6 +147,7 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
 - Uses React Router for client-side navigation
 
 ### 4. Project Detail Page
+
 **Route**: `/project/:id`  
 **Component**: `<ProjectDetail />`
 
@@ -159,16 +171,19 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
 ## Performance Improvements
 
 **Bundle Size Reduction**:
+
 - **Before**: 142.10 kB (46.94 kB gzipped)
 - **After**: 133.06 kB (44.43 kB gzipped)
 - **Saved**: -9.04 kB (-2.51 kB gzipped)
 
 **Removed Components**:
+
 - BaddieGallery.tsx (~300 lines)
 - ProjectGallery.tsx usage (component still exists but unused)
 - GALLERY_IMAGES import (7 image imports)
 
 **Navigation Speed**:
+
 - Old: `window.location.href` → full page reload
 - New: `navigate()` → instant client-side transition
 
@@ -206,6 +221,7 @@ export function toWorkSectionProject(p: GalleryProject): WSProject {
 ## Next Steps (Optional)
 
 1. **Remove Unused Files** (if desired):
+
    ```bash
    rm src/components/BaddieGallery.tsx
    rm src/components/ProjectGallery.tsx

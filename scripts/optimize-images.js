@@ -26,16 +26,18 @@ async function optimizeImages() {
 
   for (const file of files) {
     const ext = path.extname(file).toLowerCase();
-    
+
     // Only process image files
     if (!['.jpg', '.jpeg', '.png'].includes(ext)) continue;
 
     const inputPath = path.join(assetsDir, file);
     const stats = fs.statSync(inputPath);
-    
+
     // Skip files already small enough
     if (stats.size < SIZE_THRESHOLD) {
-      console.log(`⏭️  Skipping ${file} (already optimized: ${(stats.size / 1024).toFixed(0)}KB)`);
+      console.log(
+        `⏭️  Skipping ${file} (already optimized: ${(stats.size / 1024).toFixed(0)}KB)`
+      );
       continue;
     }
 
@@ -45,9 +47,9 @@ async function optimizeImages() {
     try {
       // Optimize and convert to WebP
       await sharp(inputPath)
-        .resize(MAX_WIDTH, MAX_HEIGHT, { 
+        .resize(MAX_WIDTH, MAX_HEIGHT, {
           fit: 'inside',
-          withoutEnlargement: true 
+          withoutEnlargement: true,
         })
         .webp({ quality: WEBP_QUALITY })
         .toFile(outputPath);
@@ -55,14 +57,16 @@ async function optimizeImages() {
       const newStats = fs.statSync(outputPath);
       const savedBytes = stats.size - newStats.size;
       const savingsPercent = ((savedBytes / stats.size) * 100).toFixed(1);
-      
+
       totalSaved += savedBytes;
       filesProcessed++;
 
       console.log(`✅ ${file}`);
       console.log(`   Original: ${(stats.size / 1024 / 1024).toFixed(2)}MB`);
       console.log(`   Optimized: ${(newStats.size / 1024 / 1024).toFixed(2)}MB`);
-      console.log(`   Savings: ${savingsPercent}% (${(savedBytes / 1024 / 1024).toFixed(2)}MB)\n`);
+      console.log(
+        `   Savings: ${savingsPercent}% (${(savedBytes / 1024 / 1024).toFixed(2)}MB)\n`
+      );
     } catch (error) {
       console.error(`❌ Failed to optimize ${file}:`, error.message, '\n');
     }

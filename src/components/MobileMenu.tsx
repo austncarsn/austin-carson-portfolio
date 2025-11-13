@@ -2,9 +2,9 @@ import React, { type ReactElement } from 'react';
 import { NavLink } from './NavLink';
 
 // Navigation item type
-type NavItem = { 
-  label: string; 
-  href: string; 
+type NavItem = {
+  label: string;
+  href: string;
   external?: boolean;
 };
 
@@ -22,12 +22,12 @@ interface MobileMenuProps {
 const MOTION = {
   scrim: {
     enter: 'animate-in fade-in duration-300 ease-out',
-    exit: 'animate-out fade-out duration-200 ease-in'
+    exit: 'animate-out fade-out duration-200 ease-in',
   },
   menu: {
     enter: 'animate-in slide-in-from-right-4 duration-300 ease-out',
-    exit: 'animate-out slide-out-to-right-4 duration-200 ease-in'
-  }
+    exit: 'animate-out slide-out-to-right-4 duration-200 ease-in',
+  },
 };
 
 /**
@@ -42,7 +42,7 @@ export function MobileMenu({
   externalLinks,
   activeSection,
   onLinkClick,
-  onClose
+  onClose,
 }: MobileMenuProps): ReactElement {
   if (!isOpen) return <></>;
 
@@ -65,7 +65,6 @@ export function MobileMenu({
         {/* Panel container: full width on small, right-docked panel on large */}
         <div className="absolute inset-0 flex justify-end">
           <div className="h-full w-full lg:w-[420px] bg-canvas border-l border-structure/50 flex flex-col">
-
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-structure/50">
               <h2 className="text-lg font-semibold text-text-primary">Menu</h2>
@@ -82,7 +81,11 @@ export function MobileMenu({
                   strokeWidth={2.5}
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>

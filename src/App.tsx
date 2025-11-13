@@ -8,9 +8,15 @@ import { GALLERY_PROJECTS } from './data/projectsGallery';
 import { adaptGalleryProjects } from './data/workAdapter';
 import type { Project } from './components/WorkSection';
 
-const Hero = lazy(() => import('./components/features/hero/Hero').then(module => ({ default: module.Hero })));
-const Contact2 = lazy(() => import('./components/Contact2').then(module => ({ default: module.Contact2 })));
-const ProjectDetail = lazy(() => import('./components/ProjectDetail').then(module => ({ default: module.default })));
+const Hero = lazy(() =>
+  import('./components/features/hero/Hero').then((module) => ({ default: module.Hero }))
+);
+const Contact2 = lazy(() =>
+  import('./components/Contact2').then((module) => ({ default: module.Contact2 }))
+);
+const ProjectDetail = lazy(() =>
+  import('./components/ProjectDetail').then((module) => ({ default: module.default }))
+);
 const Resume = lazy(() => import('./components/Resume'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
@@ -22,7 +28,11 @@ const LoadingFallback = memo(function LoadingFallback(): ReactElement {
   );
 });
 
-const RouteTransition = memo(function RouteTransition({ children }: { children: ReactNode }): ReactElement {
+const RouteTransition = memo(function RouteTransition({
+  children,
+}: {
+  children: ReactNode;
+}): ReactElement {
   return (
     <div className="animate-fade-in" data-state="open">
       {children}
@@ -30,7 +40,11 @@ const RouteTransition = memo(function RouteTransition({ children }: { children: 
   );
 });
 
-const MainContent = memo(function MainContent({ children }: { children: ReactNode }): ReactElement {
+const MainContent = memo(function MainContent({
+  children,
+}: {
+  children: ReactNode;
+}): ReactElement {
   return (
     <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
       {children}
@@ -43,7 +57,7 @@ function ScrollToSection(): null {
 
   useEffect(() => {
     if (location.pathname !== '/') return;
-    
+
     const hash = location.hash.replace('#', '');
     if (hash) {
       setTimeout(() => {
@@ -98,77 +112,84 @@ export default function App(): ReactElement {
     <Router>
       <ScrollToTop />
       <ScrollToSection />
-      <div 
+      <div
         className="flex flex-col min-h-screen bg-background text-foreground"
         data-theme="light"
       >
         {/* Global subtle noise overlay for cohesive texture */}
         <div className="page-noise" aria-hidden="true" />
-        
+
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
             <MainContent>
               <Routes>
-              <Route 
-                index 
-                element={
-                  <RouteTransition>
-                    <Hero />
-                    
-                    <div
-                      className="section-bridge"
-                      style={{
-                        height: '64px',
-                        background: 'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)'
-                      }}
-                    />
-                    
-                    <section id="work" style={{ background: 'var(--surface)' }}>
-                      <WorkSection 
-                        projects={projects}
-                        onProjectClick={handleProjectClick}
+                <Route
+                  index
+                  element={
+                    <RouteTransition>
+                      <Hero />
+
+                      <div
+                        className="section-bridge"
+                        style={{
+                          height: '64px',
+                          background:
+                            'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)',
+                        }}
                       />
-                    </section>
-                    
-                    <section id="contact" style={{ background: 'var(--surface)' }}>
-                      <Contact2
-                        directEmail="austncarsn@gmail.com"
-                        phone="206-620-4803"
-                        socials={[
-                          { label: "LinkedIn", href: "https://linkedin.com/in/austincarson" },
-                          { label: "GitHub", href: "https://github.com/austncarsn" },
-                          { label: "Instagram", href: "https://instagram.com/austncarsn" },
-                        ]}
-                      />
-                    </section>
-                  </RouteTransition>
-                } 
-              />
-              
-              <Route
-                path="/resume"
-                element={
-                  <RouteTransition>
-                    <Resume />
-                  </RouteTransition>
-                }
-              />
-              
-              <Route 
-                path="*" 
-                element={
-                  <RouteTransition>
-                    <NotFound />
-                  </RouteTransition>
-                } 
-              />
-            </Routes>
+
+                      <section id="work" style={{ background: 'var(--surface)' }}>
+                        <WorkSection
+                          projects={projects}
+                          onProjectClick={handleProjectClick}
+                        />
+                      </section>
+
+                      <section id="contact" style={{ background: 'var(--surface)' }}>
+                        <Contact2
+                          directEmail="austncarsn@gmail.com"
+                          phone="206-620-4803"
+                          socials={[
+                            {
+                              label: 'LinkedIn',
+                              href: 'https://linkedin.com/in/austincarson',
+                            },
+                            { label: 'GitHub', href: 'https://github.com/austncarsn' },
+                            {
+                              label: 'Instagram',
+                              href: 'https://instagram.com/austncarsn',
+                            },
+                          ]}
+                        />
+                      </section>
+                    </RouteTransition>
+                  }
+                />
+
+                <Route
+                  path="/resume"
+                  element={
+                    <RouteTransition>
+                      <Resume />
+                    </RouteTransition>
+                  }
+                />
+
+                <Route
+                  path="*"
+                  element={
+                    <RouteTransition>
+                      <NotFound />
+                    </RouteTransition>
+                  }
+                />
+              </Routes>
             </MainContent>
           </Suspense>
         </ErrorBoundary>
 
         <Suspense fallback={null}>
-          <ProjectDetail 
+          <ProjectDetail
             project={selectedProject}
             isOpen={isModalOpen}
             onClose={handleCloseModal}

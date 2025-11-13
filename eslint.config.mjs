@@ -13,7 +13,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default [
   {
-    ignores: ['node_modules', 'build', 'dist', 'api/**', 'src/components/IsometricBlock.tsx', 'vite.config.ts', 'tsconfig.node.json']
+    ignores: [
+      'node_modules',
+      'build',
+      'dist',
+      'api/**',
+      'src/components/IsometricBlock.tsx',
+      'vite.config.ts',
+      'tsconfig.node.json',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -23,25 +31,25 @@ export default [
         project: './tsconfig.json',
         tsconfigRootDir: __dirname,
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.es2024
-      }
+        ...globals.es2024,
+      },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
       react,
       'react-hooks': reactHooks,
-      'jsx-a11y': jsxA11y
+      'jsx-a11y': jsxA11y,
     },
     settings: {
       react: {
-        version: 'detect'
-      }
+        version: 'detect',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -56,16 +64,16 @@ export default [
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true,
-          args: 'after-used'
-        }
+          args: 'after-used',
+        },
       ],
       '@typescript-eslint/explicit-function-return-type': [
         'warn',
         {
           allowExpressions: true,
-          allowTypedFunctionExpressions: true
-        }
-      ]
-    }
-  }
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+    },
+  },
 ];
