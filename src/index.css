@@ -2167,6 +2167,68 @@ header[role="banner"] > * {
     0 14px 30px rgba(9, 12, 16, 0.16); /* external lift */
 }
 
+/* Starfield tucked into the nav indentation: black background with white sparkly stars
+   Scoped to .nav-container-glass so it only affects the nav area. Uses two layers:
+   - ::before: fine granular stars moving slowly
+   - ::after: sparser larger stars that twinkle
+   Respects prefers-reduced-motion. */
+.nav-container-glass {
+  position: relative; /* ensure pseudo-elements position correctly */
+  overflow: visible;
+}
+.nav-container-glass::before,
+.nav-container-glass::after {
+  content: '';
+  position: absolute;
+  inset: -6px; /* extend a little to surround the pill */
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0; /* sit behind nav contents */
+  mix-blend-mode: screen; /* white stars on dark field */
+}
+.nav-container-glass::before {
+  background-image:
+    radial-gradient(#fff 0.8px, transparent 1px),
+    radial-gradient(#fff 0.5px, transparent 1px);
+  background-size: 4px 4px, 8px 8px;
+  opacity: 0.12;
+  filter: contrast(140%) brightness(110%);
+  animation: starfield-move 60s linear infinite;
+}
+.nav-container-glass::after {
+  /* sparser larger stars that twinkle */
+  background-image: radial-gradient(#fff 1.6px, transparent 2px), radial-gradient(#fff 1px, transparent 2px);
+  background-size: 30px 30px, 18px 18px;
+  opacity: 0.08;
+  filter: blur(0.2px) contrast(120%);
+  animation: starfield-twinkle 6s ease-in-out infinite;
+}
+
+@keyframes starfield-move {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 800px 0, -400px 0; }
+}
+
+@keyframes starfield-twinkle {
+  0% { opacity: 0.06; transform: scale(1); }
+  50% { opacity: 0.14; transform: scale(1.02); }
+  100% { opacity: 0.06; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-container-glass::before,
+  .nav-container-glass::after {
+    animation: none !important;
+    opacity: 0.08 !important;
+  }
+}
+
+/* Ensure nav contents render above the star layers */
+.nav-container-glass > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* Slight tint for the mobile nav container variant */
 .nav-container-glass.rounded-3xl {
   background: linear-gradient(180deg, rgba(8,12,28,0.64), rgba(6,10,24,0.5));
