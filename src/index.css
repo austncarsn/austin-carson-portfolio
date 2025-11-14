@@ -559,6 +559,87 @@ kbd {
   animation-name: nav-fade-in;
 }
 
+/* ===== Redesigned Hero: warm gallery background and embossed cards ===== */
+section[aria-label="Intro"] {
+  /* warm off-white with subtle radial darkening toward the bottom */
+  background: radial-gradient(1200px 600px at 50% 10%, #fcfaf5 0%, #f8f5ed 45%, #e9e1d4 100%);
+}
+
+.hero-cards {
+  /* ensure cards are centered and responsive */
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.hero-card-wrapper {
+  flex: 1 1 320px;
+  max-width: 360px;
+  transition: transform 260ms var(--ease-smooth), box-shadow 260ms var(--ease-smooth);
+  will-change: transform, box-shadow;
+}
+
+.hero-card-inner {
+  background: #fff; /* fallback */
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  /* soft object shadow to read as an object on a table */
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.hero-card-inner::after {
+  /* very subtle inner highlight to accent embossing */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 36%;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15) 40%, transparent 100%);
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+.hero-card-wrapper:hover .hero-card-inner {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 26px 50px rgba(15, 23, 42, 0.18), 0 8px 18px rgba(15,23,42,0.08);
+}
+
+/* ensure image covers and keeps aspect ratio */
+.hero-card-inner img,
+.hero-card-inner .object-cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* responsive stacking */
+@media (max-width: 767px) {
+  .hero-cards {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .hero-card-wrapper {
+    max-width: 420px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-cards {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .hero-card-wrapper {
+    max-width: 320px;
+  }
+}
+
 /* Perforated rail - decorative perforation used in section headers like Projects */
 .perforated-rail {
   pointer-events: none;
@@ -1911,6 +1992,12 @@ video {
   height: auto;
 }
 section {
+  /* allow sections to layout/scroll correctly; if you want clipping, use .section-clip */
+  overflow: visible;
+}
+
+/* opt-in class for clipped sections when intentionally desired */
+.section-clip {
   overflow: clip;
 }
 
@@ -1963,6 +2050,14 @@ section {
 .navbar-ticker {
   position: relative;
   overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.02);
+  backdrop-filter: blur(4px) saturate(0.9);
+}
+/* make ticker darker/tinted to separate from nav and improve readability */
+.navbar-ticker {
+  background: linear-gradient(180deg, rgba(6,10,24,0.44), rgba(6,10,24,0.34));
+  border-top: 1px solid rgba(255,255,255,0.02);
 }
 .ticker-track {
   display: inline-flex;
@@ -1998,11 +2093,95 @@ header[role='banner'] {
 
 /* translucent header when compact (scrolled) */
 .header--translucent {
-  background-color: color-mix(in oklab, var(--accent) 70%, transparent);
+  background: linear-gradient(180deg, #070707 0%, #0f0f0f 100%);
+  position: relative;
   backdrop-filter: blur(6px) saturate(1.05);
-  -webkit-backdrop-filter: blur(6px) saturate(1.05);
-  border-bottom: 1px solid color-mix(in oklab, var(--accent) 20%, transparent);
 }
+
+/* Decorative starry background for the header (black & white) */
+header[role="banner"]::before,
+header[role="banner"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+header[role="banner"]::before {
+  background-image: radial-gradient(#fff 0.9px, transparent 1px), radial-gradient(#fff 0.6px, transparent 1px);
+  background-size: 3px 3px, 6px 6px;
+  opacity: 0.14;
+  filter: contrast(130%) saturate(70%);
+  animation: stars-move 40s linear infinite;
+}
+
+header[role="banner"]::after {
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 7px 7px;
+  opacity: 0.06;
+  filter: blur(0.6px) contrast(110%);
+  animation: stars-move 110s linear reverse infinite, twinkle 6s ease-in-out infinite;
+}
+
+@keyframes stars-move {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 0; }
+}
+
+/* simple twinkle animation that slightly varies the opacity of the second layer */
+@keyframes twinkle {
+  0% { opacity: 0.04; }
+  35% { opacity: 0.09; }
+  70% { opacity: 0.05; }
+  100% { opacity: 0.04; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  header[role="banner"]::before,
+  header[role="banner"]::after {
+    animation: none !important;
+  }
+}
+
+/* ensure banner children render above the star layers */
+header[role="banner"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glass panel for navigation — translucent so the starry background shows through */
+.nav-container-glass {
+  /* make the inner bar a solid rounded pill (no glassmorphism) so it reads as a tactile surface
+     stronger curvature + thin top rim to suggest a ridge */
+  border-radius: 999px;
+  /* base + top rim + radial darkening for depth */
+  background: linear-gradient(180deg, color-mix(in oklab, white 18%, var(--bar-surface, #fbf7ed) 82%), var(--bar-surface, #fbf7ed));
+  background-image: radial-gradient(900px 220px at 50% 28%, color-mix(in oklab, var(--bar-surface, #fbf7ed) 78%, black 8%), transparent 60%), linear-gradient(180deg, color-mix(in oklab, white 18%, var(--bar-surface, #fbf7ed) 82%), var(--bar-surface, #fbf7ed));
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow:
+    inset 0 12px 30px rgba(0,0,0,0.14), /* deeper inner cavity */
+    inset 0 1px 0 rgba(255,255,255,0.96), /* thin bright rim at the top */
+    0 14px 30px rgba(9, 12, 16, 0.16); /* external lift */
+}
+
+/* Slight tint for the mobile nav container variant */
+.nav-container-glass.rounded-3xl {
+  background: linear-gradient(180deg, rgba(8,12,28,0.64), rgba(6,10,24,0.5));
+}
+
+/* Expose a CSS variable for other components to avoid overlap with fixed header */
+:root {
+  --site-header-height: 88px;
+}
+
+/* Ensure the hero section sits below the fixed header */
+section[aria-label="Intro"] {
+  padding-top: calc(var(--site-header-height) + 12px);
+}
+
 
 .header--translucent .nav-item {
   color: rgba(255, 255, 255, 0.95);
@@ -2018,23 +2197,39 @@ header[role='banner'] {
 /* Modernized header visuals and curved bottom */
 .site-header {
   position: relative;
-  /* keep the blue base via inline style from component (var(--accent)) */
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
+  /* inner container only — keep layout padding, but visuals are applied to the banner */
   overflow: visible;
 }
+
+/* Make the header element itself a single rounded bar with depth so the
+   nav area + ticker render as one cohesive surface. We target the banner
+   header element so the rounded corners and shadow apply to the whole bar. */
+/* Remove old blue background; header visuals are defined above with starry background */
+/* Keep the header full-width and allow children (mobile panel) to escape the banner
+   so dropdowns and slide-down panels are not clipped. Move rounded pill styling to
+   the inner .nav-container-glass so the visual remains intact without clipping. */
+header[role='banner'] {
+  border-radius: 0;
+  overflow: visible; /* allow mobile panels to expand beyond the banner */
+  box-shadow:
+    0 14px 40px rgba(14, 21, 28, 0.12),
+    0 4px 18px rgba(14, 21, 28, 0.06);
+  /* ensure the header sits above page content when sticky */
+  isolation: isolate;
+}
+
+/* subtle curved shadow/bottom accent moved to a smaller ::after tucked under the banner */
 .site-header::after {
-  /* subtle curved shadow/bottom accent */
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
-  height: 18px;
+  left: 6px;
+  right: 6px;
+  bottom: -8px;
+  height: 12px;
   pointer-events: none;
   background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.06) 100%);
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 .site-header-inner {
   display: flex;
@@ -2059,11 +2254,20 @@ header[role='banner'] {
   align-items: center;
 }
 .nav-center {
-  /* make the centered nav visually match the page background */
-  background: var(--color-bg-canvas);
-  padding: 0.25rem 0.5rem;
+  /* Warm off-white interior with soft radial light in the center and
+     slightly darker edges to create depth. Keeps the rounded pill layout. */
+  /* use transparent here — the solid pill is provided by .nav-container-glass now */
+  background: transparent;
+  padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  box-shadow: 0 6px 20px color-mix(in oklab, black 6%, transparent);
+  /* 1px semi-transparent white top highlight for a delicate rim */
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(0, 0, 0, 0.03);
+  /* Soft outer shadow to read the pill as slightly raised from the page */
+  box-shadow:
+    0 18px 35px rgba(15, 23, 42, 0.22),
+    0 6px 22px rgba(9, 12, 16, 0.06);
   font-family:
     'Plus Jakarta Sans',
     ui-sans-serif,
@@ -2073,6 +2277,8 @@ header[role='banner'] {
     Roboto,
     'Helvetica Neue',
     Arial;
+  -webkit-font-smoothing: antialiased;
+  position: relative; /* for sheen pseudo-element */
 }
 
 /* Make nav-center position relative so an SVG wave can be placed behind it */
@@ -2113,11 +2319,35 @@ header[role='banner'] {
 
 /* inside the centered nav, use brand blue for text */
 .nav-center .nav-item {
-  color: var(--accent);
+  /* Dark ink on the off-white pill for strong contrast */
+  color: var(--bar-ink);
   background: transparent;
+  position: relative;
+  overflow: hidden; /* contain sheen */
+}
+.nav-center .nav-item::before {
+  /* a narrow vertical specular stripe that sweeps across on hover, like
+     a finger rubbing across a varnished surface */
+  content: '';
+  position: absolute;
+  left: -140%;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 40%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.28) 60%, transparent 100%);
+  transform: skewX(-12deg) translateX(0);
+  transition: transform 420ms var(--ease-smooth), opacity 320ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-center .nav-item:hover::before {
+  transform: translateX(240%);
+  opacity: 1;
 }
 .nav-center .nav-item:hover {
-  background: color-mix(in oklab, var(--accent) 6%, transparent);
+  /* on hover, darken ink slightly and show tactile lift through a faint shadow */
+  color: color-mix(in oklab, var(--bar-ink) 88%, black 6%);
+  box-shadow: 0 6px 18px rgba(3, 8, 18, 0.06);
 }
 .nav-center .nav-underline {
   background: linear-gradient(
@@ -2126,34 +2356,118 @@ header[role='banner'] {
     color-mix(in oklab, var(--accent) 10%, white)
   );
 }
+
+/* ===== Target the actual pill container used in markup: .nav-pills-container =====
+   The SiteHeader markup nests pill items inside .nav-pills-container, so ensure
+   the off-white radial interior and shadows apply to that element. */
+
+.nav-pills-container {
+  position: relative;
+  padding: 6px 8px;
+  border-radius: 999px;
+  /* solid warm paper interior with a subtle top rim + inset for curvature */
+  background: linear-gradient(180deg, color-mix(in oklab, white 22%, var(--bar-surface, #fbf7ed) 78%), var(--bar-surface, #fbf7ed));
+  background-image: radial-gradient(700px 180px at 50% 30%, color-mix(in oklab, var(--bar-surface, #fbf7ed) 76%, black 6%), transparent 60%), linear-gradient(180deg, color-mix(in oklab, white 22%, var(--bar-surface, #fbf7ed) 78%), var(--bar-surface, #fbf7ed));
+  box-shadow:
+    inset 0 8px 18px rgba(0,0,0,0.10),
+    0 14px 30px rgba(15, 23, 42, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.88);
+  z-index: 2; /* make sure the pill sits above the glass rail */
+}
+
+/* Active segment that slides under the current tab */
+.nav-pill-indicator {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow:
+    0 6px 12px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  border-radius: inherit;
+  z-index: 1; /* place beneath the pill text/buttons */
+}
+
+.nav-pills-container .nav-pill-item {
+  color: #2b2520;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: transparent;
+  position: relative;
+  overflow: visible;
+}
+
+.nav-pill-item:not([aria-current="page"]) {
+  color: #5f584f;
+}
+
+.nav-pill-item:not([aria-current="page"]):hover {
+  color: #241c16;
+}
+
+/* sheen that sweeps across each pill on hover, simulating a finger drag */
+.nav-pills-container .nav-pill-item::before {
+  content: '';
+  position: absolute;
+  left: -140%;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 40%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.28) 60%, transparent 100%);
+  transform: skewX(-12deg) translateX(0);
+  transition: transform 420ms var(--ease-smooth), opacity 320ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-pills-container .nav-pill-item:hover::before {
+  transform: translateX(240%);
+  opacity: 1;
+}
+.nav-pills-container .nav-pill-item:hover {
+  color: color-mix(in oklab, var(--bar-ink) 88%, black 6%);
+  box-shadow: 0 6px 18px rgba(3, 8, 18, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-pills-container .nav-pill-item::before {
+    display: none !important;
+  }
+  .nav-pills-container .nav-pill-item:hover {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
 .nav-item {
   position: relative;
-  padding: 0.35rem 0.5rem;
-  color: rgba(255, 255, 255, 0.95);
-  background: transparent;
-  border-radius: 8px;
+  /* Glasmorphism-style nav buttons */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  color: inherit; /* inherit from parent (.nav-center) so contrast is correct */
+  background: transparent; /* keep buttons visually light on the off-white pill */
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.04);
+  /* solid surface — no backdrop-filter (no glass effect) */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .nav-item:hover {
-  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(3, 8, 18, 0.12);
 }
 .nav-item .nav-underline {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: -8px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.16),
-    rgba(255, 255, 255, 0.32)
-  );
-  transform-origin: center;
-  transform: scaleX(0);
-  border-radius: 99px;
-  transition: transform 260ms ease;
+  display: none;
 }
-.nav-item.active .nav-underline {
-  transform: scaleX(1);
+.nav-item:active,
+.nav-item:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-item,
+  .nav-item:hover,
+  .nav-item:active {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 .cta.button--accent {
   background: var(--accent);
@@ -2182,5 +2496,43 @@ header[role='banner'] {
   }
   .cta.button--accent {
     padding: 0.45rem 0.6rem;
+  }
+}
+
+/* Mobile panel (slide down) — accessible, prefers-reduced-motion aware */
+.mobile-panel {
+  overflow: hidden;
+  max-height: 0; /* collapsed */
+  opacity: 0;
+  transform-origin: top center;
+  transform: translateY(-6px) scaleY(0.98);
+  transition:
+    max-height 320ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.mobile-panel.open {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  /* generous max-height to accommodate content — keeps transition smooth */
+  max-height: 520px;
+}
+.mobile-panel-inner {
+  will-change: transform, opacity;
+}
+
+/* Make the slide-down mobile panel match the solid pill styling for parity */
+.mobile-panel-inner {
+  background: var(--bar-surface, #fbf7ed);
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: inset 0 10px 22px rgba(0,0,0,0.12), 0 8px 20px rgba(9,12,16,0.08);
+  padding: 0.75rem 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-panel,
+  .mobile-panel.open {
+    transition: none !important;
   }
 }
