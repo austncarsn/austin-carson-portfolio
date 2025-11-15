@@ -8,7 +8,11 @@ const MEDIA_QUERY = '(prefers-reduced-motion: reduce)';
  */
 export function usePrefersReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
-    if (typeof window === 'undefined') {
+    if (
+      typeof window === 'undefined' ||
+      !('matchMedia' in window) ||
+      typeof window.matchMedia !== 'function'
+    ) {
       return false;
     }
 
@@ -16,7 +20,11 @@ export function usePrefersReducedMotion(): boolean {
   });
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (
+      typeof window === 'undefined' ||
+      !('matchMedia' in window) ||
+      typeof window.matchMedia !== 'function'
+    ) {
       return undefined;
     }
 

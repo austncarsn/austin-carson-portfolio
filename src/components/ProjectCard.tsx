@@ -1,40 +1,16 @@
-import React, {
-  memo,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  KeyboardEvent,
-  ForwardedRef,
-} from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState, ForwardedRef } from 'react';
 import type { JSX } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, useScroll, useSpring, useTransform } from 'motion/react';
-import { ArrowRight, ExternalLink, Github, X } from 'lucide-react';
 import { ImageWithFallback } from './common/media/ImageWithFallback';
 
 /*************************************************************
- * Project Cards Scroll FX
- * -----------------------------------------------------------
- * What you get in this file:
- * 1) <ProjectCard/> — your original flip card, ref-enabled & SSR-safe
- * 2) <ProjectReel/> — horizontal scroll area with snap + per-card
- *    scroll-linked transforms (scale, lift, subtle 3D tilt)
- * 3) <ScrollGradientMask/> — optional edge mask to hint scroll affordance
- * 4) Minimal CSS helpers embedded via style tag for no-scrollbar
+ * Project cards with horizontal scroll FX
  *
- * Drop-in usage:
+ * Usage:
  *   <ProjectReel projects={projectsArray} />
- *
- * Notes:
- * - Uses motion/react (Framer Motion v11) hooks only; no external libs
- * - Honors prefers-reduced-motion
- * - Keeps your keyboard/a11y behaviors
  *************************************************************/
 
-// -----------------------------
 // Types
-// -----------------------------
 export type ProjectCardProps = Readonly<{
   id?: string;
   title: string;
@@ -46,11 +22,14 @@ export type ProjectCardProps = Readonly<{
   liveUrl?: string;
   githubUrl?: string;
   previewImage?: string;
+  ratio?: '4:5' | '16:9' | '1:1';
+  /** Optional override for CSS object-position (for example 'center top') */
+  objectPosition?: string;
+  /** Optional per project fit: 'cover' keeps full bleed, 'contain' shows entire image, 'auto' chooses */
+  fit?: 'cover' | 'contain' | 'auto';
 }>;
 
-// -----------------------------
 // Utils
-// -----------------------------
 function assignRefs<T>(...refs: (ForwardedRef<T> | null | undefined)[]) {
   return (value: T | null) => {
     for (const ref of refs) {
@@ -66,28 +45,42 @@ function usePrefersReducedMotion(): boolean {
   useEffect(() => {
     if (typeof window === 'undefined' || !('matchMedia' in window)) return;
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const l = (): void => setReduced(mq.matches);
-    l();
-    mq.addEventListener?.('change', l);
-    return () => mq.removeEventListener?.('change', l);
+    const listener = (): void => setReduced(mq.matches);
+    listener();
+    mq.addEventListener?.('change', listener);
+    return () => mq.removeEventListener?.('change', listener);
   }, []);
   return reduced;
 }
 
-// -----------------------------
-// ProjectCard (ref-enabled)
-// -----------------------------
+// ProjectCard (no flip, just preview)
 export const ProjectCard = memo(
   React.forwardRef<HTMLElement, ProjectCardProps>(function ProjectCard(
-    { id, title, category, year, role, description, liveUrl, githubUrl, previewImage },
+    { title, previewImage, ratio, objectPosition, fit },
     forwardedRef
   ) {
-    const [flipped, setFlipped] = useState(false);
     const [hasBeenInView, setHasBeenInView] = useState(false);
     const localRef = useRef<HTMLElement>(null);
-    const reduceMotion = usePrefersReducedMotion();
 
-    // Basic in-view observer to fade in once
+    const cardHeightClass =
+      ratio === '4:5'
+        ? 'h-[520px] sm:h-[600px]'
+        : ratio === '1:1'
+          ? 'h-[480px] sm:h-[520px]'
+          : 'h-[380px] sm:h-[440px]';
+
+    const imgObjectPosition = ratio === '4:5' ? 'center top' : 'center center';
+
+    const aspectClass =
+      ratio === '4:5'
+        ? 'aspect-[4/5]'
+        : ratio === '1:1'
+          ? 'aspect-square'
+          : ratio === '16:9'
+            ? 'aspect-[16/9]'
+            : 'aspect-[16/10]';
+
+    // Fade in once when in view
     useEffect(() => {
       const node = localRef.current;
       if (!node || hasBeenInView) return;
@@ -107,155 +100,51 @@ export const ProjectCard = memo(
       return () => obs.disconnect();
     }, [hasBeenInView]);
 
-    const handleFlip = (): void => setFlipped(true);
-    const handleClose = (): void => setFlipped(false);
-
-    const handleKeyDown = (e: KeyboardEvent): void => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (!flipped) handleFlip();
-      }
-      if (e.key === 'Escape' && flipped) handleClose();
-    };
-
-    // Focus first actionable element when flipped
-    useEffect(() => {
-      if (flipped && localRef.current) {
-        const firstLink = localRef.current.querySelector(
-          '.card-back a, .card-back button'
-        ) as HTMLElement | null;
-        firstLink?.focus();
-      }
-    }, [flipped]);
-
     return (
-      <article
-        ref={assignRefs(localRef, forwardedRef)}
-        className="group relative"
-        style={{ perspective: '1200px' }}
-        data-state={flipped ? 'back' : 'front'}
-        onKeyDown={handleKeyDown}
-      >
+      <article ref={assignRefs(localRef, forwardedRef)} className="group relative">
         <div
-          className="card relative h-[420px] sm:h-[480px] rounded-[24px] transition-transform duration-500 will-change-transform"
+          className={`card relative rounded-[24px] transition-transform duration-500 will-change-transform ${cardHeightClass}`}
           style={{
-            transformStyle: 'preserve-3d',
-            transform: flipped && !reduceMotion ? 'rotateY(180deg)' : 'none',
             opacity: hasBeenInView ? 1 : 0,
             boxShadow: 'var(--shadow-card-strong)',
           }}
         >
-          {/* FRONT */}
-          <button
-            type="button"
-            onClick={handleFlip}
-            aria-label={`Open details for ${title}`}
-            aria-hidden={flipped}
-            tabIndex={flipped ? -1 : 0}
-            className="card-front absolute inset-0 overflow-hidden rounded-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_16px_50px_rgba(0,0,0,0.45)] active:translate-y-[-1px]"
-            style={{ backfaceVisibility: 'hidden' }}
-          >
-            {previewImage ? (
-              <ImageWithFallback
-                src={previewImage}
-                alt={`${title} preview`}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 w-full h-full bg-neutral-200 flex items-center justify-center">
-                <span className="text-sm text-neutral-500">No preview</span>
-              </div>
-            )}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0) 62%)',
-              }}
-            />
-            <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
-              <h3
-                className="text-white text-2xl sm:text-3xl font-bold leading-tight drop-shadow-lg line-clamp-2"
-                style={{ letterSpacing: '-0.5px' }}
+          {previewImage ? (
+            <div className="relative w-full h-full flex items-center justify-center">
+              <div
+                className={`relative w-full ${aspectClass} overflow-hidden rounded-[24px]`}
               >
-                {title}
-              </h3>
-            </div>
-          </button>
-
-          {/* BACK */}
-          <div
-            className="card-back absolute inset-0 rounded-[24px] bg-[var(--surface)] text-[var(--text)] p-6 sm:p-7 flex flex-col justify-between overflow-y-auto"
-            style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
-            aria-hidden={!flipped}
-          >
-            <button
-              type="button"
-              onClick={handleClose}
-              aria-label="Close details"
-              tabIndex={flipped ? 0 : -1}
-              className="absolute top-4 right-4 p-2 text-[var(--muted)] hover:text-[var(--text)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="space-y-3 pr-8">
-              <div className="flex items-center justify-between">
-                <p className="text-xs uppercase tracking-wide text-[var(--muted)]">
-                  {category}
-                </p>
-                <p className="text-xs text-[var(--muted)]">{year}</p>
+                <ImageWithFallback
+                  src={previewImage}
+                  alt={`${title} preview`}
+                  className="h-full w-full object-contain"
+                  fit={fit === 'auto' ? 'contain' : fit}
+                  imgStyle={{
+                    objectPosition: objectPosition || imgObjectPosition,
+                  }}
+                />
               </div>
-
-              <h3 className="text-2xl sm:text-3xl font-bold leading-tight">{title}</h3>
-
-              {role && (
-                <p className="text-sm text-[var(--muted)]">
-                  <span className="font-medium">Role:</span> {role}
-                </p>
-              )}
-
-              <p className="text-[var(--muted)] leading-relaxed whitespace-pre-line">
-                {description}
-              </p>
             </div>
-
-            <div className="flex flex-wrap items-center gap-3 pt-4">
-              {id && (
-                <Link
-                  to={`/project/${id}`}
-                  tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                >
-                  Details
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              )}
-              {liveUrl && liveUrl !== '#' && (
-                <a
-                  href={liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                >
-                  Live Demo
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              )}
-              {githubUrl && githubUrl !== '#' && (
-                <a
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  tabIndex={flipped ? 0 : -1}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                >
-                  Repo
-                  <Github className="w-4 h-4" />
-                </a>
-              )}
+          ) : (
+            <div className="absolute inset-0 w-full h-full bg-neutral-200 flex items-center justify-center p-6">
+              <div className="text-center">
+                <p className="text-sm font-medium text-neutral-600">No preview</p>
+                <p className="mt-2 text-xs text-neutral-500">{title}</p>
+              </div>
             </div>
+          )}
+
+          <div
+            className="absolute inset-0"
+            style={{ background: 'var(--card-overlay-dark)' }}
+          />
+          <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
+            <h3
+              className="type-heading-l text-inverse font-bold leading-tight drop-shadow-lg line-clamp-2"
+              style={{ letterSpacing: '-0.5px' }}
+            >
+              {title}
+            </h3>
           </div>
         </div>
       </article>
@@ -263,9 +152,7 @@ export const ProjectCard = memo(
   })
 );
 
-// -----------------------------
-// CardScrollItem — per-card scroll FX
-// -----------------------------
+// Per card scroll FX
 function CardScrollItem({
   children,
   container,
@@ -275,13 +162,10 @@ function CardScrollItem({
   container: React.RefObject<HTMLElement>;
   index: number;
 }): JSX.Element {
-  const ref = useRef<HTMLLIElement>(null);
   const reduceMotion = usePrefersReducedMotion();
 
-  // Per-card scroll progress relative to the scroller container
   const { scrollXProgress } = useScroll({ target: container, axis: 'x' });
 
-  // Stagger each card's response slightly by index
   const start = Math.max(0, 0.05 * index);
   const end = Math.min(1, start + 0.6);
 
@@ -293,9 +177,12 @@ function CardScrollItem({
   const scale = useSpring(rawScale, { stiffness: 220, damping: 28, mass: 0.3 });
   const y = useSpring(rawY, { stiffness: 220, damping: 28, mass: 0.3 });
   const tilt = useSpring(rawTilt, { stiffness: 220, damping: 28, mass: 0.3 });
-  const shadowAlpha = useSpring(rawShadow, { stiffness: 220, damping: 28, mass: 0.3 });
+  const shadowAlpha = useSpring(rawShadow, {
+    stiffness: 220,
+    damping: 28,
+    mass: 0.3,
+  });
 
-  // Derive boxShadow string reactively using useTransform instead of .to()
   const boxShadow = useTransform(
     shadowAlpha,
     (a: number) => `0 16px 50px rgba(0,0,0,${a})`
@@ -319,27 +206,20 @@ function CardScrollItem({
   }, [reduceMotion, scale, y, tilt, boxShadow]);
 
   return (
-    <motion.li
-      ref={ref}
-      className="snap-start shrink-0 w-[84vw] sm:w-[520px]"
-      style={style}
-    >
+    <motion.li className="snap-start shrink-0 w-[84vw] sm:w-[520px]" style={style}>
       {children}
     </motion.li>
   );
 }
 
-// -----------------------------
-// ScrollGradientMask — optional edge fade
-// -----------------------------
+// Edge fade
 function ScrollGradientMask(): JSX.Element {
   return (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-y-0 left-0 right-0"
       style={{
-        maskImage:
-          'linear-gradient(90deg, rgba(0,0,0,1) 6%, rgba(0,0,0,0) 16%), linear-gradient(90deg, rgba(0,0,0,0) 84%, rgba(0,0,0,1) 94%)',
+        maskImage: 'var(--card-edge-fade)',
         WebkitMaskComposite: 'destination-in',
         maskComposite: 'intersect',
       }}
@@ -347,9 +227,7 @@ function ScrollGradientMask(): JSX.Element {
   );
 }
 
-// -----------------------------
-// ProjectReel — horizontal scroller + snap + FX
-// -----------------------------
+// Project reel
 export function ProjectReel({
   projects,
   title,
@@ -360,7 +238,6 @@ export function ProjectReel({
   const scrollerRef = useRef<HTMLElement>(null);
   const reduceMotion = usePrefersReducedMotion();
 
-  // Global affordance: subtle background parallax as the reel scrolls
   const { scrollXProgress } = useScroll({ target: scrollerRef, axis: 'x' });
   const bgX = useTransform(scrollXProgress, [0, 1], [0, -120]);
   const bgOpacity = useTransform(scrollXProgress, [0, 1], [0.25, 0.35]);
@@ -368,21 +245,18 @@ export function ProjectReel({
   return (
     <section className="relative py-14">
       {title && (
-        <h2 className="px-6 sm:px-8 text-xl sm:text-2xl font-semibold tracking-tight mb-4">
+        <h2 className="px-6 sm:px-8 type-display-xl font-semibold tracking-tight mb-4">
           {title}
         </h2>
       )}
 
-      {/* Background glow */}
       {!reduceMotion && (
         <motion.div
           aria-hidden
           className="absolute -z-10 top-0 left-0 right-0 h-[200%] blur-3xl"
           style={
             {
-              // accent-based glow (uses primary blue)
-              background:
-                'radial-gradient(600px 160px at 40% 20%, rgba(46,136,255,0.08), transparent 60%), radial-gradient(480px 140px at 80% 60%, rgba(150,200,255,0.06), transparent 60%)',
+              background: 'var(--reel-bg-radials)',
               x: bgX,
               opacity: bgOpacity,
             } as React.CSSProperties & {
@@ -417,7 +291,6 @@ export function ProjectReel({
         </ul>
       </motion.div>
 
-      {/* Minimal CSS helpers */}
       <style>{`
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -425,13 +298,3 @@ export function ProjectReel({
     </section>
   );
 }
-
-// -----------------------------
-// Example data shape (remove in production)
-// -----------------------------
-// const demoProjects: ProjectCardProps[] = [
-//   { id: '1', title: 'Cinematic Shop', category: 'Web', year: '2025', description: 'Ecomm with motion design.', previewImage: 'https://picsum.photos/seed/1/960/600' },
-//   { id: '2', title: 'Heritage Atlas', category: 'Maps', year: '2025', description: 'Texas icon system & maps.', previewImage: 'https://picsum.photos/seed/2/960/600' },
-//   { id: '3', title: 'Panda Pad', category: 'Product', year: '2025', description: 'Cute note app with tokens.', previewImage: 'https://picsum.photos/seed/3/960/600' },
-// ];
-// <ProjectReel projects={demoProjects} title="Selected Work" />

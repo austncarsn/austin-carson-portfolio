@@ -65,7 +65,7 @@ const iconOnlySizeStyles: Record<ButtonSize, string> = {
  */
 const variantStyles: Record<ButtonVariant, string> = {
   primary: `
-    bg-neutral-900 text-white
+  bg-neutral-900 text-inverse
     border border-neutral-800
     rounded-2xl
     hover:bg-neutral-800 active:bg-neutral-700
@@ -94,14 +94,14 @@ const variantStyles: Record<ButtonVariant, string> = {
     focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2
   `,
   danger: `
-    bg-error text-white
+  bg-error text-inverse
     hover:bg-error-hover active:bg-error-active
     disabled:bg-error-subtle disabled:text-error-muted
     shadow-sm hover:shadow-md
     focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2
   `,
   success: `
-    bg-success text-white
+  bg-success text-inverse
     hover:bg-success-hover active:bg-success-active
     disabled:bg-success-subtle disabled:text-success-muted
     shadow-sm hover:shadow-md

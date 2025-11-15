@@ -6,6 +6,10 @@ interface ImageWithFallbackProps {
   className?: string;
   /** loading attribute for the native img element — 'lazy' | 'eager' */
   loading?: 'lazy' | 'eager';
+  /** optional inline style applied to the <img> element (e.g. objectPosition) */
+  imgStyle?: React.CSSProperties;
+  /** optional fit hint: 'cover' | 'contain' | 'auto' (auto picks based on aspect) */
+  fit?: 'cover' | 'contain' | 'auto';
 }
 
 /**
@@ -23,9 +27,12 @@ export function ImageWithFallback({
   alt,
   className = '',
   loading = 'lazy',
+  imgStyle,
+  fit = 'auto',
 }: ImageWithFallbackProps): React.ReactElement {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [computedStyle, setComputedStyle] = useState<React.CSSProperties | null>(null);
 
   // Derive a .webp sibling URL for automatic WebP delivery when available.
   // Only replace common raster extensions; leave SVGs, data: URLs, and others untouched.
@@ -54,8 +61,42 @@ export function ImageWithFallback({
           loading={loading}
           className={className}
           onError={() => setError(true)}
-          onLoad={() => setIsLoading(false)}
-          style={{ display: isLoading ? 'none' : 'block' }}
+          onLoad={(e) => {
+            try {
+              const imgEl = e.currentTarget as HTMLImageElement;
+              const w = imgEl.naturalWidth || imgEl.width;
+              const h = imgEl.naturalHeight || imgEl.height;
+              const aspect = w > 0 && h > 0 ? w / h : 1;
+
+              // Decide default objectPosition based on aspect
+              const defaultPos = aspect < 1 ? 'center top' : 'center center';
+
+              // Decide objectFit: honor explicit fit prop, else auto-pick
+              let objectFit: 'cover' | 'contain';
+              if (fit === 'cover') objectFit = 'cover';
+              else if (fit === 'contain') objectFit = 'contain';
+              else {
+                // auto: use contain for tall/square images, cover for wide images
+                objectFit = aspect >= 1.15 ? 'cover' : 'contain';
+              }
+
+              setComputedStyle({
+                ...(imgStyle || {}),
+                objectPosition: (imgStyle && imgStyle.objectPosition) || defaultPos,
+                objectFit,
+              });
+            } catch {
+              setComputedStyle({
+                ...(imgStyle || {}),
+                objectFit: fit === 'cover' ? 'cover' : 'contain',
+              });
+            }
+            setIsLoading(false);
+          }}
+          style={{
+            ...(computedStyle || imgStyle || {}),
+            display: isLoading ? 'none' : 'block',
+          }}
         />
       </picture>
     </>

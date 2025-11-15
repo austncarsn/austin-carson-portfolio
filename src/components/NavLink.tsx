@@ -1,12 +1,27 @@
 import React, { type ReactElement } from 'react';
 
+type NavLinkSize = 'mobile' | 'desktop';
+
 type NavLinkProps = {
   href: string;
-  size?: 'mobile' | 'desktop';
+  size?: NavLinkSize;
   isActive?: boolean;
   isExternal?: boolean;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   children: React.ReactNode;
+};
+
+const SIZE_CLASSES: Record<NavLinkSize, string> = {
+  mobile: 'text-lg',
+  desktop: 'text-base',
+};
+
+const getStateClasses = (isActive: boolean): string => {
+  if (isActive) {
+    // active links use gradient text fill (bg-clip + transparent text)
+    return 'font-medium';
+  }
+  return 'text-text hover:bg-surface-hover';
 };
 
 export function NavLink({
@@ -18,15 +33,15 @@ export function NavLink({
   children,
 }: NavLinkProps): ReactElement {
   const baseClasses = 'block px-4 py-3 rounded-lg transition-all duration-200';
-  const activeClasses = isActive
-    ? 'bg-accent text-white font-medium'
-    : 'text-text hover:bg-surface-hover';
-  const sizeClasses = size === 'mobile' ? 'text-lg' : 'text-base';
+  const stateClasses = getStateClasses(isActive);
+  const sizeClasses = SIZE_CLASSES[size];
 
   return (
     <a
       href={href}
-      className={`${baseClasses} ${activeClasses} ${sizeClasses}`}
+      className={`${baseClasses} ${stateClasses} ${sizeClasses} ${
+        isActive ? 'navlink--active-gradient' : ''
+      }`}
       onClick={onClick}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}

@@ -97,18 +97,18 @@ function useRandomFortune(): { pick: () => string } {
 /* ------------------- Sub‑components ------------------- */
 /* Commented out unused components - can be re-enabled if needed
 const Label = ({ children }: { children: ReactNode }) => (
-  <div className="font-satoshi tracking-[0.15em] text-[11px] text-white/70 uppercase mb-3">
+  <div className="font-satoshi tracking-[0.15em] text-[11px] text-inverse/70 uppercase mb-3">
     {children}
   </div>
 );
 
 const Hint = ({ children }: { children: ReactNode }) => (
-  <div className="font-satoshi text-xs text-white/60">{children}</div>
+  <div className="font-satoshi text-xs text-inverse/60">{children}</div>
 );
 
 const FortuneText = ({ text }: { text: string }) => (
   <p
-    className="font-satoshi text-sm text-white leading-relaxed mb-3 min-h-[60px] flex items-center"
+  className="font-satoshi text-sm text-inverse leading-relaxed mb-3 min-h-[60px] flex items-center"
     aria-live="polite"
   >
     {text}

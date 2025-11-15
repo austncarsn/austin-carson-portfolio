@@ -1,8 +1,8 @@
 /**
  * Design Tokens - New Color System
- * 
+ *
  * Base colors: Chinese White, Powder Blue, Platinum, Blue, Pitch Black, White Chocolate
- * Semantic layer: bg (primary/secondary/tertiary/surface), text, action
+ * Semantic layer: bg (primary / secondary / tertiary / surface), text, action
  */
 
 /* ============================================================================
@@ -14,46 +14,43 @@
   --chinese-white: #e2e5de;
   --powder-blue: #f4faff;
   --platinum: #e5e4e2;
-  /* legacy warm accent kept as alias for compatibility — now points to primary blue */
+  /* legacy warm accent kept as alias for compatibility (now points to primary blue) */
   --orange: var(--blue);
-  /* Primary brand blue (replaces previous warm accent) */
-  --blue: #2e88ff; /* primary blue */
+  /* primary brand blue, darker for stronger button affordance */
+  --blue: #145fd0;
   --pitch-black: #000000; /* pure black for text */
   --white-chocolate: #ede6d6;
 
   /* === SEMANTIC TOKENS - BACKGROUND === */
-  --bg: var(--powder-blue); /* primary background */
-  --bg-secondary: var(--chinese-white);
+  /* page and large-surface backgrounds */
+  --bg: #fbfcfe;
+  --bg-secondary: #f7f8f7;
   --bg-tertiary: var(--white-chocolate);
-  --surface: #ffffff; /* card/panel surface */
-  --surface-2: var(--chinese-white); /* alternative surface */
+  --surface: var(--color-neutral-0); /* card / panel surface */
+  --surface-2: #fbfbfb; /* alternative surface for large components */
 
   /* === SEMANTIC TOKENS - TEXT === */
-  --text: var(--pitch-black); /* primary text */
+  --text: var(--pitch-black);
   --ink: var(--pitch-black); /* alias for compatibility */
-  --muted: color-mix(
-    in oklab,
-    var(--pitch-black) 60%,
-    var(--powder-blue)
-  ); /* muted text */
-  --link: var(--accent); /* link color */
+  --muted: color-mix(in oklab, var(--pitch-black) 60%, var(--powder-blue));
+  --link: var(--accent);
 
   /* === SEMANTIC TOKENS - ACTION === */
-  --accent: var(--blue); /* primary action color (blue) */
-  --accent-hover: #1f6ae6; /* action hover state */
-  --accent-pressed: #145fd0; /* action pressed state */
+  --accent: var(--blue);
+  --accent-hover: #0f53b8;
+  --accent-pressed: #0a4690;
 
   /* === DERIVED TOKENS === */
   --accent-600: color-mix(in oklab, var(--accent) 88%, black);
-  --accent-300: color-mix(in oklab, var(--accent) 60%, white);
-  --line: var(--platinum); /* borders/dividers */
+  --accent-300: color-mix(in oklab, var(--accent) 60%, var(--color-neutral-0));
+  --line: var(--platinum);
   --focus: var(--accent);
 
-  /* === SHADOWS === */
+  /* shadows */
   --shadow-1: 0 10px 30px color-mix(in oklab, black 22%, transparent);
   --elev-1: var(--shadow-1);
 
-  /* Card and elevation tokens for consistent depth */
+  /* card and elevation tokens */
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-card-strong: 0 24px 64px rgba(0, 0, 0, 0.18);
   --shadow-card-hover: 0 36px 84px rgba(0, 0, 0, 0.24);
@@ -64,16 +61,16 @@
   /* === LEGACY COMPATIBILITY === */
   --primary: var(--text);
   --bg-muted: var(--surface);
-  --bone: var(--chinese-white); /* legacy bone → chinese-white */
-  --pearl: var(--white-chocolate); /* legacy pearl → white-chocolate */
+  --bone: var(--chinese-white); /* legacy bone */
+  --pearl: var(--white-chocolate); /* legacy pearl */
 
-  /* Legacy bridges so nothing breaks */
+  /* legacy bridges */
   --warm-lightest: var(--bg);
   --warm-medium: var(--surface);
   --warm-stone: var(--muted);
   --warm-tan: var(--bg-secondary);
 
-  /* Legacy color mappings for gradual migration */
+  /* legacy neutral scale */
   --color-neutral-0: #ffffff;
   --color-neutral-50: var(--surface);
   --color-neutral-100: var(--surface-2);
@@ -92,40 +89,81 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent-mint: var(--accent-300);
-  --color-shadow: color-mix(in oklch, black 18%, transparent);
 
-  --color-brand-500: var(--accent);
-  --color-brand-600: var(--accent-600);
-  --color-brand-300: var(--accent-300);
+  /* softened global shadow for elevated surfaces */
+  --color-shadow: color-mix(in oklch, black 12%, transparent);
+
+  /* brand tokens (kept as true brand scale, not accent) */
+  --color-brand-50: #fafafa;
+  --color-brand-100: #f5f5f5;
+  --color-brand-200: #e5e5e5;
+  --color-brand-400: #9e9e9e;
+  --color-brand-500: var(--pitch-black);
+  --color-brand-600: #0d0d0d;
+  --color-brand-700: #111111;
+  --color-brand-800: #1f1f1f; /* lightened so header reads lighter */
+  --color-brand-900: #050505; /* deeper brand for pills and buttons */
+  --color-brand-950: #020202;
+
+  /* accent scale, for utility style bindings like bg-accent-100 */
+  --color-accent-50: #f0f6ff;
+  --color-accent-100: #e1eeff;
+  --color-accent-200: #c9e0ff;
+  --color-accent-300: #9fccff;
+  --color-accent-400: #71afff;
+  --color-accent-500: var(--blue);
+  --color-accent-600: #1f6ae6;
+  --color-accent-700: #145fd0;
+  --color-accent-800: #11449a;
+  --color-accent-900: #0b2f66;
+
+  /* hero frame accent */
+  --color-hero-frame: color-mix(in oklab, var(--muted) 12%, transparent);
+
+  /* brand shortcuts */
+  --color-brand-300: #c4c4c4;
+
+  /* Navigation tokens */
+  --nav-track-start: 42%; /* where the dark track begins inside the header rail */
+  --nav-button-gap: 8px; /* space between pill buttons */
+  --nav-button-margin-right: 16px; /* right margin for pill cluster inside header */
+  --nav-ind-hover-visible: 0; /* used to animate the hover indicator via css var */
+  --color-pill-hover: color-mix(in oklab, var(--color-pill-button) 72%, transparent 28%);
+  --nav-track-bg: linear-gradient(180deg, var(--color-brand-900) 0%, #0b0b0c 100%);
+  --nav-star-far: rgba(200, 210, 220, 0.25);
+  --nav-star-near: rgba(240, 235, 215, 0.55);
 
   /* === TAILWIND SEMANTIC TOKENS === */
-  /* Background tokens */
+  /* backgrounds */
   --color-bg-canvas: var(--bg);
   --color-bg-surface: var(--surface);
   --color-bg-elevated: var(--surface);
-  --color-bg-overlay: color-mix(in oklab, var(--pitch-black) 85%, transparent);
+  --color-bg-overlay: color-mix(in oklab, var(--pitch-black) 70%, transparent);
   --color-bg-muted: var(--surface-2);
   --color-bg-glass: color-mix(in oklab, var(--surface) 92%, transparent);
   --color-bg-panel: var(--surface-2);
 
-  /* Text tokens */
+  /* header backdrop */
+  --color-header-backdrop: color-mix(in oklab, var(--pitch-black) 22%, transparent);
+
+  /* text */
   --color-text-primary: var(--text);
   --color-text-primary-80: color-mix(in oklab, var(--text) 80%, transparent);
   --color-text-primary-88: color-mix(in oklab, var(--text) 88%, transparent);
   --color-text-secondary: color-mix(in oklab, var(--text) 70%, var(--bg));
   --color-text-muted: var(--muted);
   --color-text-subtle: color-mix(in oklab, var(--muted) 70%, var(--bg));
-  --color-text-on-brand: #ffffff;
-  --color-text-inverse: #ffffff;
+  --color-text-on-brand: var(--color-text-inverse);
+  --color-text-inverse: var(--color-neutral-0);
 
-  /* Border tokens */
+  /* borders */
   --color-border-subtle: var(--line);
   --color-border-default: var(--line);
   --color-border-strong: color-mix(in oklab, var(--text) 30%, var(--bg));
   --color-border-brand: var(--accent);
   --color-border-error: #dc2626;
 
-  /* Interactive tokens */
+  /* interactive */
   --color-interactive-primary: var(--accent);
   --color-interactive-primary-hover: var(--accent-hover);
   --color-interactive-primary-active: var(--accent-pressed);
@@ -146,7 +184,7 @@
   --color-interactive-disabled: var(--muted);
   --color-interactive-focus: var(--accent);
 
-  /* Status colors */
+  /* status colors */
   --color-success-light: #dcfce7;
   --color-success: #16a34a;
   --color-success-dark: #15803d;
@@ -156,93 +194,57 @@
   --color-error-light: #fee2e2;
   --color-error: #dc2626;
   --color-error-dark: #b91c1c;
-  /* Align info to warm accent to avoid cool-blue clashes and keep palette unified */
+
+  /* info aligned to accent */
   --color-info-light: var(--color-accent-100);
   --color-info: var(--color-accent-400);
   --color-info-dark: var(--color-accent-600);
 
-  /* Accent scale (for Tailwind classes like bg-accent-100) */
-  --color-accent-50: #f0f6ff;
-  --color-accent-100: #e1eeff;
-  --color-accent-200: #c9e0ff;
-  --color-accent-300: #9fccff;
-  --color-accent-400: #71afff;
-  --color-accent-500: var(--blue);
-  --color-accent-600: #1f6ae6;
-  --color-accent-700: #145fd0;
-  --color-accent-800: #11449a;
-  --color-accent-900: #0b2f66;
-
-  /* Brand scale (pitch-black) */
-  --color-brand-50: #fafafa;
-  --color-brand-100: #f5f5f5;
-  --color-brand-200: #e5e5e5;
-  --color-brand-400: #9e9e9e;
-  --color-brand-500: var(--pitch-black);
-  --color-brand-600: #0d0d0d;
-  --color-brand-700: #0a0a0a;
-  --color-brand-800: #070707;
-  --color-brand-900: #040404;
-  --color-brand-950: #020202;
-
-  /* Hero frame accent color (semantic) - used for the hero outline/depth
-    Default is a subtle muted tint on light backgrounds. Can be overridden
-    by theme-specific rules (data-theme="dark") in the app styles. */
-  --color-hero-frame: color-mix(in oklab, var(--muted) 12%, transparent);
-
-  /* Theme-specific overrides for semantic tokens (applied when the app root
-   sets data-theme="dark" on the wrapper). These are intentionally placed
-   here so designers can update token defaults in one place. */
-  [data-theme='dark'] {
-    --color-hero-frame: color-mix(in oklab, var(--color-text-inverse) 10%, transparent);
-  }
-
-  /* === SPACING PRIMITIVES === */
-  /* Refined spacing scale: 8px base unit */
+  /* === SPACING PRIMITIVES (8px base) === */
   --space-0: 0;
-  --space-1: 0.25rem; /* 4px - legacy support */
+  --space-1: 0.25rem; /* 4px, legacy */
   --space-2: 0.5rem; /* 8px */
   --space-3: 0.75rem; /* 12px */
   --space-4: 1rem; /* 16px */
-  --space-5: 1.25rem; /* 20px - legacy support */
+  --space-5: 1.25rem; /* 20px, legacy */
   --space-6: 1.5rem; /* 24px */
   --space-8: 2rem; /* 32px */
   --space-10: 2.5rem; /* 40px */
-  --space-12: 3rem; /* 48px - legacy support */
+  --space-12: 3rem; /* 48px */
   --space-14: 3.5rem; /* 56px */
-  --space-16: 4rem; /* 64px - legacy support */
+  --space-16: 4rem; /* 64px */
   --space-18: 4.5rem; /* 72px */
-  --space-20: 5rem; /* 80px - legacy support */
-  --space-24: 6rem; /* 96px - legacy support */
-  --space-32: 8rem; /* 128px - legacy support */
-  --space-40: 10rem; /* 160px - legacy support */
-  --space-48: 12rem; /* 192px - legacy support */
-  --space-56: 14rem; /* 224px - legacy support */
-  --space-64: 16rem; /* 256px - legacy support */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
+  --space-32: 8rem; /* 128px */
+  --space-40: 10rem; /* 160px */
+  --space-48: 12rem; /* 192px */
+  --space-56: 14rem; /* 224px */
+  --space-64: 16rem; /* 256px */
 
   /* === TYPOGRAPHY PRIMITIVES === */
-  /* Refined type scale: base 16px - WCAG 2.2 AA Compliant */
-  --font-size-xs: 0.75rem; /* 12px - extra small text */
-  --font-size-sm: 0.875rem; /* 14px - small text */
-  --font-size-caption: 0.8125rem; /* 13px - captions, helper text */
-  --font-size-small: 0.875rem; /* 14px - small text (legacy) */
-  --font-size-base: 1rem; /* 16px - body text, REQUIRED for inputs */
-  --font-size-lg: 1.125rem; /* 18px - emphasized body */
+  /* base 16px, WCAG mindful */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-caption: 0.8125rem; /* 13px */
+  --font-size-small: 0.875rem; /* 14px, legacy */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
 
-  /* 2025 Spec-Compliant Fluid Typography */
-  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem); /* 22-32px - Main headlines */
-  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem); /* 20-28px - Section headings */
-  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem); /* 18-24px - Subsection headings */
+  /* 2025 fluid type */
+  --font-size-h1: clamp(1.375rem, 4.5vw, 2rem); /* 22-32px */
+  --font-size-h2: clamp(1.25rem, 4vw, 1.75rem); /* 20-28px */
+  --font-size-h3: clamp(1.125rem, 3.5vw, 1.5rem); /* 18-24px */
 
-  /* Legacy fluid sizes (for decorative/hero elements only) */
-  --font-size-xl: 1.5rem; /* 24px - static large text */
-  --font-size-2xl: 2rem; /* 32px - static XL text */
-  --font-size-3xl: 2.75rem; /* 44px - decorative */
-  --font-size-4xl: 3.5rem; /* 56px - decorative */
-  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem); /* 48-60px - hero decorative */
-  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem); /* 60-72px - hero decorative */
+  /* decorative / legacy sizes */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2rem; /* 32px */
+  --font-size-3xl: 2.75rem; /* 44px */
+  --font-size-4xl: 3.5rem; /* 56px */
+  --font-size-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);
+  --font-size-6xl: clamp(3.75rem, 3rem + 3.75vw, 4.5rem);
 
-  /* Font weights */
+  /* weights */
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -250,7 +252,10 @@
   --font-weight-bold: 700;
   --font-weight-black: 900;
 
-  /* Line heights */
+  /* central display weight */
+  --display-weight: 400;
+
+  /* line heights */
   --line-height-none: 1;
   --line-height-tight: 1.1;
   --line-height-snug: 1.25;
@@ -258,7 +263,7 @@
   --line-height-relaxed: 1.625;
   --line-height-loose: 1.75;
 
-  /* Letter spacing */
+  /* letter spacing */
   --letter-spacing-tighter: -0.03em;
   --letter-spacing-tight: -0.02em;
   --letter-spacing-normal: 0;
@@ -272,11 +277,11 @@
   --radius-md: 0.375rem; /* 6px */
   --radius-lg: 0.5rem; /* 8px */
   --radius-xl: 0.75rem; /* 12px */
-  --radius-soft: 1rem; /* 16px - soft corners */
+  --radius-soft: 1rem; /* 16px */
   --radius-2xl: 1rem; /* 16px */
   --radius-3xl: 1.5rem; /* 24px */
-  --radius-pill: 999px; /* pill shape */
-  --radius-full: 9999px; /* full circle */
+  --radius-pill: 999px;
+  --radius-full: 9999px;
 
   /* === SHADOW PRIMITIVES === */
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -286,9 +291,9 @@
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
-  /* Refined shadow presets */
-  --shadow-low: 0 2px 8px var(--color-shadow); /* Subtle elevation */
-  --shadow-elev: 0 12px 36px var(--color-shadow); /* Floating elements */
+  /* refined presets */
+  --shadow-low: 0 2px 8px var(--color-shadow);
+  --shadow-elev: 0 12px 36px var(--color-shadow);
 
   /* === MOTION PRIMITIVES === */
   --duration-instant: 0ms;
@@ -299,104 +304,14 @@
   --duration-slower: 300ms;
   --duration-slowest: 500ms;
 
-  /* Easing functions */
   --ease-linear: linear;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
-}
 
-/* ============================================================================
-   SEMANTIC TOKENS - Light Mode (Default)
-   Context-aware tokens mapped from primitives
-   ============================================================================ */
-
-:root {
-  /* === BACKGROUND COLORS === */
-  --color-bg-canvas: var(--color-cream-bg); /* Warm cream background */
-  --color-bg-surface: var(--color-neutral-0); /* White */
-  --color-bg-elevated: var(--color-neutral-50); /* Subtle elevation */
-  --color-bg-overlay: rgba(0, 0, 0, 0.8); /* Modal/drawer overlay */
-  --color-bg-muted: var(--color-neutral-100); /* Disabled, secondary areas */
-
-  /* Glass effect backgrounds */
-  --color-bg-glass: rgba(255, 255, 255, 0.8); /* Glass with 80% opacity */
-  --color-bg-panel: rgba(255, 255, 255, 0.6); /* Subtle panel */
-
-  /* === TEXT COLORS === */
-  --color-text-primary: var(--color-ink); /* Deep ink text */
-  --color-text-primary-80: oklch(25% 0.03 250 / 0.8); /* 80% opacity ink */
-  --color-text-primary-88: oklch(25% 0.03 250 / 0.88); /* 88% opacity ink */
-  --color-text-secondary: var(--color-muted); /* Muted text */
-  --color-text-muted: var(--color-neutral-600); /* Muted, helper text */
-  --color-text-subtle: var(--color-neutral-500); /* Placeholder, captions */
-  --color-text-on-brand: var(--color-neutral-0); /* Text on brand backgrounds */
-  --color-text-inverse: var(--color-neutral-0); /* Text on dark backgrounds */
-
-  /* === BORDER COLORS === */
-  --color-border-subtle: var(--color-neutral-200); /* Subtle borders */
-  --color-border-default: var(--color-neutral-300); /* Default borders */
-  --color-border-strong: var(--color-neutral-400); /* Emphasized borders */
-  --color-border-brand: var(--color-brand-500); /* Brand borders */
-  --color-border-error: var(--color-error); /* Error state borders */
-
-  /* === INTERACTIVE COLORS === */
-  --color-interactive-primary: var(--color-brand-500);
-  --color-interactive-primary-hover: var(--color-brand-600);
-  --color-interactive-primary-active: var(--color-brand-700);
-
-  --color-interactive-secondary: var(--color-neutral-800);
-  --color-interactive-secondary-hover: var(--color-neutral-900);
-  --color-interactive-secondary-active: var(--color-neutral-950);
-
-  --color-interactive-ghost: transparent;
-  --color-interactive-ghost-hover: var(--color-neutral-100);
-  --color-interactive-ghost-active: var(--color-neutral-200);
-
-  --color-interactive-disabled: var(--color-neutral-300);
-  --color-interactive-focus: var(--color-brand-500);
-
-  /* === SEMANTIC STATE COLORS === */
-  --color-status-success: var(--color-success);
-  --color-status-success-bg: var(--color-success-light);
-  --color-status-warning: var(--color-warning);
-  --color-status-warning-bg: var(--color-warning-light);
-  --color-status-error: var(--color-error);
-  --color-status-error-bg: var(--color-error-light);
-  --color-status-info: var(--color-info);
-  --color-status-info-bg: var(--color-info-light);
-}
-
-/* Dark-mode/theme blocks removed per user request to keep the site on the light palette.
-   If you want a scoped dark theme later, add a separate selector such as
-   [data-theme="dark"] { ... } or use a non-destructive media query. */
-
-/* ============================================================================
-   SEMANTIC TOKENS - High Contrast Mode
-   ============================================================================ */
-
-@media (prefers-contrast: high) {
-  :root {
-    /* Increase contrast ratios */
-    --color-text-primary: var(--color-neutral-1000);
-    --color-text-secondary: var(--color-neutral-800);
-    --color-border-default: var(--color-neutral-400);
-    --color-border-strong: var(--color-neutral-600);
-
-    /* Make interactive elements more visible */
-    --color-interactive-focus: var(--color-brand-700);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  }
-}
-
-/* ============================================================================
-   COMPONENT TOKENS
-   Specific tokens for component styling
-   ============================================================================ */
-
-:root {
-  /* === BUTTON TOKENS === */
+  /* === COMPONENT TOKENS === */
+  /* buttons */
   --button-height-xs: var(--space-6);
   --button-height-sm: var(--space-8);
   --button-height-md: var(--space-10);
@@ -415,7 +330,7 @@
   --button-radius: var(--radius-lg);
   --button-transition: all var(--duration-normal) var(--ease-out);
 
-  /* === INPUT TOKENS === */
+  /* inputs */
   --input-height-sm: var(--space-8);
   --input-height-md: var(--space-10);
   --input-height-lg: var(--space-12);
@@ -425,7 +340,7 @@
   --input-radius: var(--radius-md);
   --input-font-size: var(--font-size-base);
 
-  /* === CARD TOKENS === */
+  /* cards */
   --card-padding: var(--space-6);
   --card-padding-sm: var(--space-4);
   --card-padding-lg: var(--space-8);
@@ -433,101 +348,152 @@
   --card-shadow: var(--shadow-md);
   --card-border-width: 1px;
 
-  /* === LAYOUT TOKENS === */
+  /* layout */
   --content-max-width: 80rem; /* 1280px */
   --content-max-width-narrow: 48rem; /* 768px */
   --content-max-width-wide: 96rem; /* 1536px */
-  --content-max-line-length: 75ch; /* Optimal reading line length */
+  --content-max-line-length: 75ch;
 
   --nav-height: var(--space-16); /* 64px */
   --nav-height-mobile: var(--space-14); /* 56px */
 
-  --section-spacing-sm: var(--space-12); /* 48px */
-  --section-spacing-md: var(--space-16); /* 64px */
-  --section-spacing-lg: var(--space-24); /* 96px */
-  --section-spacing-xl: var(--space-32); /* 128px */
+  --section-spacing-sm: var(--space-12);
+  --section-spacing-md: var(--space-16);
+  --section-spacing-lg: var(--space-24);
+  --section-spacing-xl: var(--space-32);
 
-  /* Grid system */
+  /* grid */
   --grid-columns: 12;
   --grid-gutter: 1.5rem; /* 24px */
-  --grid-margin: 5.5rem; /* 88px at desktop */
-  --grid-margin-mobile: 1rem; /* 16px at mobile */
+  --grid-margin: 5.5rem; /* 88px desktop */
+  --grid-margin-mobile: 1rem; /* 16px mobile */
 
-  /* === INTERACTIVE TOKENS === */
+  /* interactive */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-interactive-focus);
+  --touch-target-min: 44px; /* iOS / Android minimum */
 
-  --touch-target-min: 44px; /* iOS/Android minimum */
-}
+  /* header gradient stops */
+  --color-header-grad-0: color-mix(in oklab, var(--color-brand-900) 100%, transparent);
+  --color-header-grad-1: color-mix(in oklab, var(--color-brand-800) 84%, transparent);
+  --color-header-grad-2: color-mix(in oklab, var(--color-brand-700) 72%, transparent);
 
-/* ============================================================================
-  NOIR GLASS THEME - DISABLED (using new powder-blue/blue palette)
-   OKLCH-based dark glass aesthetic with high contrast
-   ============================================================================ */
+  /* navigation theming */
+  --color-nav-rail: color-mix(
+    in oklab,
+    var(--bg-secondary) 88%,
+    var(--color-brand-800) 12%
+  );
+  --nav-bg: var(--color-nav-rail);
 
-/* :root[data-theme="noir"] {
-  --primary: oklch(98% 0.01 95);
-  --warm-lightest: oklch(20% 0.01 260);
-  --warm-light: oklch(40% 0.02 260);
-  --warm-medium: oklch(95% 0.02 85);
-  --warm-stone: oklch(88% 0.02 95);
-  --warm-tan: oklch(70% 0.08 75);
-  --border-contrast: color-mix(in oklch, var(--line) 80%, white 20%);
+  /* pills */
+  --color-pill-bg: var(--color-brand-900);
+  --color-pill-button: var(--color-brand-950);
+  --color-pill-text: var(--color-text-inverse);
 
-  --elev-0: 0 0 0 rgba(0,0,0,0);
-  --elev-1: 0 1px 2px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.04);
-  --elev-2: 0 2px 8px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.06);
-  --elev-3: 0 8px 24px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.08);
+  /* === GRADIENT & PATTERN TOKENS === */
+  /* hero decorative textures */
+  --hero-texture:
+    radial-gradient(1200px 600px at 10% 10%, rgba(0, 0, 0, 0.05), transparent 60%),
+    radial-gradient(900px 500px at 90% 15%, rgba(150, 200, 255, 0.08), transparent 55%);
+  --hero-radial-accent: radial-gradient(
+    620px circle at 50% 50%,
+    rgba(150, 200, 255, 0.1),
+    transparent 60%
+  );
 
-  --chip-surface: color-mix(in oklch, #000 6%, transparent);
-  --frame-surface: color-mix(in oklch, #000 10%, transparent);
+  /* card overlays */
+  --card-overlay-dark: linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0) 62%);
+  --card-edge-fade:
+    linear-gradient(90deg, rgba(0, 0, 0, 1) 6%, rgba(0, 0, 0, 0) 16%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, 1) 94%);
 
-  --cream: #FFFCEB;
-  --ink: oklch(.22 .03 260);
-  --gold: oklch(.74 .08 90);
-  --accent: oklch(.88 .14 150);
+  /* reel and gallery radials */
+  --reel-bg-radials:
+    radial-gradient(600px 160px at 40% 20%, rgba(46, 136, 255, 0.08), transparent 60%),
+    radial-gradient(480px 140px at 80% 60%, rgba(150, 200, 255, 0.06), transparent 60%);
 
-  --danger: #b00020;
-  --success: #0a7f52;
+  /* speckle patterns */
+  --pattern-speckle-white:
+    radial-gradient(1px 1px at 20% 30%, var(--color-neutral-0), transparent),
+    radial-gradient(1px 1px at 70% 60%, var(--color-neutral-0), transparent);
 
-  --overlay-80: oklch(20% 0.01 260 / 0.80);
-  --overlay-70: oklch(20% 0.01 260 / 0.70);
-} */
+  /* fortune box decor */
+  --fortune-dot-purple: radial-gradient(
+    circle at 20% 30%,
+    rgba(139, 92, 246, 0.4) 1px,
+    transparent 1px
+  );
+  --fortune-dot-pink: radial-gradient(
+    circle at 60% 70%,
+    rgba(236, 72, 153, 0.4) 1px,
+    transparent 1px
+  );
+  --fortune-dot-blue: radial-gradient(
+    circle at 80% 20%,
+    rgba(59, 130, 246, 0.4) 1px,
+    transparent 1px
+  );
+  --fortune-dot-lilac: radial-gradient(
+    circle at 40% 80%,
+    rgba(167, 139, 250, 0.4) 1px,
+    transparent 1px
+  );
+  --fortune-gradient-overlay: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  --fortune-gradient-fill: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
 
-/* :root[data-theme="noir"][data-mode="dark"] {
-  --primary: oklch(16% 0.01 260);
-  --warm-lightest: oklch(95% 0.01 95);
-  --warm-light: oklch(80% 0.02 95);
-  --warm-medium: oklch(22% 0.02 85);
-  --warm-stone: oklch(32% 0.02 260);
-  --warm-tan: oklch(78% 0.08 75);
-  --border-contrast: color-mix(in oklch, var(--line) 80%, white 20%);
-
-  --elev-1: 0 1px 2px rgba(0,0,0,.24), 0 0 0 1px rgba(255,255,255,.06);
-  --elev-2: 0 2px 8px rgba(0,0,0,.28), 0 0 0 1px rgba(255,255,255,.08);
-  --elev-3: 0 8px 24px rgba(0,0,0,.36), 0 0 0 1px rgba(255,255,255,.10);
-
-  --chip-surface: color-mix(in oklch, #fff 6%, transparent);
-  --frame-surface: color-mix(in oklch, #fff 10%, transparent);
-
-  --danger: #f1e8e7;
-  --success: #81c995;
-
-  --overlay-80: oklch(16% 0.01 260 / 0.80);
-  --overlay-70: oklch(16% 0.01 260 / 0.70);
-} */
-
-/* SiteHeader fallbacks */
-:root {
+  /* SiteHeader fallbacks */
   --noir-accent: #d8c199;
   --noir-pulse: var(--accent);
   --warm-sage: #a7c4bc;
+
+  /* NEUMORPHIC NAVIGATION COMPONENT TOKENS */
+  --neu-bg: var(--color-bg-elevated);
+  --neu-text-active: var(--color-text-primary);
+  --neu-text-inactive: var(--color-text-secondary);
+  --neu-ring: var(--color-interactive-focus);
+  --neu-shadow-dark: rgba(14, 21, 32, 0.18);
+  --neu-shadow-light: var(--color-neutral-0);
+  --neu-press-inset-dark: rgba(14, 21, 32, 0.24);
+  --neu-press-inset-light: rgba(255, 255, 255, 0.92);
+
+  /* STATUS TOKENS RE-MAPPED TO BLUE ACCENT */
+  --hot-pink: var(--accent) !important;
+  --pink: var(--accent) !important;
+  --magenta: var(--accent) !important;
+}
+
+/* ============================================================================
+   THEME OVERRIDES
+   ============================================================================ */
+
+[data-theme='dark'] {
+  /* only override what needs to differ in dark mode */
+  --color-hero-frame: color-mix(in oklab, var(--color-text-inverse) 10%, transparent);
+}
+
+/* ============================================================================
+   HIGH CONTRAST MODE
+   ============================================================================ */
+
+@media (prefers-contrast: high) {
+  :root {
+    --color-text-primary: var(--color-neutral-1000);
+    --color-text-secondary: var(--color-neutral-800);
+    --color-border-default: var(--color-neutral-400);
+    --color-border-strong: var(--color-neutral-600);
+    --color-interactive-focus: var(--color-brand-700);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  }
 }
 
 /* ============================================================================
    UTILITY: Reduced Motion
-   Respect user's motion preferences
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -539,56 +505,33 @@
 }
 
 /* ============================================================================
-   NEUMORPHIC NAVIGATION COMPONENT TOKENS
-   Component-specific aliases mapped to semantic tokens
+   ACCENT UTILITY CLASSES
    ============================================================================ */
 
-:root {
-  /* Neumorphic component aliases mapped to semantic tokens */
-  --neu-bg: var(--color-bg-elevated);
-  --neu-text-active: var(--color-text-primary);
-  --neu-text-inactive: var(--color-text-secondary);
-  --neu-ring: var(--color-interactive-focus);
-
-  /* Shadow system tuned for light "paper" */
-  --neu-shadow-dark: rgba(14, 21, 32, 0.18);
-  --neu-shadow-light: #ffffff;
-  --neu-press-inset-dark: rgba(14, 21, 32, 0.24);
-  --neu-press-inset-light: rgba(255, 255, 255, 0.92);
-}
-
-/* Removed prefers-color-scheme: dark overrides to avoid active dark-theme rules.
-   Keep the default neumorphic tokens tuned for the light palette above. */
-
-/* ============================================================================
-   ACCENT UTILITY CLASSES - NEW COLOR SYSTEM
-   ============================================================================ */
-
-/* Accent button */
 .btn-accent {
-  color: #ffffff;
+  color: var(--color-text-inverse);
   background: var(--accent);
   border: 2px solid var(--accent-600);
   transition: background 150ms ease;
 }
+
 .btn-accent:hover {
   background: var(--accent-hover);
 }
 
-/* Accent focus ring */
+/* Token-backed utilities for gradual adoption */
+.bg-surface-70 { background: color-mix(in oklab, var(--surface) 70%, transparent); }
+.bg-surface-50 { background: color-mix(in oklab, var(--surface) 50%, transparent); }
+.text-inverse { color: var(--color-text-inverse); }
+.bg-surface { background: var(--surface); }
+
 .ring-accent {
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent);
 }
 
 /* ============================================================================
-  STATUS INDICATORS - Blue accent
+   STATUS INDICATORS
    ============================================================================ */
-
-:root {
-  --hot-pink: var(--accent) !important;
-  --pink: var(--accent) !important;
-  --magenta: var(--accent) !important;
-}
 
 .status-dot,
 [data-status='live'],
@@ -598,7 +541,7 @@
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
-/* Text halo for small accent text on light backgrounds */
+/* text halo for small accent text on light backgrounds */
 .accent-halo {
-  text-shadow: 0 1px 0 color-mix(in oklch, white 65%, transparent);
+  text-shadow: 0 1px 0 color-mix(in oklch, var(--color-neutral-0) 65%, transparent);
 }

@@ -35,7 +35,7 @@ export default function NotFound(): React.JSX.Element {
           {/* Primary Action */}
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-white font-satoshi font-medium text-[15px] hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand text-inverse font-satoshi font-medium text-[15px] hover:opacity-90 transition-opacity"
           >
             <Home className="w-4 h-4" />
             Back to Home

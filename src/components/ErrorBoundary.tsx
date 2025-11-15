@@ -23,8 +23,8 @@ export class ErrorBoundary extends React.Component<Props, { hasError: boolean }>
       return (
         <div className="min-h-screen flex items-center justify-center p-8">
           <div className="max-w-lg text-center">
-            <h2 className="text-2xl font-semibold mb-4">Something went wrong</h2>
-            <p className="text-sm text-muted">
+            <h2 className="type-heading-m font-semibold mb-4">Something went wrong</h2>
+            <p className="type-body text-[color:var(--color-text-muted)]">
               We're sorry — the component failed to load. Try refreshing the page.
             </p>
           </div>

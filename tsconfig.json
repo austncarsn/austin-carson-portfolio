@@ -21,7 +21,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "vitest.config.ts"],
   "exclude": ["api", "src/components/IsometricBlock.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -20,6 +20,8 @@ module.exports = {
 
       // === COLORS ===
       colors: {
+        // Top-level inverse mapping for token-driven text set
+        inverse: 'var(--color-text-inverse)',
         // Coquelicot Noir palette bridges
         bg: 'var(--bg)',
         surface: 'var(--surface)',
@@ -224,6 +226,49 @@ module.exports = {
         '4xl': ['var(--font-size-4xl)', { lineHeight: 'var(--line-height-tight)' }],
         '5xl': ['var(--font-size-5xl)', { lineHeight: 'var(--line-height-tight)' }],
         '6xl': ['var(--font-size-6xl)', { lineHeight: 'var(--line-height-tight)' }],
+
+        // Semantic display & heading sizes wired to CSS tokens
+        'display-2xl': [
+          'var(--font-display-2xl-size)',
+          {
+            lineHeight: 'var(--font-display-2xl-line)',
+            letterSpacing: 'var(--font-display-2xl-track)',
+          },
+        ],
+        'display-xl': [
+          'var(--font-display-xl-size)',
+          {
+            lineHeight: 'var(--font-display-xl-line)',
+            letterSpacing: 'var(--font-display-xl-track)',
+          },
+        ],
+        'heading-l': [
+          'var(--font-heading-l-size)',
+          {
+            lineHeight: 'var(--font-heading-l-line)',
+            letterSpacing: 'var(--font-heading-l-track)',
+          },
+        ],
+        'heading-m': [
+          'var(--font-heading-m-size)',
+          {
+            lineHeight: 'var(--font-heading-m-line)',
+            letterSpacing: 'var(--font-heading-m-track)',
+          },
+        ],
+        body: ['var(--font-body-size)', { lineHeight: 'var(--font-body-line)' }],
+        meta: [
+          'var(--font-meta-size)',
+          {
+            lineHeight: 'var(--font-body-line)',
+            letterSpacing: 'var(--font-meta-track)',
+          },
+        ],
+      },
+
+      // Expose display weight as a named font-weight so you can use `font-display`
+      fontWeight: {
+        display: 'var(--display-weight)',
       },
 
       fontWeight: {
@@ -254,8 +299,12 @@ module.exports = {
       },
 
       fontFamily: {
-        sans: ['Satoshi', 'system-ui', '-apple-system', 'sans-serif'],
-        satoshi: ['Satoshi', 'system-ui', 'sans-serif'],
+        // Use CSS variables so runtime font-family can be swapped without rebuilding
+        sans: ['var(--font-sans-family)'],
+        satoshi: ['var(--font-sans-family)'],
+        // Semantic font stacks (display uses the serif token)
+        display: ['var(--font-display-family)'],
+        body: ['var(--font-sans-family)'],
         barcode: ['Libre Barcode 39', 'monospace'], // Only for branding
       },
 

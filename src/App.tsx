@@ -113,6 +113,12 @@ export default function App(): ReactElement {
     <Router>
       <ScrollToTop />
       <ScrollToSection />
+      <a
+        href="#main-content"
+  className="skip-link absolute left-0 top-0 z-50 m-4 p-2 bg-black text-inverse rounded opacity-0 focus:opacity-100 focus:outline-none"
+      >
+        Skip to content
+      </a>
       <div
         className="flex flex-col min-h-screen bg-background text-foreground"
         data-theme="light"
@@ -131,41 +137,45 @@ export default function App(): ReactElement {
                   index
                   element={
                     <RouteTransition>
-                      <Hero />
+                        <div className="page-shell">
+                          <section className="section-block" aria-label="Hero section">
+                            <Hero />
+                          </section>
 
-                      <div
-                        className="section-bridge"
-                        style={{
-                          height: '64px',
-                          background:
-                            'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)',
-                        }}
-                      />
+                          <div
+                            className="section-bridge"
+                            style={{
+                              height: '64px',
+                              background:
+                                'linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%)',
+                            }}
+                          />
 
-                      <section id="work" style={{ background: 'var(--surface)' }}>
-                        <WorkSection
-                          projects={projects}
-                          onProjectClick={handleProjectClick}
-                        />
-                      </section>
+                          <section id="work" className="section-block bg-surface">
+                            <WorkSection
+                              projects={projects}
+                              onProjectClick={handleProjectClick}
+                            />
+                          </section>
 
-                      <section id="contact" style={{ background: 'var(--surface)' }}>
-                        <Contact2
-                          directEmail="austncarsn@gmail.com"
-                          phone="206-620-4803"
-                          socials={[
-                            {
-                              label: 'LinkedIn',
-                              href: 'https://linkedin.com/in/austincarson',
-                            },
-                            { label: 'GitHub', href: 'https://github.com/austncarsn' },
-                            {
-                              label: 'Instagram',
-                              href: 'https://instagram.com/austncarsn',
-                            },
-                          ]}
-                        />
-                      </section>
+                          <section id="contact" className="section-block bg-surface">
+                            <Contact2
+                              directEmail="austncarsn@gmail.com"
+                              phone="206-620-4803"
+                              socials={[
+                                {
+                                  label: 'LinkedIn',
+                                  href: 'https://linkedin.com/in/austincarson',
+                                },
+                                { label: 'GitHub', href: 'https://github.com/austncarsn' },
+                                {
+                                  label: 'Instagram',
+                                  href: 'https://instagram.com/austncarsn',
+                                },
+                              ]}
+                            />
+                          </section>
+                        </div>
                     </RouteTransition>
                   }
                 />

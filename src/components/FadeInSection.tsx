@@ -1,28 +1,34 @@
 /* ==========================================================================
-   Fade In Section — Optimized scroll-triggered animation wrapper
+   FadeInSection — Scroll-triggered fade/slide wrapper
    ========================================================================== */
 
-import type { ReactElement, ReactNode } from 'react';
-import { memo, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, ReactElement, ReactNode } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+
+type FadeDirection = 'up' | 'down' | 'left' | 'right' | 'none';
 
 interface FadeInSectionProps {
   children: ReactNode;
   delay?: number;
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
+  direction?: FadeDirection;
   className?: string;
 }
 
-const transformMap = {
-  up: 'translateY(30px)',
-  down: 'translateY(-30px)',
-  left: 'translateX(30px)',
-  right: 'translateX(-30px)',
+const TRANSITION_DURATION_MS = 800;
+const EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const OFFSET_PX = 30;
+
+const TRANSFORM_MAP: Record<FadeDirection, string> = {
+  up: `translateY(${OFFSET_PX}px)`,
+  down: `translateY(-${OFFSET_PX}px)`,
+  left: `translateX(${OFFSET_PX}px)`,
+  right: `translateX(-${OFFSET_PX}px)`,
   none: 'translateY(0)',
 };
 
-export default memo(function FadeInSection({
+function FadeInSectionComponent({
   children,
   delay = 0,
   direction = 'up',
@@ -33,13 +39,14 @@ export default memo(function FadeInSection({
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
+    // If the user prefers reduced motion, show content immediately.
     if (prefersReducedMotion) {
       setIsVisible(true);
       return;
     }
 
-    const currentRef = ref.current;
-    if (!currentRef) return;
+    const node = ref.current;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -54,36 +61,39 @@ export default memo(function FadeInSection({
       }
     );
 
-    observer.observe(currentRef);
+    observer.observe(node);
 
     return () => {
       observer.disconnect();
     };
   }, [prefersReducedMotion]);
 
-  const shouldAnimate = !prefersReducedMotion;
-  const baseOpacity = shouldAnimate ? (isVisible ? 1 : 0) : 1;
-  const baseTransform = shouldAnimate
-    ? isVisible
-      ? 'translate(0)'
-      : transformMap[direction]
-    : 'translate(0)';
-  const transition = shouldAnimate
-    ? `opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`
-    : 'none';
+  const style = useMemo<CSSProperties>(() => {
+    const shouldAnimate = !prefersReducedMotion;
+    const visible = isVisible || !shouldAnimate;
+
+    if (!shouldAnimate) {
+      return {
+        opacity: 1,
+        transform: 'translate(0)',
+        transition: 'none',
+        willChange: 'auto',
+      };
+    }
+
+    return {
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translate(0)' : TRANSFORM_MAP[direction],
+      transition: `opacity ${TRANSITION_DURATION_MS}ms ${EASING} ${delay}ms, transform ${TRANSITION_DURATION_MS}ms ${EASING} ${delay}ms`,
+      willChange: !visible ? 'opacity, transform' : 'auto',
+    };
+  }, [delay, direction, isVisible, prefersReducedMotion]);
 
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: baseOpacity,
-        transform: baseTransform,
-        transition,
-        willChange: shouldAnimate && !isVisible ? 'opacity, transform' : 'auto',
-      }}
-    >
+    <div ref={ref} className={className} style={style}>
       {children}
     </div>
   );
-});
+}
+
+export default memo(FadeInSectionComponent);

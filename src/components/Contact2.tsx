@@ -75,35 +75,35 @@ const ContactMethod3D = memo(
               <method.icon
                 size={24}
                 className="md:w-7 md:h-7"
-                style={{ color: isActive ? 'white' : 'var(--accent)' }}
+                style={{ color: isActive ? 'var(--color-text-inverse)' : 'var(--accent)' }}
               />
             </div>
             <ArrowRight
               size={20}
               className="md:w-6 md:h-6 transition-transform duration-300 group-hover:translate-x-2"
-              style={{ color: isActive ? 'white' : 'var(--accent)' }}
+              style={{ color: isActive ? 'var(--color-text-inverse)' : 'var(--accent)' }}
             />
           </div>
           <div
-            className="text-[10px] md:text-xs tracking-[0.25em] md:tracking-[0.3em] uppercase mb-2 md:mb-3"
+            className="type-meta mb-2 md:mb-3"
             style={{
-              color: isActive ? 'white' : 'var(--ink)',
-              opacity: 0.7,
+              color: isActive ? 'var(--color-text-inverse)' : 'var(--color-text-primary)',
+              opacity: 0.8,
             }}
           >
             {method.label}
           </div>
           <div
-            className="text-xl md:text-2xl mb-1 md:mb-2 break-all"
-            style={{ color: isActive ? 'white' : 'var(--ink)' }}
+            className="type-heading-m mb-1 md:mb-2 break-all"
+            style={{ color: isActive ? 'var(--color-text-inverse)' : 'var(--color-text-primary)' }}
           >
             {method.value}
           </div>
           <div
-            className="text-sm"
+            className="type-body"
             style={{
-              color: isActive ? 'white' : 'var(--ink)',
-              opacity: 0.6,
+              color: isActive ? 'var(--color-text-inverse)' : 'var(--color-text-primary)',
+              opacity: 0.72,
             }}
           >
             {method.description}
@@ -166,11 +166,8 @@ export function Contact2({
   }, []);
 
   return (
-    <section
-      className="relative min-h-screen px-4 md:px-8 lg:px-20 py-16 md:py-24 lg:py-32"
-      style={{ backgroundColor: 'var(--color-bg-canvas)' }}
-    >
-      <div className="relative z-10 max-w-[1800px] mx-auto">
+    <div className="relative" style={{ backgroundColor: 'var(--color-bg-canvas)' }}>
+  <div className="relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -184,10 +181,7 @@ export function Contact2({
               className="w-12 md:w-16 h-[1px]"
               style={{ backgroundColor: 'var(--accent)' }}
             />
-            <span
-              className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
-              style={{ color: 'var(--muted)' }}
-            >
+            <span className="type-meta text-[color:var(--color-text-secondary)]">
               Get In Touch
             </span>
             <div
@@ -195,10 +189,7 @@ export function Contact2({
               style={{ backgroundColor: 'var(--accent)' }}
             />
           </div>
-          <h2
-            className="text-6xl md:text-8xl lg:text-9xl tracking-[-0.02em]"
-            style={{ color: 'var(--ink)', fontWeight: 600 }}
-          >
+          <h2 className="type-display-xl text-[color:var(--color-text-primary)]">
             Let's Talk
           </h2>
         </motion.div>
@@ -225,7 +216,7 @@ export function Contact2({
                 viewport={{ once: true }}
                 className="p-6 md:p-8 rounded-2xl md:rounded-3xl"
                 style={{
-                  backgroundColor: 'var(--card-bg)',
+                  backgroundColor: 'transparent',
                   boxShadow: 'var(--shadow-elev)',
                 }}
               >
@@ -316,7 +307,7 @@ export function Contact2({
                   >
                     <span
                       className="text-xs md:text-sm"
-                      style={{ color: formStep >= step ? 'white' : 'var(--ink)' }}
+                      style={{ color: formStep >= step ? 'var(--color-text-inverse)' : 'var(--ink)' }}
                     >
                       {step}
                     </span>
@@ -489,7 +480,7 @@ export function Contact2({
                   className="flex-1 py-3 md:py-4 text-xs md:text-sm tracking-[0.25em] md:tracking-[0.3em] uppercase rounded-2xl transition-all duration-300 flex items-center justify-center"
                   style={{
                     backgroundColor: 'var(--accent)',
-                    color: 'white',
+                    color: 'var(--color-text-inverse)',
                     boxShadow: 'var(--shadow-card-hover)',
                   }}
                 >
@@ -500,6 +491,6 @@ export function Contact2({
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

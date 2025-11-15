@@ -20,6 +20,7 @@ export type Project = {
   gallery?: string[];
   tags?: string[];
   link?: string;
+  role?: string;
 };
 
 type Props = {
@@ -59,16 +60,22 @@ function FilterButton({
       }
       viewport={{ once: true }}
       onClick={onClick}
+      aria-pressed={isActive}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
       className="relative px-6 md:px-10 py-3 md:py-4 overflow-hidden transition-all duration-500 group rounded-[16px] md:rounded-[20px]"
       style={{
-        backgroundColor: isActive ? 'var(--accent)' : 'transparent',
+        /* Make inactive filter buttons match the page surface so they blend in */
+        backgroundColor: isActive ? 'var(--accent)' : 'var(--surface)',
         color: isActive ? 'var(--bg)' : 'var(--ink)',
         border: `1px solid ${isActive ? 'var(--accent)' : 'var(--line)'}`,
+        /* subtle inner shadow on inactive buttons for a touch of affordance */
+        boxShadow: isActive
+          ? 'none'
+          : 'inset 0 1px 0 rgba(0,0,0,0.06), inset 0 -1px 0 rgba(255,255,255,0.02)',
       }}
     >
-      <span className="relative z-10 text-[10px] md:text-xs tracking-[0.2em] uppercase font-medium">
+      <span className="relative z-10 text-[10px] md:text-xs tracking-[0.12em] uppercase font-normal">
         {filter}
       </span>
       {!isActive && (
@@ -84,130 +91,8 @@ function FilterButton({
 }
 
 // Project Card Component
-function ProjectCard({
-  project,
-  index,
-  onClick,
-}: {
-  project: Project;
-  index: number;
-  onClick?: (_project: Project, _index: number) => void;
-}): JSX.Element {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-      viewport={{ once: true, amount: 0.2 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      onClick={() => onClick?.(project, index)}
-      className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center py-8 md:py-12 border-b cursor-pointer group"
-      style={{ borderColor: 'var(--line)' }}
-    >
-      {/* Index Number */}
-      <div className="hidden md:block md:col-span-1">
-        <motion.span
-          className="text-3xl md:text-4xl tabular-nums"
-          style={{
-            color: 'var(--muted)',
-            opacity: isHovered ? 1 : 0.4,
-            fontWeight: 300,
-          }}
-          animate={{ opacity: isHovered ? 1 : 0.4 }}
-          transition={{ duration: 0.3 }}
-        >
-          {String(index + 1).padStart(2, '0')}
-        </motion.span>
-      </div>
-
-      {/* Project Title - First on mobile */}
-      <div className="col-span-1 md:col-span-3 order-1 md:order-none">
-        <motion.h3
-          className="text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-2 leading-[0.95]"
-          style={{
-            color: 'var(--ink)',
-            fontWeight: 600,
-          }}
-          animate={{
-            x: isHovered ? 8 : 0,
-            color: isHovered ? 'var(--accent)' : 'var(--ink)',
-          }}
-          transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-        >
-          {project.title}
-        </motion.h3>
-        {/* Show metadata on mobile */}
-        <div className="md:hidden mt-4 grid grid-cols-2 gap-4">
-          <MetaField label="Category" value={project.category} />
-          <MetaField label="Client" value={project.client} />
-        </div>
-      </div>
-
-      {/* Project Image */}
-      <div className="col-span-1 md:col-span-4 order-2 md:order-none">
-        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 rounded-[20px]">
-          <motion.div
-            animate={{ scale: isHovered ? 1.08 : 1 }}
-            transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
-            className="w-full h-full"
-          >
-            <ImageWithFallback
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* Overlay with description */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 flex items-center justify-center p-6"
-            style={{ backgroundColor: 'rgba(46,136,255,0.95)' }}
-          >
-            <span
-              className="text-xs md:text-sm tracking-[0.25em] uppercase text-center leading-relaxed"
-              style={{ color: 'var(--bg)', fontWeight: 600 }}
-            >
-              {project.description}
-            </span>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Metadata - Hidden on mobile, shown in title section */}
-      <div className="hidden md:grid col-span-3 grid-cols-2 gap-6">
-        <MetaField label="Category" value={project.category} />
-        <MetaField label="Client" value={project.client} />
-      </div>
-
-      {/* Arrow Indicator */}
-      <div className="hidden md:flex col-span-1 justify-end">
-        <motion.div
-          animate={{
-            x: isHovered ? 4 : 0,
-            scale: isHovered ? 1.1 : 1,
-          }}
-          transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-          className="w-14 h-14 rounded-full border flex items-center justify-center"
-          style={{ borderColor: isHovered ? 'var(--accent)' : 'var(--line)' }}
-        >
-          <motion.span
-            className="text-xl"
-            style={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
-            animate={{ color: isHovered ? 'var(--accent)' : 'var(--muted)' }}
-          >
-            →
-          </motion.span>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
+// We no longer use the old ProjectCard row here. The single-column ProjectCard
+// used for project reels is implemented in `src/components/ProjectCard.tsx`.
 
 // MetaField Component
 function MetaField({ label, value }: { label: string; value: string }): JSX.Element {
@@ -219,7 +104,7 @@ function MetaField({ label, value }: { label: string; value: string }): JSX.Elem
       >
         {label}
       </div>
-      <div className="text-base" style={{ color: 'var(--ink)', fontWeight: 500 }}>
+      <div className="text-base font-medium" style={{ color: 'var(--ink)' }}>
         {value}
       </div>
     </div>
@@ -253,20 +138,16 @@ export function WorkSection({
   };
 
   return (
-    <section
-      className="relative min-h-screen px-8 md:px-16 py-24"
-      style={{ background: 'var(--surface)', color: 'var(--text)' }}
-      aria-labelledby="work-heading"
-    >
+    <div className="relative" style={{ color: 'var(--text)' }} aria-labelledby="work-heading">
       <div
         className="pointer-events-none absolute inset-x-0 -top-8 h-8"
         style={{
           background:
-            'linear-gradient(180deg, transparent, color-mix(in oklab, white 6%, transparent))',
+            'linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-neutral-0) 6%, transparent))',
         }}
       />
 
-      <div className="max-w-[1800px] mx-auto">
+  <div>
         {/* Header Section */}
         <header className="mb-16 md:mb-24 relative overflow-visible">
           <motion.div
@@ -286,7 +167,7 @@ export function WorkSection({
                 style={{ backgroundColor: 'var(--accent)' }}
               />
               <span
-                className="text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase font-medium"
+                className="text-[9px] md:text-[10px] tracking-[0.12em] md:tracking-[0.12em] uppercase font-normal"
                 style={{ color: 'var(--muted)' }}
               >
                 Selected Work
@@ -304,8 +185,8 @@ export function WorkSection({
                 ? undefined
                 : { duration: 0.8, delay: 0.1, ease: [0.19, 1, 0.22, 1] }
             }
-            className="text-4xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-12 md:mb-16"
-            style={{ color: 'var(--ink)', fontWeight: 600 }}
+            className="type-display-xl tracking-[-0.02em] mb-12 md:mb-16 font-display"
+            style={{ color: 'var(--ink)' }}
           >
             Projects
           </motion.h2>
@@ -329,14 +210,75 @@ export function WorkSection({
           </nav>
         </header>
 
-        <motion.div layout className="space-y-4">
+        <motion.div layout className="space-y-14">
           {filteredProjects.map((project, index) => (
-            <ProjectCard
+            <article
               key={project.id || project.title}
-              project={project}
-              index={index}
-              onClick={handleProjectClick}
-            />
+              className={`grid gap-8 items-center md:grid-cols-[minmax(0,0.9fr)_minmax(0,2fr)_minmax(0,1.1fr)]`}
+            >
+              {/* Left column: index/role/year */}
+              <div className="text-sm text-muted leading-relaxed">
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted/80">
+                  {String(index + 1).padStart(2, '0')}
+                </p>
+                <p className="mt-2 font-medium text-default">{project.role}</p>
+                {project.year && (
+                  <p className="mt-1 text-muted/70">{project.year}</p>
+                )}
+              </div>
+
+              {/* Middle column: image + title */}
+              <div className="max-w-[640px] mx-auto w-full">
+                {/* metadata for mobile (category/client) */}
+                <div className="md:hidden mt-4 grid grid-cols-2 gap-4">
+                  <MetaField label="Category" value={project.category} />
+                  <MetaField label="Client" value={project.client} />
+                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="relative"
+                >
+                  <h3 className="type-heading-l mb-4 font-display" style={{ color: 'var(--ink)' }}>
+                    {project.title}
+                  </h3>
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-3xl">
+                    <ImageWithFallback
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Right column: tags + CTA */}
+              <div className="flex flex-col items-start md:items-end gap-3 text-sm">
+                <div className="flex flex-wrap gap-2 md:justify-end">
+                  {project.tags?.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border px-3 py-1 text-xs uppercase tracking-[0.16em] text-muted/80"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  data-testid={`case-study-${project.id}`}
+                  className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.16em] uppercase text-muted hover:text-default"
+                  onClick={() => handleProjectClick(project, index)}
+                >
+                  View case study
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border">
+                    →
+                  </span>
+                </button>
+              </div>
+            </article>
           ))}
         </motion.div>
 
@@ -350,6 +292,6 @@ export function WorkSection({
           </div>
         )}
       </div>
-    </section>
+  </div>
   );
 }

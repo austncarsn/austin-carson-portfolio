@@ -8,8 +8,12 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --max-warnings=0",
+  "test:unit": "vitest --run --environment jsdom",
+  
     "format": "prettier --check .",
-    "optimize-images": "node scripts/optimize-images.js"
+    "test:nav-indicator": "node scripts/test-nav-indicator.js",
+    "optimize-images": "node scripts/optimize-images.js",
+    "fetch-og": "node scripts/fetch-og-images.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -26,6 +30,9 @@
   "devDependencies": {
     "@eslint/js": "^9.12.0",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.8.4",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -34,18 +41,23 @@
     "@vercel/node": "^5.5.5",
     "@vitejs/plugin-react-swc": "^3.7.1",
     "autoprefixer": "^10.4.14",
+    "cheerio": "^1.1.2",
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.11.0",
+    "jsdom": "^27.2.0",
+    "node-fetch": "^2.7.0",
     "playwright": "^1.56.1",
     "postcss": "^8.4.24",
     "prettier": "^3.4.0",
+    "puppeteer": "^24.30.0",
     "sharp": "^0.34.4",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.4",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^4.0.9"
   }
 }

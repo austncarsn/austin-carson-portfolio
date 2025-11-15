@@ -1,21 +1,28 @@
+import React, { type ReactElement, type CSSProperties } from 'react';
 import { ProjectReel } from './ProjectCard';
 import FadeInSection from './FadeInSection';
 import { FortuneBox } from './FortuneBox';
 import Section from './Section';
-import React from 'react';
+
 // Import project preview assets so Vite resolves their URLs correctly
 import greenProjectPreview from '@/assets/green_project_preview.webp';
+import vacuolePreview from '@/assets-optimized/vacuole.png';
 import floralFiftyNine from '@/assets/floralfiftynine.png';
 import chromeCameoPreview from '@/assets/chrome_cameo_preview.webp';
 import aiPromptPreview from '@/assets/ai_prompt.webp';
 import samanthaPreview from '@/assets/samantha.webp';
 
-// Project data with extended descriptions
+// ======================================
+// Types
+// ======================================
+
 export type CaseStudy = {
   problem: readonly string[];
   approach: readonly string[];
   impact?: readonly string[];
 };
+
+export type ProjectTechnology = string;
 
 export type ProjectData = {
   id: string;
@@ -27,25 +34,76 @@ export type ProjectData = {
   previewImage: string;
   subtitle?: string;
   longDescription?: string;
-  technologies?: readonly string[];
+  technologies?: readonly ProjectTechnology[];
   liveUrl?: string;
   githubUrl?: string;
   caseStudy?: CaseStudy;
 };
 
-export const PROJECTS: Record<string, ProjectData> = {
+export type ProjectId = keyof typeof PROJECTS;
+export type Project = ProjectData;
+
+// ======================================
+// Project data
+// ======================================
+
+export const PROJECTS = {
+  'cell-biology-visual-textbook': {
+    id: 'cell-biology-visual-textbook',
+    title: 'Cell Biology, Interactive Visual Textbook',
+    category: 'Educational Resource',
+    year: 'November 2025',
+    role: 'Design and Front end Development',
+    description:
+      'An interactive visual resource for learning cell biology through detailed diagrams, a comprehensive glossary, and downloadable materials. Designed to make complex cellular structures accessible and memorable for students and educators.',
+    previewImage: vacuolePreview,
+    subtitle: 'Interactive, accessible cell biology learning',
+    longDescription:
+      'Cell Biology, Interactive Visual Textbook is a modern educational platform for learning cell biology. It features high quality interactive diagrams, a comprehensive glossary with audio playback, color coded categories, downloadable PDF resources, and accessibility features such as speech synthesis and larger text options. Optimized for both desktop and mobile, it makes complex cellular structures accessible and memorable for students and educators.',
+    technologies: [
+      'React 18',
+      'TypeScript',
+      'Vite',
+      'Tailwind CSS',
+      'Radix UI',
+      'Motion library',
+      'Lucide React',
+      'jsPDF',
+      'Sonner',
+    ],
+    githubUrl: 'https://github.com/austncarsn/biology-virtual-textbook',
+    caseStudy: {
+      problem: [
+        'Cell biology concepts are often difficult for students to visualize and remember.',
+        'Traditional textbooks lack interactive and accessible features for diverse learners.',
+        'Educators need downloadable, high quality resources for teaching cellular structures.',
+      ],
+      approach: [
+        'Designed interactive diagrams of cellular organelles and processes with detailed illustrations.',
+        'Built a comprehensive glossary with expandable definitions and audio playback for accessibility.',
+        'Implemented color coded categories and intuitive navigation for visual learning.',
+        'Enabled PDF generation and download for figures and resources using jsPDF.',
+        'Optimized for responsive design and accessibility, including speech synthesis and larger text options.',
+      ],
+      impact: [
+        'Improved student engagement and retention through interactive visual learning.',
+        'Enhanced accessibility for diverse learners with audio and text options.',
+        'Provided educators with downloadable, high quality teaching materials.',
+      ],
+    },
+  },
   'graphic-design-gallery': {
     id: 'graphic-design-gallery',
-    title: 'Graphic Design Gallery - Creative Portfolio',
+    title: 'Graphic Design Gallery, Creative Portfolio',
     category: 'Design Portfolio',
     year: 'October 2025',
-    role: 'Design & Front-end Development',
+    role: 'Design and Front end Development',
     description:
-      'A curated gallery showcasing graphic design work with elegant layouts, smooth animations, and responsive design.',
+      'A curated gallery that showcases graphic design work with elegant layouts, smooth animations, and responsive design.',
     previewImage: greenProjectPreview,
     subtitle: 'Elegant showcase for creative design portfolios',
     longDescription:
-      'Graphic Design Gallery is a sophisticated portfolio platform designed to showcase creative work in an engaging and professional manner. Features include responsive grid layouts, smooth hover animations, detailed project views, and optimized performance for fast loading across all devices.',
+      'Graphic Design Gallery is a sophisticated portfolio platform designed to present creative work in an engaging and professional way. Features include responsive grid layouts, smooth hover animations, detailed project views, and performance optimizations for fast loading across devices.',
     technologies: [
       'React',
       'Next.js',
@@ -63,15 +121,15 @@ export const PROJECTS: Record<string, ProjectData> = {
         'Designers require intuitive tools for presenting work across various devices and screen sizes.',
       ],
       approach: [
-        'Developed a responsive grid system with elegant hover animations and fluid transitions using Framer Motion.',
-        'Implemented optimized image loading with Next.js Image component and lazy loading for peak performance.',
-        'Created detailed project views with smooth navigation and intuitive back functionality.',
-        'Utilized modern CSS techniques and Tailwind utilities for enhanced visual appeal and maintainability.',
-        'Built a flexible content management structure for easy portfolio updates.',
+        'Developed a responsive grid system with refined hover animations and fluid transitions using Framer Motion.',
+        'Implemented optimized image loading with the Next.js Image component and lazy loading for performance.',
+        'Created detailed project views with smooth navigation and intuitive back behavior.',
+        'Used modern CSS techniques and Tailwind utilities for visual polish and maintainability.',
+        'Built a flexible content structure for easy portfolio updates.',
       ],
       impact: [
-        'Achieved 95+ Lighthouse performance score with sub-2s load times.',
-        'Improved user engagement by 60% with smooth animations and responsive design.',
+        'Achieved a 95 plus Lighthouse performance score with sub two second load times.',
+        'Improved user engagement with smooth animations and responsive layouts.',
         'Enhanced accessibility with WCAG 2.1 AA compliance and keyboard navigation.',
         'Provided a scalable platform that adapts to growing portfolio needs.',
       ],
@@ -79,54 +137,54 @@ export const PROJECTS: Record<string, ProjectData> = {
   },
   'floral-design-svg': {
     id: 'floral-design-svg',
-    title: 'Floral Design SVG - Web App',
+    title: 'Floral Design SVG, Web App',
     category: 'Design Tool',
     year: 'October 2025',
-    role: 'Web App Development & UI Design',
+    role: 'Web App Development and UI Design',
     description:
-      'A minimalist web app for generating elegant, nature-inspired floral illustrations with real-time preview and high-resolution export capabilities.',
+      'A minimalist web app for generating elegant, nature inspired floral illustrations with real time preview and high resolution export.',
     previewImage: floralFiftyNine,
     subtitle: 'Elegant floral illustrations for creative projects',
     longDescription:
-      'Floral Design SVG is a minimalist web application that generates elegant, nature-inspired floral illustrations. Users can explore preset compositions, preview their designs in real-time, and download high-resolution PNG or SVG files for use across print and digital projects. Built with React and TypeScript, it combines accessibility with precision, offering a lightweight alternative to complex vector software.',
+      'Floral Design SVG is a minimalist web application that generates elegant, nature inspired floral illustrations. Users can explore preset compositions, preview designs in real time, and download high resolution PNG or SVG files for print and digital work. Built with React and TypeScript, it offers a lightweight alternative to complex vector tools.',
     technologies: ['React', 'TypeScript', 'SVG', 'Canvas API', 'Vite', 'Vercel'],
     liveUrl: 'https://floral-design-svg.vercel.app',
     githubUrl: 'https://github.com/austncarsn/floral-design-svg',
     caseStudy: {
       problem: [
-        'Designers need quick access to high-quality floral illustrations without manual drawing or expensive software.',
-        'Creating consistent botanical elements across multiple design projects is time-consuming.',
+        'Designers need quick access to high quality floral illustrations without manual drawing or expensive software.',
+        'Creating consistent botanical elements across multiple design projects is time consuming.',
         'Generating scalable vector variations of floral designs for different branding contexts requires specialized tools.',
         'Complex vector software has steep learning curves and is often overkill for simple floral elements.',
       ],
       approach: [
         'Developed a minimalist web app with intuitive preset compositions for instant floral generation.',
-        'Implemented real-time SVG preview functionality for instant design feedback and iteration.',
-        'Created a clean, accessible UI with high-resolution export capabilities (PNG and SVG formats).',
-        'Built with React and TypeScript for optimal performance, type safety, and maintainability.',
-        'Utilized the Canvas API for efficient rendering and export functionality.',
+        'Implemented real time SVG preview for instant design feedback and iteration.',
+        'Created a clean, accessible interface with high resolution export in PNG and SVG formats.',
+        'Built with React and TypeScript for performance, type safety, and maintainability.',
+        'Used the Canvas API for efficient rendering and export.',
       ],
       impact: [
-        'Accelerated floral illustration creation by 80% compared to manual drawing.',
-        'Ensured visual consistency across botanical design elements with preset compositions.',
+        'Accelerated floral illustration creation compared to manual drawing.',
+        'Ensured visual consistency across botanical elements with preset compositions.',
         'Enabled rapid prototyping of floral designs for various brand applications.',
-        'Provided a lightweight, browser-based alternative to complex vector software like Adobe Illustrator.',
-        'Achieved 100% scalability with vector SVG output for print and digital use.',
+        'Provided a lightweight, browser based alternative to tools like Adobe Illustrator.',
+        'Delivered fully scalable vector SVG output for print and digital use.',
       ],
     },
   },
   'cameo-store': {
     id: 'cameo-store',
-    title: 'Cameo Store - Minimal E-commerce Demo',
+    title: 'Cameo Store, Minimal Ecommerce Demo',
     category: 'UI Experiment',
     year: 'October 2025',
-    role: 'Product Design & Front-end Development',
+    role: 'Product Design and Front end Development',
     description:
-      'A minimal e-commerce UI that highlights curated products through restrained design, generous whitespace, and purposeful micro-interactions.',
+      'A minimal ecommerce interface that highlights curated products through restraint, whitespace, and purposeful micro interactions.',
     previewImage: chromeCameoPreview,
     subtitle: 'Premium product presentation through restraint and clarity',
     longDescription:
-      'Cameo Store is a minimal e-commerce UI focused on product presentation and user experience. Generous spacing and a clear typographic hierarchy spotlight curated items, while purposeful micro-interactions guide browsing and checkout. The design system emphasizes restraint and clarity to elevate perceived product value and support scalable merchandising.',
+      'Cameo Store is a minimal ecommerce interface focused on product presentation and user experience. Generous spacing and a clear typographic hierarchy spotlight curated items, while purposeful micro interactions guide browsing and checkout. The design system emphasizes restraint and clarity to elevate perceived product value and support scalable merchandising.',
     technologies: [
       'React',
       'Next.js',
@@ -139,37 +197,37 @@ export const PROJECTS: Record<string, ProjectData> = {
     githubUrl: 'https://github.com/austncarsn/cameo-web',
     caseStudy: {
       problem: [
-        'Premium collectibles require clear presentation without visual clutter or overwhelming detail.',
-        'Traditional e-commerce sites often have friction in the checkout flow, reducing conversion rates.',
-        'Users need subtle feedback during interactions without distracting animations.',
-        'Maintaining a premium aesthetic while ensuring usability across devices is challenging.',
+        'Premium collectibles need clear presentation without visual clutter.',
+        'Traditional ecommerce sites often introduce friction in the checkout flow, reducing conversion.',
+        'Users need subtle feedback during interactions without distracting animation.',
+        'Maintaining a premium aesthetic while staying usable across devices is challenging.',
       ],
       approach: [
-        'Adopted a card-first product layout with generous whitespace (40px+ margins) and clear typographic hierarchy.',
-        'Designed concise, contextual micro-interactions for add-to-cart and checkout using Framer Motion.',
-        'Prioritized a restrained visual language with neutral colors and minimal decorative elements.',
-        'Implemented responsive design patterns to maintain premium feel across mobile and desktop.',
-        'Created a modular component system for scalable product catalog expansion.',
+        'Adopted a card first product layout with generous spacing and clear type hierarchy.',
+        'Designed concise, contextual micro interactions for add to cart and checkout with Framer Motion.',
+        'Prioritized a restrained visual language with neutral colors and minimal decoration.',
+        'Implemented responsive patterns to keep the premium feel on mobile and desktop.',
+        'Created a modular component system for scalable catalog expansion.',
       ],
       impact: [
-        'Improved clarity and perceived product quality by 45% in user testing.',
-        'Reduced checkout abandonment by 30% with streamlined flow and reduced cognitive load.',
-        'Achieved 98 Lighthouse performance score with optimized images and lazy loading.',
-        'Created a scalable visual system that supports future product category expansions.',
-        'Enhanced mobile conversion rates by 25% with touch-optimized interactions.',
+        'Improved clarity and perceived product quality in user testing.',
+        'Reduced checkout abandonment with a streamlined flow and reduced cognitive load.',
+        'Achieved a high Lighthouse performance score with optimized images and lazy loading.',
+        'Created a scalable visual system that supports future product categories.',
+        'Enhanced mobile conversion rates with touch optimized interactions.',
       ],
     },
   },
   'icon-library': {
     id: 'icon-library',
-    title: 'American Heritage Icon Library - Icon System',
+    title: 'American Heritage Icon Library, Icon System',
     category: 'Icon System',
     year: 'October 2025',
-    role: 'Design Systems & Iconography',
+    role: 'Design Systems and Iconography',
     description:
-      'A precision icon system with consistent 24px grid geometry, accessible markup, and developer-friendly React component exports.',
+      'A precision icon system with a consistent 24px grid, accessible markup, and developer friendly React component exports.',
     previewImage: samanthaPreview,
-    subtitle: 'Systematic iconography with cross-platform consistency',
+    subtitle: 'Systematic iconography with cross platform consistency',
     longDescription:
       'The American Heritage Icon Library is a precision icon system focused on clarity and consistency. Icons are crafted on a 24px grid and follow strict rules for stroke weight and spacing. The library includes accessible markup and ARIA support, and ships as React components for straightforward integration across web applications.',
     technologies: [
@@ -187,38 +245,38 @@ export const PROJECTS: Record<string, ProjectData> = {
       problem: [
         'Teams need a consistent, legible icon set that works across multiple products and screen sizes.',
         'Icons must be accessible with proper ARIA labels and semantic markup for assistive technologies.',
-        'Designers and developers require easy integration without hunting for individual SVG files.',
-        'Maintaining visual consistency across icon sets created by different team members is challenging.',
+        'Designers and developers want straightforward integration without hunting for individual SVG files.',
+        'Maintaining visual consistency across icons created by different team members is difficult.',
       ],
       approach: [
-        'Designed icons on a precise 24px grid with consistent 2px stroke weights and 2px corner radii.',
-        'Created comprehensive documentation of design rules and grid systems for maintaining consistency.',
-        'Provided componentized React exports with TypeScript support for type-safe integration.',
-        'Implemented semantic markup and ARIA attributes to ensure accessibility compliance.',
-        'Built a searchable showcase site with copy-paste code snippets for rapid adoption.',
-        'Established a Figma library with shared components for cross-team collaboration.',
+        'Designed icons on a precise 24px grid with consistent stroke weights and corner radii.',
+        'Documented design rules and grid systems for long term consistency.',
+        'Provided componentized React exports with TypeScript support for type safe integration.',
+        'Implemented semantic markup and ARIA attributes to support accessibility.',
+        'Built a searchable showcase site with copy ready code snippets for rapid adoption.',
+        'Established a Figma library with shared components for collaboration.',
       ],
       impact: [
-        'Achieved 100% visual consistency across 200+ icons used in multiple products.',
-        'Reduced icon integration time by 70% with pre-built React components.',
-        'Improved accessibility scores by 15 points with proper ARIA implementation.',
-        'Enhanced legibility at small sizes (16px) with optimized stroke weights.',
-        'Simplified designer-developer handoff with comprehensive documentation and Figma integration.',
+        'Achieved strong visual consistency across hundreds of icons used in multiple products.',
+        'Reduced icon integration time with pre built React components.',
+        'Improved accessibility scores with proper ARIA implementation.',
+        'Enhanced legibility at small sizes with tuned stroke weights.',
+        'Simplified designer and developer handoff with documentation and Figma integration.',
       ],
     },
   },
   'ai-prompt-studio-vehicles': {
     id: 'ai-prompt-studio-vehicles',
-    title: 'AI Prompt Studio - Vehicles',
+    title: 'AI Prompt Studio, Vehicles',
     category: 'AI Tooling',
     year: 'October 2025',
-    role: 'Front-end Development & Prompt Engineering',
+    role: 'Front end Development and Prompt Engineering',
     description:
-      'An experimental prompt-authoring interface for crafting cinematic, vehicle-focused AI prompts with parameterized controls and live preview.',
+      'An experimental prompt authoring interface for cinematic, vehicle focused AI prompts with parameter controls and live preview.',
     previewImage: aiPromptPreview,
-    subtitle: 'Interactive prompt authoring for vehicle-focused AI generation',
+    subtitle: 'Interactive prompt authoring for vehicle focused AI generation',
     longDescription:
-      'AI Prompt Studio - Vehicles enables users to construct richly detailed prompts tailored for automotive renders. The tool supports parameterized inputs for vehicle make, color, lighting, motion, and atmosphere, generating descriptive outputs ready for text-to-image or video models. It includes live prompt generation, preset management, and export options for PNG and SVG results, fostering a repeatable creative workflow.',
+      'AI Prompt Studio, Vehicles enables users to construct richly detailed prompts tailored for automotive renders. The tool supports parameter inputs for vehicle make, color, lighting, motion, and atmosphere, generating descriptive outputs ready for text to image or video models. It includes live prompt generation, preset management, and export options for creative workflows.',
     technologies: [
       'Tailwind CSS',
       'Alpine.js',
@@ -231,72 +289,86 @@ export const PROJECTS: Record<string, ProjectData> = {
     githubUrl: 'https://github.com/austncarsn/ai-prompt-studio-vehicles',
     caseStudy: {
       problem: [
-        'Iterating on AI prompts for vehicle imagery is time-consuming and difficult to reproduce.',
+        'Iterating on AI prompts for vehicle imagery is time consuming and hard to reproduce.',
         'Designers and engineers lack predictable interfaces to tweak style and composition parameters.',
-        'Text-to-image models require detailed, structured prompts for consistent quality output.',
-        'Capturing and versioning successful prompts for team collaboration is manual and error-prone.',
+        'Text to image models need detailed, structured prompts for consistent quality.',
+        'Capturing and versioning successful prompts for a team is manual and error prone.',
       ],
       approach: [
-        'Created an interactive prompt authoring workspace with live preview and parameter controls.',
-        'Added granular controls for vehicle make, color, lighting conditions, motion blur, and atmospheric effects.',
-        'Implemented prompt versioning and export functionality to capture successful iterations.',
-        'Built with lightweight Alpine.js for reactive updates without heavy framework overhead.',
+        'Created an interactive prompt workspace with live preview and parameter controls.',
+        'Added granular controls for vehicle make, color, lighting conditions, motion blur, and atmosphere.',
+        'Implemented prompt versioning and export to capture successful iterations.',
+        'Built with lightweight Alpine.js for reactive updates without framework overhead.',
         'Used LocalStorage for preset management and session persistence.',
-        'Designed an accessibility-ready UI with keyboard navigation and screen reader support.',
+        'Designed an accessibility ready interface with keyboard navigation and screen reader support.',
       ],
       impact: [
-        'Reduced iteration time for prompt engineering by 65% with rapid parameter experimentation.',
-        'Captured reproducible prompts and assets to streamline handoff between design and AI teams.',
-        'Enabled consistent quality output with structured prompt templates.',
+        'Reduced iteration time for prompt engineering with rapid parameter experimentation.',
+        'Captured reusable prompts and assets to streamline handoff between design and AI teams.',
+        'Enabled consistent output quality with structured prompt templates.',
         'Created a reusable workflow for automotive visualization projects.',
-        'Demonstrated efficient prompt engineering in a self-contained browser environment.',
+        'Demonstrated efficient prompt engineering in a self contained browser environment.',
         'Improved team collaboration with shareable preset configurations.',
       ],
     },
   },
-} as const;
+} as const satisfies Record<string, ProjectData>;
 
 // Array version for easy iteration
-export const projects = Object.values(PROJECTS) as readonly ProjectData[];
+export const projects: readonly ProjectData[] = Object.values(PROJECTS);
 
-export type ProjectId = keyof typeof PROJECTS;
+// ======================================
+// Visual constants
+// ======================================
 
-export type Project = ProjectData;
+const GRAIN_STYLE: CSSProperties = {
+  // Use the centralized speckle token so the pattern can be themed from tokens.css
+  backgroundImage: 'var(--pattern-speckle-white)',
+  backgroundSize: '100px 100px',
+};
 
-export default function Projects(): React.JSX.Element {
+// ======================================
+// Component
+// ======================================
+
+export default function Projects(): ReactElement {
   return (
     <Section
       id="work"
       bgClass="bg-[var(--color-bg-canvas)] text-neutral-900"
-      labelNumber="02"
-      labelTitle="WORK"
-      labelDelay={0}
       aria-labelledby="work-section-label"
-      noContainer={true}
+      noContainer
     >
       {/* Subtle grain texture */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-soft-light"
-        style={{
-          backgroundImage:
-            'radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 60%, #fff, transparent)',
-          backgroundSize: '100px 100px',
-        }}
+        className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light"
+        style={GRAIN_STYLE}
         aria-hidden="true"
       />
 
       <div className="relative">
         <div id="work-section-label" className="sr-only">
-          Work Portfolio
+          Work portfolio
         </div>
 
-        {/* Enhanced horizontal scroll reel with all new features */}
+        {/* Section header */}
+        <div className="mx-auto mb-8 w-full max-w-7xl px-4 md:px-8 lg:px-16">
+          <div className="text-center md:text-left">
+            <div className="type-meta text-[color:var(--color-text-secondary)]">
+              Selected work
+            </div>
+            <h2 className="type-display-xl mt-3 text-[color:var(--color-text-primary)]">
+              Projects
+            </h2>
+          </div>
+        </div>
+
         <ProjectReel projects={projects} />
       </div>
 
-      {/* Fortune Box - Centered after all project cards */}
+      {/* Fortune Box */}
       <FadeInSection delay={projects.length * 100 + 100} direction="up">
-        <div className="flex justify-center mt-16 sm:mt-20 md:mt-24">
+        <div className="mt-16 flex justify-center sm:mt-20 md:mt-24">
           <FortuneBox />
         </div>
       </FadeInSection>

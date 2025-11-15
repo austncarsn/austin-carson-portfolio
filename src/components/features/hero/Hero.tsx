@@ -1,369 +1,381 @@
 import React, {
-  useRef,
-  useMemo,
   useState,
   useEffect,
   useCallback,
-  createContext,
-  useContext,
+  type ReactElement,
+  type MouseEvent,
 } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useReducedMotion,
-  type MotionValue,
-} from 'motion/react';
-import { ImageWithFallback } from '../../common/media/ImageWithFallback';
+import { motion, useReducedMotion } from 'motion/react';
+import { ChevronRight } from 'lucide-react';
 
-import astroNature from '../../../assets/astro_nature.webp';
-import wallArt from '../../../assets/wall_art.webp';
-import cowboys from '../../../assets/Cowboys.webp';
+// ======================================
+// Constants
+// ======================================
 
-const HeroContext = createContext<
-  | {
-      scrollYProgress?: MotionValue<number>;
-      isMobile: boolean;
-      reduceMotion: boolean;
-    }
-  | undefined
->(undefined);
+const BREAKPOINT_SMALL = 375;
+const BREAKPOINT_MOBILE = 768;
+const BREAKPOINT_TABLET = 1024;
+const BREAKPOINT_DESKTOP = 1280;
 
-function useHeroContext(): {
-  scrollYProgress?: MotionValue<number>;
+// ======================================
+// Types
+// ======================================
+
+// CursorState removed — not needed in the new hero.
+
+// ======================================
+// Hooks
+// ======================================
+
+function useDeviceSize(): {
+  isSmall: boolean;
   isMobile: boolean;
-  reduceMotion: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
 } {
-  const ctx = useContext(HeroContext);
-  if (!ctx) throw new Error('useHeroContext must be used within HeroContext.Provider');
-  return ctx;
-}
-
-function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState<boolean>(() =>
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false
-  );
-  useEffect(() => {
-    const onResize = (): void => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', onResize, { passive: true });
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  return isMobile;
-}
-
-function CursorGradient({
-  x,
-  y,
-  visible,
-}: {
-  x: number;
-  y: number;
-  visible: boolean;
-}): React.ReactElement {
-  return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none absolute inset-0"
-      style={{
-        background: `radial-gradient(600px circle at ${x * 100}% ${y * 100}%, rgba(150,200,255,0.08), transparent 60%)`,
-      }}
-      animate={{ opacity: visible ? 1 : 0.6 }}
-      transition={{ duration: 0.35 }}
-    />
-  );
-}
-
-function TextureOverlay(): React.ReactElement {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 opacity-[0.15]"
-      style={{
-        background:
-          'radial-gradient(1200px 600px at 10% 10%, rgba(0,0,0,0.04), transparent 60%), radial-gradient(900px 500px at 90% 15%, rgba(150,200,255,0.06), transparent 55%)',
-      }}
-    />
-  );
-}
-
-type GalleryImage = { src: string; alt: string; className?: string };
-
-function GalleryItem({
-  image,
-  index,
-  onMouseEnter,
-  onMouseLeave,
-  eager,
-}: {
-  image: GalleryImage;
-  index: number;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  eager?: boolean;
-}): React.ReactElement {
-  const { reduceMotion, isMobile, scrollYProgress } = useHeroContext();
-  const initialScale = reduceMotion ? 1 : 0.99;
-  const initialY = reduceMotion ? 0 : isMobile ? 8 : 20;
-
-  // Always create a progress MotionValue to keep hooks stable; use a fallback when
-  // the real scrollYProgress is not available. This ensures useTransform is
-  // called consistently every render (React hook rules).
-  const fallbackProgress = useMotionValue(0);
-  const progress = scrollYProgress ?? fallbackProgress;
-
-  const depth = 1 + index * 0.12; // small incremental depth per index
-  const yParallax = useTransform(
-    progress,
-    [0, 1],
-    reduceMotion || isMobile ? [0, 0] : [depth * 6, -depth * 6]
-  );
-  const rotateParallax = useTransform(
-    progress,
-    [0, 1],
-    reduceMotion || isMobile ? [0, 0] : [depth * 0.6, -depth * 0.6]
-  );
-
-  return (
-    <motion.div
-      initial={{ opacity: reduceMotion ? 1 : 0, y: initialY, scale: initialScale }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: isMobile ? 0.45 : 0.7 }}
-      className="w-full max-w-[420px]"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{
-        boxShadow: 'var(--shadow-card)',
-        transition: 'box-shadow .28s ease, transform .28s ease',
-        y: yParallax,
-        rotate: rotateParallax,
-      }}
-    >
-      <div
-        className="relative w-full overflow-hidden rounded-xl md:rounded-3xl bg-surface"
-        style={{ aspectRatio: '3/4' }}
-      >
-        <motion.div
-          whileHover={reduceMotion || isMobile ? undefined : { y: -6, scale: 1.02 }}
-          transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-          className="w-full h-full"
-        >
-          <ImageWithFallback
-            src={image.src}
-            alt={image.alt}
-            className={image.className ?? 'w-full h-full object-cover'}
-            loading={eager ? 'eager' : 'lazy'}
-          />
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
-
-function MobileGalleryCarousel({
-  images,
-}: {
-  images: GalleryImage[];
-}): React.ReactElement {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    if (index < 0) setIndex(0);
-    if (index > images.length - 1) setIndex(images.length - 1);
-  }, [index, images.length]);
-  if (images.length === 0) return <div />;
-  return (
-    <div className="w-full max-w-md">
-      <div className="w-full">
-        <GalleryItem image={images[index]} index={index} eager />
-      </div>
-      <div className="flex items-center justify-between mt-4 px-2">
-        <button
-          className="px-3 py-2 rounded-full bg-white/90 shadow-sm"
-          onClick={() => setIndex((i) => Math.max(0, i - 1))}
-          aria-label="Previous"
-          disabled={index === 0}
-        >
-          ←
-        </button>
-        <div className="flex gap-2">
-          {images.map((_, i) => (
-            <span
-              key={i}
-              className={`block w-2 h-2 rounded-full ${i === index ? 'bg-neutral-900' : 'bg-neutral-300'}`}
-            />
-          ))}
-        </div>
-        <button
-          className="px-3 py-2 rounded-full bg-white/90 shadow-sm"
-          onClick={() => setIndex((i) => Math.min(images.length - 1, i + 1))}
-          aria-label="Next"
-          disabled={index === images.length - 1}
-        >
-          →
-        </button>
-      </div>
-    </div>
-  );
-}
-
-const HeroText: React.FC = () => {
-  const { reduceMotion, isMobile } = useHeroContext();
-  const handleExploreClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = document.getElementById('work');
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    else window.location.hash = '#work';
-  }, []);
-  return (
-    <div className="text-center w-full">
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: isMobile ? 8 : 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-6"
-      >
-        <span className="uppercase text-neutral-800 text-[10px] md:text-sm tracking-[0.15em] md:tracking-[0.2em]">
-          Designer & Developer — Austin Carson
-        </span>
-      </motion.div>
-      <motion.h1
-        initial={reduceMotion ? false : { y: isMobile ? 12 : 24, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="hero-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl mb-4 md:mb-6 text-neutral-900 tracking-tight leading-[1.05] font-bold"
-      >
-        Interfaces With Intent
-      </motion.h1>
-      <motion.p
-        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-base md:text-xl lg:text-2xl max-w-2xl mx-auto text-neutral-500 leading-relaxed"
-      >
-        Design systems that scale. Experiences that connect. Impact you can measure.
-      </motion.p>
-      <div className="mt-8 flex items-center justify-center gap-4">
-        <a
-          href="#work"
-          onClick={handleExploreClick}
-          className="hero-cta inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white shadow-lg"
-        >
-          Explore the work
-        </a>
-        <a
-          href="#/resume"
-          className="inline-flex items-center justify-center px-4 py-3 rounded-full text-neutral-700 hover:underline"
-        >
-          Resume
-        </a>
-      </div>
-    </div>
-  );
-};
-
-export function Hero(): React.ReactElement {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
-  const isMobile = useIsMobile();
-  const [cursor, setCursor] = useState({ x: 0.5, y: 0.5 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
+  const [deviceSize, setDeviceSize] = useState({
+    isSmall: false,
+    isMobile: false,
+    isTablet: false,
+    isDesktop: true,
   });
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? ['0%', '0%'] : ['0%', '20%']
-  );
-  const scale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1, 1] : [1, 1.04]);
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.6, 1],
-    reduceMotion ? [1, 1, 1] : [1, 0.9, 0.14]
-  );
-
-  const baseImgClass = 'w-full h-full object-cover contrast-[1.12] brightness-[1.02]';
-  const images: GalleryImage[] = useMemo(
-    () => [
-      { src: cowboys, alt: 'Cowboys', className: baseImgClass },
-      { src: wallArt, alt: 'Wall art', className: baseImgClass },
-      { src: astroNature, alt: 'Astro nature', className: baseImgClass },
-    ],
-    []
-  );
 
   useEffect(() => {
-    if (reduceMotion || isMobile) return;
-    const el = containerRef.current;
-    if (!el) return;
-    const handle = (e: MouseEvent): void => {
-      const r = el.getBoundingClientRect();
-      setCursor({
-        x: Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)),
-        y: Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)),
+    const checkDevice = (): void => {
+      const width = window.innerWidth;
+      setDeviceSize({
+        isSmall: width < BREAKPOINT_SMALL,
+        isMobile: width < BREAKPOINT_MOBILE,
+        isTablet: width >= BREAKPOINT_MOBILE && width < BREAKPOINT_TABLET,
+        isDesktop: width >= BREAKPOINT_DESKTOP,
       });
     };
-    el.addEventListener('mousemove', handle, { passive: true });
-    return () => el.removeEventListener('mousemove', handle);
-  }, [reduceMotion, isMobile]);
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
+
+  return deviceSize;
+}
+
+// ======================================
+// Visual Components
+// ======================================
+
+function TechnicalGrid(): ReactElement {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 opacity-[0.03]"
+      style={{
+        backgroundImage: `
+          radial-gradient(circle at center, rgba(0,0,0,0.15) 1px, transparent 1px)
+        `,
+        backgroundSize: '24px 24px',
+      }}
+    />
+  );
+}
+
+function BackgroundGradient(): ReactElement {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      style={{
+        background: `
+          radial-gradient(ellipse at top, var(--surface) 0%, #f8f8f8 40%, #f0f0f0 100%)
+        `,
+      }}
+    />
+  );
+}
+
+function RadialSpotlight(): ReactElement {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 flex items-center justify-center"
+    >
+      <div
+        className="w-full max-w-4xl h-96 opacity-[0.08]"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+        }}
+      />
+    </div>
+  );
+}
+
+// ======================================
+// Visual Components
+// ======================================
+
+// (previous cursor + texture + glow visuals removed; replaced by TechnicalGrid and RadialSpotlight)
+
+// ======================================
+// Hero Text Components
+// ======================================
+
+const HeroBadge = React.memo(function HeroBadge({
+  shouldAnimate,
+  isMobile,
+}: {
+  shouldAnimate: boolean;
+  isMobile: boolean;
+}): ReactElement {
+  return (
+    <motion.div
+      initial={shouldAnimate ? { opacity: 0, y: 10 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={isMobile ? 'mb-6' : 'mb-8'}
+    >
+      <span
+        className="inline-flex items-center gap-2.5 rounded-full border backdrop-blur-md px-4 py-2"
+        style={{
+          fontSize: isMobile ? '0.75rem' : '0.8125rem',
+          fontWeight: 500,
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          color: 'rgba(0, 0, 0, 0.65)',
+          borderColor: 'rgba(0, 0, 0, 0.1)',
+          backgroundColor: 'rgba(0, 0, 0, 0.03)',
+        }}
+      >
+        <span
+          className="h-1.5 w-1.5 rounded-full relative"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            boxShadow: '0 0 8px rgba(0, 0, 0, 0.3), 0 0 16px rgba(0, 0, 0, 0.15)',
+          }}
+        >
+          <span
+            className="absolute inset-0 rounded-full animate-ping"
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          />
+        </span>
+        <span className="sr-only">Status: </span>
+        Designer & Developer
+      </span>
+    </motion.div>
+  );
+});
+
+const HeroHeading = React.memo(function HeroHeading({
+  shouldAnimate,
+  isMobile,
+  isTablet,
+}: {
+  shouldAnimate: boolean;
+  isMobile: boolean;
+  isTablet: boolean;
+}): ReactElement {
+  const headingText = 'Interfaces With Intent';
+  const words = headingText.split(' ');
+
+  const getFontSize = (): string => {
+    if (isMobile) return '2.5rem'; // 40px for mobile
+    if (isTablet) return '4rem'; // 64px for tablet
+    return '5rem'; // 80px for desktop
+  };
+
+  const getLineHeight = (): string => {
+    if (isMobile) return '2.375rem'; // 38px for mobile
+    if (isTablet) return '3.75rem'; // 60px for tablet
+    return '4.75rem'; // 76px for desktop
+  };
 
   return (
-    <HeroContext.Provider
-      value={{
-        scrollYProgress: scrollYProgress as MotionValue<number> | undefined,
-        isMobile: !!isMobile,
-        reduceMotion: !!reduceMotion,
+    <h1 className="mb-6 text-center px-4">
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block mr-3 last:mr-0">
+          {word.split('').map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              initial={shouldAnimate ? { opacity: 0, y: isMobile ? 10 : 20 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: wordIndex * 0.1 + charIndex * 0.03,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="inline-block"
+              style={{
+                fontFamily: "'Instrument Serif', serif",
+                fontSize: getFontSize(),
+                fontWeight: 400,
+                lineHeight: getLineHeight(),
+                color: 'rgb(0, 0, 0)',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+});
+
+const HeroSubheading = React.memo(function HeroSubheading({
+  shouldAnimate,
+  isMobile,
+}: {
+  shouldAnimate: boolean;
+  isMobile: boolean;
+}): ReactElement {
+  return (
+    <motion.p
+      initial={shouldAnimate ? { opacity: 0, y: 8 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+      className={`type-body mx-auto max-w-2xl leading-relaxed text-[color:var(--color-text-secondary)] ${isMobile ? 'text-sm px-2' : 'text-base'}`}
+    >
+      Design systems that scale, experiences that feel human, outcomes you can measure.
+    </motion.p>
+  );
+});
+
+const HeroCTA = React.memo(function HeroCTA({
+  shouldAnimate,
+  onExploreClick,
+  isMobile,
+}: {
+  shouldAnimate: boolean;
+  // eslint-disable-next-line no-unused-vars
+  onExploreClick: (e: MouseEvent<HTMLAnchorElement>) => void;
+  isMobile: boolean;
+}): ReactElement {
+  return (
+    <motion.div
+      initial={shouldAnimate ? { opacity: 0, y: 10 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="mt-8 flex flex-wrap items-center justify-center gap-4"
+    >
+      <motion.a
+        href="#work"
+        onClick={onExploreClick}
+  className={`hero-cta inline-flex items-center justify-center rounded-full ${isMobile ? 'px-6 py-3 text-sm' : 'px-7 py-3.5 text-sm md:text-base'} font-medium text-inverse shadow-lg transition-transform duration-200 hover:-translate-y-0.5`}
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, color-mix(in oklab, var(--accent) 80%, var(--color-neutral-0) 10%), var(--accent))',
+        }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        Explore the work
+        <ChevronRight className="ml-2 w-4 h-4" />
+      </motion.a>
+      <motion.a
+        href="/resume"
+  className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-surface-70 backdrop-blur-sm px-5 py-3 text-sm font-medium text-neutral-800 transition-colors hover:bg-surface md:text-base"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        View résumé
+      </motion.a>
+    </motion.div>
+  );
+});
+
+// ======================================
+// Main Hero Text Component
+// ======================================
+
+type HeroTextProps = {
+  isMobile: boolean;
+  isTablet: boolean;
+  shouldAnimate: boolean;
+};
+
+const HeroText = React.memo(function HeroText({
+  isMobile,
+  isTablet,
+  shouldAnimate,
+}: HeroTextProps): ReactElement {
+  const handleExploreClick = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById('work');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.hash = '#work';
+    }
+  }, []);
+
+  return (
+    <div className="w-full text-center">
+      <HeroBadge shouldAnimate={shouldAnimate} isMobile={isMobile} />
+      <HeroHeading
+        shouldAnimate={shouldAnimate}
+        isMobile={isMobile}
+        isTablet={isTablet}
+      />
+      <HeroSubheading shouldAnimate={shouldAnimate} isMobile={isMobile} />
+      <HeroCTA
+        shouldAnimate={shouldAnimate}
+        onExploreClick={handleExploreClick}
+        isMobile={isMobile}
+      />
+    </div>
+  );
+});
+
+HeroText.displayName = 'HeroText';
+
+// ======================================
+// Hero Section
+// ======================================
+
+export function Hero(): ReactElement {
+  const reduceMotion = useReducedMotion();
+  const { isMobile, isTablet } = useDeviceSize();
+
+  const shouldAnimate = !reduceMotion;
+
+  const getMinHeight = (): string => {
+    if (isMobile) return 'calc(100vh - 4rem)';
+    return '800px';
+  };
+
+  const getPaddingTop = (): string => {
+    if (isMobile) return 'calc(env(safe-area-inset-top) + 5rem)';
+    return '0';
+  };
+
+  return (
+    <div
+      id="home"
+      aria-label="Hero section"
+      className="relative isolate overflow-hidden"
+      style={{
+        minHeight: getMinHeight(),
+        paddingTop: getPaddingTop(),
       }}
     >
-      <section
-        ref={containerRef}
-        aria-label="Intro"
-        className="relative min-h-screen isolate overflow-hidden"
-      >
-        {!reduceMotion && !isMobile && (
-          <CursorGradient x={cursor.x} y={cursor.y} visible={isHovering} />
-        )}
-        <TextureOverlay />
-        <div className="hero-accent-glow" aria-hidden />
+      {/* Background layers */}
+      <BackgroundGradient />
+      <TechnicalGrid />
+      <RadialSpotlight />
 
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-20 md:py-28">
-          <div className="relative z-30">
-            <HeroText />
-          </div>
+      {/* Content container */}
+  <div className="relative z-20 page-shell h-full flex items-center justify-center">
+        <div className="relative z-30 flex flex-col items-center w-full">
+          <HeroText
+            isMobile={isMobile}
+            isTablet={isTablet}
+            shouldAnimate={shouldAnimate}
+          />
         </div>
-
-        <motion.div
-          style={{ y, scale, opacity }}
-          className="absolute inset-0 flex items-end justify-center pointer-events-none"
-        >
-          <div className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 flex flex-col items-center">
-            <div className="hidden lg:flex w-full justify-center items-end gap-10 pointer-events-auto">
-              {images.map((img, i) => (
-                <GalleryItem
-                  key={i}
-                  index={i}
-                  image={img}
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}
-                />
-              ))}
-            </div>
-            <div className="hidden md:flex lg:hidden w-full flex-col items-center gap-8 pointer-events-auto">
-              <div className="flex w-full gap-6 justify-center">
-                <GalleryItem image={images[0]} index={0} />
-                <GalleryItem image={images[1]} index={1} />
-              </div>
-              <GalleryItem image={images[2]} index={2} />
-            </div>
-            <div className="md:hidden w-full flex items-center justify-center pointer-events-auto py-8">
-              <MobileGalleryCarousel images={images} />
-            </div>
-          </div>
-        </motion.div>
-      </section>
-    </HeroContext.Provider>
+      </div>
+  </div>
   );
 }
 

@@ -151,7 +151,7 @@ export default function Resume(): React.JSX.Element {
         <div className="mx-auto max-w-[8.5in] bg-surface rounded-xl border border-line p-8 md:p-12 shadow-lg">
           {/* Header Section */}
           <div className="mb-8">
-            <div className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900 mb-2">
+            <div className="type-display-xl font-bold tracking-tight text-[color:var(--color-text-primary)] mb-2">
               AUSTIN CARSON
             </div>
             <div className="text-lg text-neutral-700 mb-4">
