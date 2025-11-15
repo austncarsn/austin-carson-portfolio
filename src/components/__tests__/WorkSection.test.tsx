@@ -60,4 +60,37 @@ describe('WorkSection', () => {
   expect(cta).toBeTruthy();
   expect(cta.textContent).toMatch(/View case study/i);
   });
+
+  it('filter buttons reflect aria-pressed and CTA is accessible and focusable', () => {
+    render(<WorkSection projects={projects} />);
+
+    // Use the first design filter button we find and ensure clicking sets some
+    // design button to aria-pressed=true (avoid asserting global default state
+    // because animation wrappers can create duplicate nodes in the test DOM).
+    const designButtons = screen.getAllByRole('button', { name: /design/i });
+    expect(designButtons.length).toBeGreaterThan(0);
+    const designBtn = designButtons[0];
+
+    // Activate Design filter
+    fireEvent.click(designBtn);
+
+    // After activation, at least one of the design buttons should report pressed
+    const anyDesignPressed = screen
+      .getAllByRole('button', { name: /design/i })
+      .some((b) => b.getAttribute('aria-pressed') === 'true');
+    expect(anyDesignPressed).toBe(true);
+
+    // Check CTA accessibility and focusability
+    const articles = screen.getAllByRole('article');
+    const firstArticle = articles[0];
+    const cta = within(firstArticle).getByTestId(`case-study-${projects[0].id}`);
+
+    // Should be a button with accessible name
+  expect(cta).toBeTruthy();
+  expect(cta.textContent).toMatch(/View case study/i);
+
+    // Ensure it's focusable via DOM focus (keyboard accessible)
+    (cta as HTMLElement).focus();
+    expect(document.activeElement).toBe(cta);
+  });
 });
