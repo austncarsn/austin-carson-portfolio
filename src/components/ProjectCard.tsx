@@ -71,14 +71,7 @@ export const ProjectCard = memo(
 
     const imgObjectPosition = ratio === '4:5' ? 'center top' : 'center center';
 
-    const aspectClass =
-      ratio === '4:5'
-        ? 'aspect-[4/5]'
-        : ratio === '1:1'
-          ? 'aspect-square'
-          : ratio === '16:9'
-            ? 'aspect-[16/9]'
-            : 'aspect-[16/10]';
+    // aspectClass was used in the older layout; the new card uses a stable aspect-[16/10]
 
     // Fade in once when in view
     useEffect(() => {
@@ -102,50 +95,34 @@ export const ProjectCard = memo(
 
     return (
       <article ref={assignRefs(localRef, forwardedRef)} className="group relative">
-        <div
-          className={`card relative rounded-[24px] transition-transform duration-500 will-change-transform ${cardHeightClass}`}
-          style={{
-            opacity: hasBeenInView ? 1 : 0,
-            boxShadow: 'var(--shadow-card-strong)',
-          }}
-        >
+        <div className={`transition-transform duration-500 will-change-transform ${cardHeightClass}`}>
           {previewImage ? (
-            <div className="relative w-full h-full flex items-center justify-center">
-              <div
-                className={`relative w-full ${aspectClass} overflow-hidden rounded-[24px]`}
-              >
+            <div className="overflow-hidden rounded-3xl bg-surface shadow-soft">
+              <div className="aspect-[16/10] w-full overflow-hidden">
                 <ImageWithFallback
                   src={previewImage}
                   alt={`${title} preview`}
-                  className="h-full w-full object-contain"
+                  className="h-full w-full object-cover"
                   fit={fit === 'auto' ? 'contain' : fit}
-                  imgStyle={{
-                    objectPosition: objectPosition || imgObjectPosition,
-                  }}
+                  imgStyle={{ objectPosition: objectPosition || imgObjectPosition }}
                 />
+              </div>
+
+              <div className="px-4 py-3">
+                <h3 className="type-heading-l font-bold leading-tight line-clamp-2 text-default">
+                  {title}
+                </h3>
               </div>
             </div>
           ) : (
-            <div className="absolute inset-0 w-full h-full bg-neutral-200 flex items-center justify-center p-6">
-              <div className="text-center">
+            <div className="overflow-hidden rounded-3xl bg-neutral-200 shadow-soft">
+              <div className="aspect-[16/10] w-full" />
+              <div className="px-4 py-6 text-center">
                 <p className="text-sm font-medium text-neutral-600">No preview</p>
                 <p className="mt-2 text-xs text-neutral-500">{title}</p>
               </div>
             </div>
           )}
-
-          <div
-            className="absolute inset-0"
-            style={{ background: 'var(--card-overlay-dark)' }}
-          />
-          <div className="absolute left-5 bottom-5 right-5 max-w-[70%]">
-            <h3
-              className="type-heading-l text-inverse font-bold leading-tight drop-shadow-lg line-clamp-2"
-              style={{ letterSpacing: '-0.5px' }}
-            >
-              {title}
-            </h3>
-          </div>
         </div>
       </article>
     );
